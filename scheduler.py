@@ -126,9 +126,9 @@ class LotteryScheduler:
                         "result": res
                     })
 
-            if collected_results and (len(collected_results) == len(pending_lottos) or attempt == max_attempts):
+            if collected_results:
                 if len(collected_results) > 1:
-                    # Combined card for multiple lotteries
+                    # Combined card for multiple ready lotteries
                     items_to_send = []
                     for item in collected_results:
                         l = item["lotto"]
@@ -157,7 +157,7 @@ class LotteryScheduler:
                             if l in pending_lottos:
                                 pending_lottos.remove(l)
                 else:
-                    # Single lottery card
+                    # Send single ready lottery immediately
                     item = collected_results[0]
                     l = item["lotto"]
                     r = item["result"]
