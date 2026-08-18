@@ -1879,3 +1879,82 @@ HTTP response body: {"message":"A message (messages[0]) in the request body is 
 2026-08-18 15:58:43 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
 2026-08-18 15:58:50 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
 2026-08-18 15:58:57 | INFO     | lottery_bot | Successfully fetched 54 lottery results from SMLOT
+2026-08-18 16:25:00 | INFO     | lottery_bot | === Start checking หุ้นสิงคโปร์ (polling up to 30 min) ===
+2026-08-18 16:25:00 | INFO     | lottery_bot | หุ้นสิงคโปร์ attempt 1/30 (waiting for site to update)...
+2026-08-18 16:25:00 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 16:25:03 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 16:25:08 | INFO     | lottery_bot | Successfully fetched 55 lottery results from SMLOT
+2026-08-18 16:25:08 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:25:08 | WARNING  | lottery_bot | ParseError for หุ้นสิงคโปร์: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:26:08 | INFO     | lottery_bot | หุ้นสิงคโปร์ attempt 2/30 (waiting for site to update)...
+2026-08-18 16:26:08 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 16:26:10 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 16:26:15 | INFO     | lottery_bot | Successfully fetched 55 lottery results from SMLOT
+2026-08-18 16:26:15 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:26:15 | WARNING  | lottery_bot | ParseError for หุ้นสิงคโปร์: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:27:15 | INFO     | lottery_bot | หุ้นสิงคโปร์ attempt 3/30 (waiting for site to update)...
+2026-08-18 16:27:15 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 16:27:17 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 16:27:21 | INFO     | lottery_bot | Successfully fetched 55 lottery results from SMLOT
+2026-08-18 16:27:21 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:27:21 | WARNING  | lottery_bot | ParseError for หุ้นสิงคโปร์: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:28:21 | INFO     | lottery_bot | หุ้นสิงคโปร์ attempt 4/30 (waiting for site to update)...
+2026-08-18 16:28:21 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 16:28:24 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 16:28:28 | INFO     | lottery_bot | Successfully fetched 55 lottery results from SMLOT
+2026-08-18 16:28:28 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:28:28 | WARNING  | lottery_bot | ParseError for หุ้นสิงคโปร์: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:29:28 | INFO     | lottery_bot | หุ้นสิงคโปร์ attempt 5/30 (waiting for site to update)...
+2026-08-18 16:29:28 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 16:29:32 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 16:29:37 | INFO     | lottery_bot | Successfully fetched 55 lottery results from SMLOT
+2026-08-18 16:29:37 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:29:37 | WARNING  | lottery_bot | ParseError for หุ้นสิงคโปร์: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:30:00 | INFO     | lottery_bot | === Start checking ฮานอย กาชาด (polling up to 30 min) ===
+2026-08-18 16:30:00 | INFO     | lottery_bot | ฮานอย กาชาด attempt 1/30 (waiting for site to update)...
+2026-08-18 16:30:00 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย กาชาด' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:30:00 | WARNING  | lottery_bot | ParseError for ฮานอย กาชาด: SMLOT parser: Result for 'ฮานอย กาชาด' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:30:37 | INFO     | lottery_bot | หุ้นสิงคโปร์ attempt 6/30 (waiting for site to update)...
+2026-08-18 16:30:37 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 16:30:39 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 16:30:44 | INFO     | lottery_bot | Successfully fetched 55 lottery results from SMLOT
+2026-08-18 16:30:44 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:30:44 | WARNING  | lottery_bot | ParseError for หุ้นสิงคโปร์: SMLOT parser: Result for 'หุ้นสิงคโปร์' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:31:00 | INFO     | lottery_bot | ฮานอย กาชาด attempt 2/30 (waiting for site to update)...
+2026-08-18 16:31:00 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย กาชาด' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:31:00 | WARNING  | lottery_bot | ParseError for ฮานอย กาชาด: SMLOT parser: Result for 'ฮานอย กาชาด' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:31:44 | INFO     | lottery_bot | หุ้นสิงคโปร์ attempt 7/30 (waiting for site to update)...
+2026-08-18 16:31:44 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 16:31:46 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 16:31:51 | INFO     | lottery_bot | Successfully fetched 56 lottery results from SMLOT
+2026-08-18 16:31:51 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=140 bottom2=06
+2026-08-18 16:31:51 | INFO     | lottery_bot | Prepared message:
+🇸🇬 หุ้นสิงคโปร์
+🔺 1️⃣ 4️⃣ 0️⃣
+🔻 0️⃣ 6️⃣
+2026-08-18 16:31:51 | INFO     | lottery_bot | LINE Flex Message sent successfully for หุ้นสิงคโปร์
+2026-08-18 16:31:52 | INFO     | lottery_bot | Saved result: หุ้นสิงคโปร์ | 2026-08-18 | top3=140 bottom2=06
+2026-08-18 16:31:52 | INFO     | lottery_bot | หุ้นสิงคโปร์ result sent successfully – stop polling
+2026-08-18 16:32:00 | INFO     | lottery_bot | ฮานอย กาชาด attempt 3/30 (waiting for site to update)...
+2026-08-18 16:32:00 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย กาชาด' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:32:00 | WARNING  | lottery_bot | ParseError for ฮานอย กาชาด: SMLOT parser: Result for 'ฮานอย กาชาด' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:33:00 | INFO     | lottery_bot | ฮานอย กาชาด attempt 4/30 (waiting for site to update)...
+2026-08-18 16:33:00 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 16:33:02 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 16:33:06 | INFO     | lottery_bot | Successfully fetched 56 lottery results from SMLOT
+2026-08-18 16:33:06 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย กาชาด' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:33:06 | WARNING  | lottery_bot | ParseError for ฮานอย กาชาด: SMLOT parser: Result for 'ฮานอย กาชาด' is not yet available on member.smlot.net/reports/reward
+2026-08-18 16:34:06 | INFO     | lottery_bot | ฮานอย กาชาด attempt 5/30 (waiting for site to update)...
+2026-08-18 16:34:06 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 16:34:08 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 16:34:13 | INFO     | lottery_bot | Successfully fetched 58 lottery results from SMLOT
+2026-08-18 16:34:13 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=416 bottom2=32
+2026-08-18 16:34:13 | INFO     | lottery_bot | Prepared message:
+🇻🇳 ฮานอย กาชาด
+🔺 4️⃣ 1️⃣ 6️⃣
+🔻 3️⃣ 2️⃣
+2026-08-18 16:34:14 | INFO     | lottery_bot | LINE Flex Message sent successfully for ฮานอย กาชาด
+2026-08-18 16:34:14 | INFO     | lottery_bot | Saved result: ฮานอย กาชาด | 2026-08-18 | top3=416 bottom2=32
+2026-08-18 16:34:14 | INFO     | lottery_bot | ฮานอย กาชาด result sent successfully – stop polling
+2026-08-18 16:39:24 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 16:39:25 | INFO     | lottery_bot | LINE Flex Message sent successfully for หุ้นสิงคโปร์
