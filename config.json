@@ -390,5 +390,13 @@
     "parser": "smlot_reward",
     "type": "laos",
     "flag": "🇱🇦"
+  },
+  {
+    "name": "หวยดาวโจนส์",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "03:30",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇺🇸"
   }
 ]
