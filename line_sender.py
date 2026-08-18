@@ -1,0 +1,267 @@
+# -*- coding: utf-8 -*-
+"""LINE Messaging API sender module."""
+
+from __future__ import annotations
+
+import os
+import urllib.parse
+from typing import Optional
+
+from dotenv import load_dotenv
+from linebot.v3.messaging import (
+    ApiClient,
+    Configuration,
+    FlexContainer,
+    FlexMessage,
+    ImageMessage,
+    MessagingApi,
+    PushMessageRequest,
+    TextMessage,
+)
+
+from card_generator import generate_card_image, upload_card_image
+from utils import setup_logging
+
+load_dotenv()
+logger = setup_logging()
+
+
+class LineSender:
+    """Send text, Flex, and Image messages to a LINE group via Messaging API."""
+
+    def __init__(
+        self,
+        channel_access_token: Optional[str] = None,
+        group_id: Optional[str] = None,
+    ) -> None:
+        self.token = channel_access_token or os.getenv("LINE_CHANNEL_ACCESS_TOKEN", "")
+        self.group_id = group_id or os.getenv("LINE_GROUP_ID", "")
+
+        if not self.token:
+            raise ValueError(
+                "LINE_CHANNEL_ACCESS_TOKEN is not set. "
+                "Please set it in .env or pass it to the constructor."
+            )
+        if not self.group_id:
+            raise ValueError(
+                "LINE_GROUP_ID is not set. "
+                "Please set it in .env or pass it to the constructor."
+            )
+
+        self.configuration = Configuration(access_token=self.token)
+        logger.info("LineSender initialized for group %s", self.group_id[:8] + "...")
+
+    def send_result_image(
+        self, name: str, top3: str, bottom2: str, flag: str = "🎯"
+    ) -> bool:
+        """Generate high-res PNG card, upload to HTTPS host, and push ImageMessage."""
+        try:
+            image_path = generate_card_image(name, top3, bottom2, flag=flag)
+            image_url = upload_card_image(image_path)
+
+            with ApiClient(self.configuration) as api_client:
+                api = MessagingApi(api_client)
+                api.push_message(
+                    PushMessageRequest(
+                        to=self.group_id,
+                        messages=[
+                            ImageMessage(
+                                original_content_url=image_url,
+                                preview_image_url=image_url,
+                            )
+                        ],
+                    )
+                )
+            logger.info("LINE Card ImageMessage sent successfully for %s", name)
+            return True
+        except Exception as exc:
+            logger.error("Failed to send LINE ImageMessage for %s: %s", name, exc, exc_info=True)
+            return self.send_result_emoji_text(name, top3, bottom2, flag=flag)
+
+    def create_clean_flex_message_dict(
+        self, name: str, top3: str, bottom2: str, flag: str = "🎯"
+    ) -> dict:
+        """Create a clean Flex Message bubble (WITHOUT share button)."""
+        top3_fmt = "  ".join(top3.zfill(3)[-3:])
+        bottom2_fmt = "  ".join(bottom2.zfill(2)[-2:])
+
+        return {
+            "type": "bubble",
+            "size": "mega",
+            "header": {
+                "type": "box",
+                "layout": "horizontal",
+                "backgroundColor": "#1E222D",
+                "paddingAll": "lg",
+                "alignItems": "center",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": flag,
+                        "size": "xl",
+                        "flex": 0,
+                    },
+                    {
+                        "type": "text",
+                        "text": f" {name}",
+                        "weight": "bold",
+                        "size": "xl",
+                        "color": "#FFFFFF",
+                        "flex": 1,
+                    },
+                ],
+            },
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#181A20",
+                "spacing": "md",
+                "paddingAll": "lg",
+                "contents": [
+                    # 3 ตัวบน (Theme แดง/ส้ม)
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "backgroundColor": "#2A181A",
+                        "cornerRadius": "md",
+                        "paddingAll": "md",
+                        "spacing": "xs",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "🔺 3 ตัวบน",
+                                "size": "sm",
+                                "color": "#FF6B6B",
+                                "weight": "bold",
+                            },
+                            {
+                                "type": "text",
+                                "text": top3_fmt,
+                                "size": "3xl",
+                                "weight": "bold",
+                                "color": "#FF4D4D",
+                                "align": "center",
+                            },
+                        ],
+                    },
+                    # 2 ตัวล่าง (Theme น้ำเงิน/ฟ้า)
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "backgroundColor": "#142438",
+                        "cornerRadius": "md",
+                        "paddingAll": "md",
+                        "spacing": "xs",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "🔻 2 ตัวล่าง",
+                                "size": "sm",
+                                "color": "#4DABFF",
+                                "weight": "bold",
+                            },
+                            {
+                                "type": "text",
+                                "text": bottom2_fmt,
+                                "size": "3xl",
+                                "weight": "bold",
+                                "color": "#00D2FF",
+                                "align": "center",
+                            },
+                        ],
+                    },
+                ],
+            },
+        }
+
+    def create_flex_message_dict(
+        self, name: str, top3: str, bottom2: str, flag: str = "🎯"
+    ) -> dict:
+        """Create a styled LINE Flex Message bubble with LIFF share button."""
+        clean_flex = self.create_clean_flex_message_dict(name, top3, bottom2, flag=flag)
+        
+        # Short parameter URL for LIFF Share Target Picker (< 100 chars)
+        q_name = urllib.parse.quote(name)
+        q_top3 = urllib.parse.quote(top3)
+        q_bottom2 = urllib.parse.quote(bottom2)
+        q_flag = urllib.parse.quote(flag)
+        liff_share_uri = f"https://liff.line.me/2011157640-izadxULb?n={q_name}&t={q_top3}&b={q_bottom2}&f={q_flag}"
+
+        clean_flex["footer"] = {
+            "type": "box",
+            "layout": "vertical",
+            "backgroundColor": "#14161D",
+            "paddingAll": "md",
+            "contents": [
+                {
+                    "type": "button",
+                    "style": "primary",
+                    "color": "#28A745",
+                    "height": "sm",
+                    "action": {
+                        "type": "uri",
+                        "label": "📤 กดที่นี่เพื่อแชร์ผล",
+                        "uri": liff_share_uri,
+                    },
+                }
+            ],
+        }
+        return clean_flex
+
+    def send_result_flex(
+        self, name: str, top3: str, bottom2: str, flag: str = "🎯"
+    ) -> bool:
+        """Push a Flex Message result card to the LINE group."""
+        try:
+            flex_dict = self.create_flex_message_dict(
+                name=name, top3=top3, bottom2=bottom2, flag=flag
+            )
+            container = FlexContainer.from_dict(flex_dict)
+            alt_text = f"{flag} {name} | 3บน: {top3} | 2ล่าง: {bottom2}"
+
+            with ApiClient(self.configuration) as api_client:
+                api = MessagingApi(api_client)
+                api.push_message(
+                    PushMessageRequest(
+                        to=self.group_id,
+                        messages=[FlexMessage(alt_text=alt_text, contents=container)],
+                    )
+                )
+            logger.info("LINE Flex Message sent successfully for %s", name)
+            return True
+        except Exception as exc:
+            logger.error("Failed to send LINE Flex Message for %s: %s", name, exc, exc_info=True)
+            # Fallback to Text Message if Flex fails
+            fallback_text = f"{flag} {name}\n🔺 3บน: {top3}\n🔻 2ล่าง: {bottom2}"
+            return self.send_text(fallback_text)
+
+    def send_result_emoji_text(
+        self, name: str, top3: str, bottom2: str, flag: str = "🎯"
+    ) -> bool:
+        """Send a forwardable text message with colored badges and clean digits."""
+        top3_clean = "  ".join(top3.zfill(3)[-3:])
+        bottom2_clean = "  ".join(bottom2.zfill(2)[-2:])
+
+        text = (
+            f"{flag} {name}\n"
+            f"🔴 3 ตัวบน : {top3_clean}\n"
+            f"🔵 2 ตัวล่าง : {bottom2_clean}"
+        )
+        return self.send_text(text)
+
+    def send_text(self, message: str) -> bool:
+        """Push a text message to the configured group."""
+        try:
+            with ApiClient(self.configuration) as api_client:
+                api = MessagingApi(api_client)
+                api.push_message(
+                    PushMessageRequest(
+                        to=self.group_id,
+                        messages=[TextMessage(text=message)],
+                    )
+                )
+            logger.info("LINE text message sent successfully (%d chars)", len(message))
+            return True
+        except Exception as exc:
+            logger.error("Failed to send LINE text message: %s", exc, exc_info=True)
+            return False

@@ -1,0 +1,218 @@
+[
+  {
+    "name": "ลาว Extra",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "08:30",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "🇱🇦"
+  },
+  {
+    "name": "ฮานอยอาเซียน",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "09:30",
+    "parser": "smlot_reward",
+    "type": "5digit",
+    "flag": "🇻🇳"
+  },
+  {
+    "name": "นิเคอิเช้า",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "09:30",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇯🇵"
+  },
+  {
+    "name": "นิเคอิเช้า VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "09:05",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇯🇵"
+  },
+  {
+    "name": "จีนเช้า",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "10:30",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇨🇳"
+  },
+  {
+    "name": "จีนเช้า VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "10:05",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇨🇳"
+  },
+  {
+    "name": "ลาว TV",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "10:30",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "🇱🇦"
+  },
+  {
+    "name": "ฮั่งเส็งเช้า",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "11:05",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇭🇰"
+  },
+  {
+    "name": "ฮั่งเส็งเช้า VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "10:35",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇭🇰"
+  },
+  {
+    "name": "ฮานอย HD",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "11:30",
+    "parser": "smlot_reward",
+    "type": "5digit",
+    "flag": "🇻🇳"
+  },
+  {
+    "name": "ไต้หวัน VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "11:35",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇹🇼"
+  },
+  {
+    "name": "ฮานอย Star",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "12:30",
+    "parser": "smlot_reward",
+    "type": "5digit",
+    "flag": "🇻🇳"
+  },
+  {
+    "name": "ไต้หวัน",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "12:35",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇹🇼"
+  },
+  {
+    "name": "เกาหลี VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "12:35",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇰🇷"
+  },
+  {
+    "name": "นิเคอิบ่าย",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "13:30",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇯🇵"
+  },
+  {
+    "name": "นิเคอิบ่าย VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "13:25",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇯🇵"
+  },
+  {
+    "name": "หุ้นเกาหลี",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "13:30",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇰🇷"
+  },
+  {
+    "name": "ลาว HD",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "13:45",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "🇱🇦"
+  },
+  {
+    "name": "จีนบ่าย",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "14:00",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇨🇳"
+  },
+  {
+    "name": "จีนบ่าย VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "14:25",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇨🇳"
+  },
+  {
+    "name": "ฮานอย TV",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "14:30",
+    "parser": "smlot_reward",
+    "type": "5digit",
+    "flag": "🇻🇳"
+  },
+  {
+    "name": "ฮั่งเส็งบ่าย",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "15:10",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇭🇰"
+  },
+  {
+    "name": "ฮั่งเส็งบ่าย VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "15:25",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇭🇰"
+  },
+  {
+    "name": "ลาว Star",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "15:45",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "🇱🇦"
+  },
+  {
+    "name": "หุ้นสิงคโปร์",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "16:25",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇸🇬"
+  },
+  {
+    "name": "ฮานอย กาชาด",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "16:30",
+    "parser": "smlot_reward",
+    "type": "5digit",
+    "flag": "🇻🇳"
+  },
+  {
+    "name": "หุ้นไทยเย็น",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "16:45",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇹🇭"
+  }
+]
