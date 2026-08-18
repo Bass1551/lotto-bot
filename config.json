@@ -382,5 +382,13 @@
     "parser": "smlot_reward",
     "type": "5digit",
     "flag": "🇻🇳"
+  },
+  {
+    "name": "ลาว Extra",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "08:30",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "🇱🇦"
   }
 ]
