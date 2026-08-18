@@ -280,14 +280,6 @@
     "flag": "🇱🇦"
   },
   {
-    "name": "หวยลาวสามัคคี VIP",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "21:30",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "⭐🇱🇦"
-  },
-  {
     "name": "หวยลาวSTAR VIP",
     "url": "https://member.smlot.net/reports/reward",
     "time": "22:00",
@@ -454,22 +446,6 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸"
-  },
-  {
-    "name": "หุ้นลาว VIP",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "20:30",
-    "parser": "smlot_reward",
-    "type": "vip",
-    "flag": "⭐🇱🇦"
-  },
-  {
-    "name": "หวยอินเดีย VIP",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "16:50",
-    "parser": "smlot_reward",
-    "type": "vip",
-    "flag": "⭐🇮🇳"
   },
   {
     "name": "หวยไทย",
