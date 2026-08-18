@@ -126,7 +126,7 @@ class LotteryScheduler:
                         "result": res
                     })
 
-            if collected_results:
+            if collected_results and (len(collected_results) == len(pending_lottos) or attempt == max_attempts):
                 if len(collected_results) > 1:
                     # Combined card for multiple lotteries
                     items_to_send = []

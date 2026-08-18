@@ -298,7 +298,7 @@
   {
     "name": "หุ้นเยอรมัน",
     "url": "https://member.smlot.net/reports/reward",
-    "time": "22:30",
+    "time": "22:45",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇩🇪"
@@ -306,7 +306,7 @@
   {
     "name": "หุ้นอังกฤษ",
     "url": "https://member.smlot.net/reports/reward",
-    "time": "22:30",
+    "time": "22:45",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇬🇧"
