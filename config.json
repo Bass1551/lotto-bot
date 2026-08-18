@@ -214,5 +214,181 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇹🇭"
+  },
+  {
+    "name": "ฮานอยสามัคคี",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "17:30",
+    "parser": "smlot_reward",
+    "type": "5digit",
+    "flag": "🇻🇳"
+  },
+  {
+    "name": "สิงคโปร์ VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "17:30",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇸🇬"
+  },
+  {
+    "name": "หุ้นอินเดีย",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "17:30",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇮🇳"
+  },
+  {
+    "name": "หุ้นอียิปต์",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "18:00",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇪🇬"
+  },
+  {
+    "name": "หวยฮานอย",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "18:30",
+    "parser": "smlot_reward",
+    "type": "5digit",
+    "flag": "🇻🇳"
+  },
+  {
+    "name": "ฮานอย VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "19:30",
+    "parser": "smlot_reward",
+    "type": "5digit",
+    "flag": "⭐🇻🇳"
+  },
+  {
+    "name": "หวยลาว",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "20:30",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "🇱🇦"
+  },
+  {
+    "name": "หวยลาวสามัคคี",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "20:30",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "🇱🇦"
+  },
+  {
+    "name": "หวยลาวสามัคคี VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "21:30",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "⭐🇱🇦"
+  },
+  {
+    "name": "หวยลาวSTAR VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "22:00",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "⭐🇱🇦"
+  },
+  {
+    "name": "หุ้นเยอรมัน",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "22:30",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇩🇪"
+  },
+  {
+    "name": "หุ้นอังกฤษ",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "22:30",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇬🇧"
+  },
+  {
+    "name": "หุ้นรัสเซีย",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "22:45",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇷🇺"
+  },
+  {
+    "name": "เยอรมันVIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "23:00",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇩🇪"
+  },
+  {
+    "name": "อังกฤษVIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "23:00",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇬🇧"
+  },
+  {
+    "name": "รัสเซียVIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "23:00",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇷🇺"
+  },
+  {
+    "name": "หวยลาว กาชาด",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "23:30",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "🇱🇦"
+  },
+  {
+    "name": "หวยดาวโจนส์ VIP",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "03:00",
+    "parser": "smlot_reward",
+    "type": "vip",
+    "flag": "⭐🇺🇸"
+  },
+  {
+    "name": "หวยดาวโจนส์ mid night",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "04:30",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇺🇸"
+  },
+  {
+    "name": "หวยดาวโจนส์ STAR",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "04:00",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "⭐🇺🇸"
+  },
+  {
+    "name": "หวยดาวโจนส์ extra",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "05:00",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇺🇸"
+  },
+  {
+    "name": "หวยดาวโจนส์ TV",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "06:00",
+    "parser": "smlot_reward",
+    "type": "stock",
+    "flag": "🇺🇸"
   }
 ]
