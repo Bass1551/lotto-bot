@@ -1971,3 +1971,168 @@ HTTP response body: {"message":"A message (messages[0]) in the request body is 
 2026-08-18 16:45:09 | INFO     | lottery_bot | LINE Flex Message sent successfully for หุ้นไทยเย็น
 2026-08-18 16:45:09 | INFO     | lottery_bot | Saved result: หุ้นไทยเย็น | 2026-08-18 | top3=062 bottom2=82
 2026-08-18 16:45:09 | INFO     | lottery_bot | หุ้นไทยเย็น result sent successfully – stop polling
+2026-08-18 17:13:44 | INFO     | lottery_bot | ==================================================
+2026-08-18 17:13:44 | INFO     | lottery_bot | Lottery Bot starting...
+2026-08-18 17:13:44 | INFO     | lottery_bot | ==================================================
+2026-08-18 17:13:44 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-08-18 17:13:44 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 17:13:44 | INFO     | lottery_bot | Loaded 27 lotteries from config.json
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ลาว Extra at 08:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ฮานอยอาเซียน at 09:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled นิเคอิเช้า at 09:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled นิเคอิเช้า VIP at 09:05 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled จีนเช้า at 10:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled จีนเช้า VIP at 10:05 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ลาว TV at 10:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ฮั่งเส็งเช้า at 11:05 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ฮั่งเส็งเช้า VIP at 10:35 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ฮานอย HD at 11:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ไต้หวัน VIP at 11:35 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ฮานอย Star at 12:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ไต้หวัน at 12:35 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled เกาหลี VIP at 12:35 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled นิเคอิบ่าย at 13:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled นิเคอิบ่าย VIP at 13:25 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled หุ้นเกาหลี at 13:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ลาว HD at 13:45 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled จีนบ่าย at 14:00 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled จีนบ่าย VIP at 14:25 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ฮานอย TV at 14:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ฮั่งเส็งบ่าย at 15:10 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ฮั่งเส็งบ่าย VIP at 15:25 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ลาว Star at 15:45 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled หุ้นสิงคโปร์ at 16:25 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled ฮานอย กาชาด at 16:30 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduled หุ้นไทยเย็น at 16:45 (Asia/Bangkok)
+2026-08-18 17:13:44 | INFO     | lottery_bot | Scheduler started
+2026-08-18 17:13:44 | INFO     | lottery_bot | Checking pending lotteries due today (Current time: 17:13)...
+2026-08-18 17:13:44 | INFO     | lottery_bot | Bot is running. Press Ctrl+C to stop.
+2026-08-18 17:15:01 | INFO     | lottery_bot | Received signal 2 – shutting down...
+2026-08-18 17:15:01 | INFO     | lottery_bot | Scheduler shut down
+2026-08-18 17:15:39 | INFO     | lottery_bot | ==================================================
+2026-08-18 17:15:39 | INFO     | lottery_bot | Lottery Bot starting...
+2026-08-18 17:15:39 | INFO     | lottery_bot | ==================================================
+2026-08-18 17:15:39 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-08-18 17:15:39 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 17:15:39 | INFO     | lottery_bot | Loaded 49 lotteries from config.json
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ลาว Extra at 08:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮานอยอาเซียน at 09:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled นิเคอิเช้า at 09:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled นิเคอิเช้า VIP at 09:05 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled จีนเช้า at 10:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled จีนเช้า VIP at 10:05 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ลาว TV at 10:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮั่งเส็งเช้า at 11:05 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮั่งเส็งเช้า VIP at 10:35 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮานอย HD at 11:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ไต้หวัน VIP at 11:35 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮานอย Star at 12:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ไต้หวัน at 12:35 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled เกาหลี VIP at 12:35 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled นิเคอิบ่าย at 13:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled นิเคอิบ่าย VIP at 13:25 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หุ้นเกาหลี at 13:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ลาว HD at 13:45 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled จีนบ่าย at 14:00 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled จีนบ่าย VIP at 14:25 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮานอย TV at 14:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮั่งเส็งบ่าย at 15:10 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮั่งเส็งบ่าย VIP at 15:25 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ลาว Star at 15:45 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หุ้นสิงคโปร์ at 16:25 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮานอย กาชาด at 16:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หุ้นไทยเย็น at 16:45 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮานอยสามัคคี at 17:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled สิงคโปร์ VIP at 17:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หุ้นอินเดีย at 17:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หุ้นอียิปต์ at 18:00 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยฮานอย at 18:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled ฮานอย VIP at 19:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยลาว at 20:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยลาวสามัคคี at 20:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยลาวสามัคคี VIP at 21:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยลาวSTAR VIP at 22:00 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หุ้นเยอรมัน at 22:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หุ้นอังกฤษ at 22:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หุ้นรัสเซีย at 22:45 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled เยอรมันVIP at 23:00 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled อังกฤษVIP at 23:00 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled รัสเซียVIP at 23:00 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยลาว กาชาด at 23:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยดาวโจนส์ VIP at 03:00 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยดาวโจนส์ mid night at 04:30 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยดาวโจนส์ STAR at 04:00 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยดาวโจนส์ extra at 05:00 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduled หวยดาวโจนส์ TV at 06:00 (Asia/Bangkok)
+2026-08-18 17:15:39 | INFO     | lottery_bot | Scheduler started
+2026-08-18 17:15:39 | INFO     | lottery_bot | Checking pending lotteries due today (Current time: 17:15)...
+2026-08-18 17:15:39 | INFO     | lottery_bot | Lottery 'หวยดาวโจนส์ VIP' (due at 03:00) has not been sent today. Checking now...
+2026-08-18 17:15:39 | INFO     | lottery_bot | Lottery 'หวยดาวโจนส์ mid night' (due at 04:30) has not been sent today. Checking now...
+2026-08-18 17:15:39 | INFO     | lottery_bot | Lottery 'หวยดาวโจนส์ STAR' (due at 04:00) has not been sent today. Checking now...
+2026-08-18 17:15:39 | INFO     | lottery_bot | Lottery 'หวยดาวโจนส์ extra' (due at 05:00) has not been sent today. Checking now...
+2026-08-18 17:15:39 | INFO     | lottery_bot | === Start checking หวยดาวโจนส์ VIP (polling up to 30 min) ===
+2026-08-18 17:15:39 | INFO     | lottery_bot | หวยดาวโจนส์ VIP attempt 1/30 (waiting for site to update)...
+2026-08-18 17:15:39 | INFO     | lottery_bot | === Start checking หวยดาวโจนส์ extra (polling up to 30 min) ===
+2026-08-18 17:15:39 | INFO     | lottery_bot | หวยดาวโจนส์ extra attempt 1/30 (waiting for site to update)...
+2026-08-18 17:15:39 | INFO     | lottery_bot | Lottery 'หวยดาวโจนส์ TV' (due at 06:00) has not been sent today. Checking now...
+2026-08-18 17:15:39 | INFO     | lottery_bot | Bot is running. Press Ctrl+C to stop.
+2026-08-18 17:15:39 | INFO     | lottery_bot | === Start checking หวยดาวโจนส์ mid night (polling up to 30 min) ===
+2026-08-18 17:15:39 | INFO     | lottery_bot | หวยดาวโจนส์ mid night attempt 1/30 (waiting for site to update)...
+2026-08-18 17:15:39 | INFO     | lottery_bot | === Start checking หวยดาวโจนส์ TV (polling up to 30 min) ===
+2026-08-18 17:15:39 | INFO     | lottery_bot | === Start checking หวยดาวโจนส์ STAR (polling up to 30 min) ===
+2026-08-18 17:15:39 | INFO     | lottery_bot | หวยดาวโจนส์ TV attempt 1/30 (waiting for site to update)...
+2026-08-18 17:15:39 | INFO     | lottery_bot | หวยดาวโจนส์ STAR attempt 1/30 (waiting for site to update)...
+2026-08-18 17:15:39 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 17:15:42 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 17:15:47 | INFO     | lottery_bot | Successfully fetched 62 lottery results from SMLOT
+2026-08-18 17:15:47 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=982 bottom2=50
+2026-08-18 17:15:47 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=117 bottom2=92
+2026-08-18 17:15:47 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=452 bottom2=11
+2026-08-18 17:15:47 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=748 bottom2=12
+2026-08-18 17:15:47 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=141 bottom2=72
+2026-08-18 17:15:47 | INFO     | lottery_bot | Prepared message:
+⭐🇺🇸 หวยดาวโจนส์ VIP
+🔺 9️⃣ 8️⃣ 2️⃣
+🔻 5️⃣ 0️⃣
+2026-08-18 17:15:47 | INFO     | lottery_bot | Prepared message:
+🇺🇸 หวยดาวโจนส์ extra
+🔺 1️⃣ 1️⃣ 7️⃣
+🔻 9️⃣ 2️⃣
+2026-08-18 17:15:47 | INFO     | lottery_bot | Prepared message:
+🇺🇸 หวยดาวโจนส์ TV
+🔺 1️⃣ 4️⃣ 1️⃣
+🔻 7️⃣ 2️⃣
+2026-08-18 17:15:47 | INFO     | lottery_bot | Prepared message:
+⭐🇺🇸 หวยดาวโจนส์ STAR
+🔺 7️⃣ 4️⃣ 8️⃣
+🔻 1️⃣ 2️⃣
+2026-08-18 17:15:47 | INFO     | lottery_bot | Prepared message:
+🇺🇸 หวยดาวโจนส์ mid night
+🔺 4️⃣ 5️⃣ 2️⃣
+🔻 1️⃣ 1️⃣
+2026-08-18 17:15:48 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์ mid night
+2026-08-18 17:15:48 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์ VIP
+2026-08-18 17:15:48 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์ extra
+2026-08-18 17:15:48 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์ STAR
+2026-08-18 17:15:48 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์ TV
+2026-08-18 17:15:48 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ mid night | 2026-08-18 | top3=452 bottom2=11
+2026-08-18 17:15:48 | INFO     | lottery_bot | หวยดาวโจนส์ mid night result sent successfully – stop polling
+2026-08-18 17:15:48 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ extra | 2026-08-18 | top3=117 bottom2=92
+2026-08-18 17:15:48 | INFO     | lottery_bot | หวยดาวโจนส์ extra result sent successfully – stop polling
+2026-08-18 17:15:48 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ VIP | 2026-08-18 | top3=982 bottom2=50
+2026-08-18 17:15:48 | INFO     | lottery_bot | หวยดาวโจนส์ VIP result sent successfully – stop polling
+2026-08-18 17:15:48 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ TV | 2026-08-18 | top3=141 bottom2=72
+2026-08-18 17:15:48 | INFO     | lottery_bot | หวยดาวโจนส์ TV result sent successfully – stop polling
+2026-08-18 17:15:49 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ STAR | 2026-08-18 | top3=748 bottom2=12
+2026-08-18 17:15:49 | INFO     | lottery_bot | หวยดาวโจนส์ STAR result sent successfully – stop polling
+2026-08-18 17:17:08 | INFO     | lottery_bot | Received signal 2 – shutting down...
+2026-08-18 17:17:08 | INFO     | lottery_bot | Scheduler shut down
+2026-08-18 17:31:35 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 17:32:15 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 17:32:15 | ERROR    | lottery_bot | Failed to send LINE Combined Flex Message: (400)
+Reason: Bad Request
+HTTP response headers: HTTPHeaderDict({'Server': 'legy', 'Content-Type': 'application/json', 'x-content-type-options': 'nosniff', 'x-frame-options': 'DENY', 'x-line-request-id': 'be9ea13a-2cac-4308-98b5-e11cac2b2782', 'x-xss-protection': '1; mode=block', 'Content-Length': '158', 'Expires': 'Tue, 18 Aug 2026 10:32:14 GMT', 'Cache-Control': 'max-age=0, no-cache, no-store', 'Pragma': 'no-cache', 'Date': 'Tue, 18 Aug 2026 10:32:14 GMT', 'Connection': 'close'})
+HTTP response body: {"message":"A message (messages[0]) in the request body is invalid","details":[{"message":"invalid property","property":"/body/contents/1/contents/1/size"}]}
+
+2026-08-18 17:32:49 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 17:32:50 | INFO     | lottery_bot | LINE Combined Flex Message sent successfully for: 🇱🇦 ลาว TV + 🇨🇳 จีนเช้า

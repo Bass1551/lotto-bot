@@ -60,9 +60,67 @@
     <script>
         let globalFlexMessage = null;
 
-        function createCleanFlex(name, top3, bottom2, flag) {
+        function createSingleItemBox(name, top3, bottom2, flag) {
             var top3_fmt = top3.padStart(3, '0').slice(-3).split('').join('  ');
             var bottom2_fmt = bottom2.padStart(2, '0').slice(-2).split('').join('  ');
+
+            return [
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "md",
+                    "contents": [
+                        { "type": "text", "text": flag, "size": "md", "flex": 0 },
+                        { "type": "text", "text": " " + name, "weight": "bold", "size": "md", "color": "#FFFFFF", "flex": 1 }
+                    ]
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "backgroundColor": "#2A181A",
+                    "cornerRadius": "md",
+                    "paddingAll": "md",
+                    "spacing": "xs",
+                    "contents": [
+                        { "type": "text", "text": "🔺 3 ตัวบน", "size": "xs", "color": "#FF6B6B", "weight": "bold" },
+                        { "type": "text", "text": top3_fmt, "size": "xxl", "weight": "bold", "color": "#FF4D4D", "align": "center" }
+                    ]
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "backgroundColor": "#142438",
+                    "cornerRadius": "md",
+                    "paddingAll": "md",
+                    "spacing": "xs",
+                    "contents": [
+                        { "type": "text", "text": "🔻 2 ตัวล่าง", "size": "xs", "color": "#4DABFF", "weight": "bold" },
+                        { "type": "text", "text": bottom2_fmt, "size": "xxl", "weight": "bold", "color": "#00D2FF", "align": "center" }
+                    ]
+                }
+            ];
+        }
+
+        function createCleanFlex(namesStr, top3sStr, bottom2sStr, flagsStr) {
+            const names = namesStr.split('|');
+            const top3s = top3sStr.split('|');
+            const bottom2s = bottom2sStr.split('|');
+            const flags = flagsStr.split('|');
+
+            let bodyContents = [];
+
+            for (let i = 0; i < names.length; i++) {
+                if (i > 0) {
+                    bodyContents.push({ "type": "separator", "margin": "lg", "color": "#333A48" });
+                }
+                const boxes = createSingleItemBox(names[i], top3s[i], bottom2s[i], flags[i] || '🎯');
+                bodyContents = bodyContents.concat(boxes);
+            }
+
+            let headerTitle = flags[0] + " " + names[0];
+            if (names.length > 1) {
+                headerTitle = "🎯 ผลสลากรวม (" + names.length + " หวย)";
+            }
 
             return {
                 "type": "bubble",
@@ -74,8 +132,7 @@
                     "paddingAll": "lg",
                     "alignItems": "center",
                     "contents": [
-                        { "type": "text", "text": flag, "size": "xl", "flex": 0 },
-                        { "type": "text", "text": " " + name, "weight": "bold", "size": "xl", "color": "#FFFFFF", "flex": 1 }
+                        { "type": "text", "text": headerTitle, "weight": "bold", "size": "lg", "color": "#FFFFFF", "flex": 1 }
                     ]
                 },
                 "body": {
@@ -84,40 +141,12 @@
                     "backgroundColor": "#181A20",
                     "spacing": "md",
                     "paddingAll": "lg",
-                    "contents": [
-                        {
-                            "type": "box",
-                            "layout": "vertical",
-                            "backgroundColor": "#2A181A",
-                            "cornerRadius": "md",
-                            "paddingAll": "md",
-                            "spacing": "xs",
-                            "contents": [
-                                { "type": "text", "text": "🔺 3 ตัวบน", "size": "sm", "color": "#FF6B6B", "weight": "bold" },
-                                { "type": "text", "text": top3_fmt, "size": "3xl", "weight": "bold", "color": "#FF4D4D", "align": "center" }
-                            ]
-                        },
-                        {
-                            "type": "box",
-                            "layout": "vertical",
-                            "backgroundColor": "#142438",
-                            "cornerRadius": "md",
-                            "paddingAll": "md",
-                            "spacing": "xs",
-                            "contents": [
-                                { "type": "text", "text": "🔻 2 ตัวล่าง", "size": "sm", "color": "#4DABFF", "weight": "bold" },
-                                { "type": "text", "text": bottom2_fmt, "size": "3xl", "weight": "bold", "color": "#00D2FF", "align": "center" }
-                            ]
-                        }
-                    ]
+                    "contents": bodyContents
                 }
             };
         }
 
         async function initLiff() {
-            const titleEl = document.getElementById('title');
-            const descEl = document.getElementById('desc');
-
             try {
                 await liff.init({ liffId: '2011157640-izadxULb' });
 
@@ -135,14 +164,14 @@
                 const f = urlParams.get('f') || '🎯';
 
                 const bubbleObj = createCleanFlex(n, t, b, f);
+                const altTextStr = n.includes('|') ? "🎯 ผลสลากรวมหลายหวย" : f + " " + n + " 3บน: " + t + " 2ล่าง: " + b;
                 globalFlexMessage = {
                     "type": "flex",
-                    "altText": f + " " + n + " 3บน: " + t + " 2ล่าง: " + b,
+                    "altText": altTextStr,
                     "contents": bubbleObj
                 };
 
                 if (liff.isInClient()) {
-                    // Automatically trigger inside LINE App
                     doShare();
                 }
             } catch (err) {

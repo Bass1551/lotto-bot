@@ -206,7 +206,133 @@ class LineSender:
                 }
             ],
         }
+    def create_combined_clean_flex_message_dict(self, items: list) -> dict:
+        """Create a clean combined Flex Message bubble for multiple lotteries."""
+        body_contents = []
+        for i, item in enumerate(items):
+            if i > 0:
+                body_contents.append({"type": "separator", "margin": "lg", "color": "#333A48"})
+            
+            top3_fmt = "  ".join(list(item["top3"].zfill(3)[-3:]))
+            bottom2_fmt = "  ".join(list(item["bottom2"].zfill(2)[-2:]))
+
+            body_contents.extend([
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "margin": "md",
+                    "contents": [
+                        {"type": "text", "text": item.get("flag", "🎯"), "size": "md", "flex": 0},
+                        {"type": "text", "text": " " + item["name"], "weight": "bold", "size": "md", "color": "#FFFFFF", "flex": 1}
+                    ]
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "backgroundColor": "#2A181A",
+                    "cornerRadius": "md",
+                    "paddingAll": "md",
+                    "spacing": "xs",
+                    "contents": [
+                        {"type": "text", "text": "🔺 3 ตัวบน", "size": "xs", "color": "#FF6B6B", "weight": "bold"},
+                        {"type": "text", "text": top3_fmt, "size": "xxl", "weight": "bold", "color": "#FF4D4D", "align": "center"}
+                    ]
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "backgroundColor": "#142438",
+                    "cornerRadius": "md",
+                    "paddingAll": "md",
+                    "spacing": "xs",
+                    "contents": [
+                        {"type": "text", "text": "🔻 2 ตัวล่าง", "size": "xs", "color": "#4DABFF", "weight": "bold"},
+                        {"type": "text", "text": bottom2_fmt, "size": "xxl", "weight": "bold", "color": "#00D2FF", "align": "center"}
+                    ]
+                }
+            ])
+
+        header_title = f"🎯 ผลสลากรวม ({len(items)} หวย)"
+        return {
+            "type": "bubble",
+            "size": "mega",
+            "header": {
+                "type": "box",
+                "layout": "horizontal",
+                "backgroundColor": "#1E222D",
+                "paddingAll": "lg",
+                "alignItems": "center",
+                "contents": [
+                    {"type": "text", "text": header_title, "weight": "bold", "size": "lg", "color": "#FFFFFF", "flex": 1}
+                ]
+            },
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#181A20",
+                "spacing": "md",
+                "paddingAll": "lg",
+                "contents": body_contents
+            }
+        }
+
+    def create_combined_flex_message_dict(self, items: list) -> dict:
+        """Create a styled LINE Flex Message bubble for multiple lotteries with LIFF share button."""
+        clean_flex = self.create_combined_clean_flex_message_dict(items)
+
+        names_str = "|".join([x["name"] for x in items])
+        top3_str = "|".join([x["top3"] for x in items])
+        bottom2_str = "|".join([x["bottom2"] for x in items])
+        flags_str = "|".join([x.get("flag", "🎯") for x in items])
+
+        q_name = urllib.parse.quote(names_str)
+        q_top3 = urllib.parse.quote(top3_str)
+        q_bottom2 = urllib.parse.quote(bottom2_str)
+        q_flag = urllib.parse.quote(flags_str)
+        liff_share_uri = f"https://liff.line.me/2011157640-izadxULb?n={q_name}&t={q_top3}&b={q_bottom2}&f={q_flag}"
+
+        clean_flex["footer"] = {
+            "type": "box",
+            "layout": "vertical",
+            "backgroundColor": "#14161D",
+            "paddingAll": "md",
+            "contents": [
+                {
+                    "type": "button",
+                    "style": "primary",
+                    "color": "#28A745",
+                    "height": "sm",
+                    "action": {
+                        "type": "uri",
+                        "label": "📤 กดที่นี่เพื่อแชร์ผลรวม",
+                        "uri": liff_share_uri,
+                    },
+                }
+            ],
+        }
         return clean_flex
+
+    def send_combined_result_flex(self, items: list) -> bool:
+        """Send a combined Flex Message card containing multiple lotteries."""
+        try:
+            flex_dict = self.create_combined_flex_message_dict(items)
+            names_title = " + ".join([f"{x.get('flag', '🎯')} {x['name']}" for x in items])
+            container = FlexContainer.from_dict(flex_dict)
+            alt_text = f"🎯 ผลสลากรวม: {names_title}"
+
+            with ApiClient(self.configuration) as api_client:
+                api = MessagingApi(api_client)
+                api.push_message(
+                    PushMessageRequest(
+                        to=self.group_id,
+                        messages=[FlexMessage(alt_text=alt_text, contents=container)],
+                    )
+                )
+            logger.info("LINE Combined Flex Message sent successfully for: %s", names_title)
+            return True
+        except Exception as err:
+            logger.error("Failed to send LINE Combined Flex Message: %s", err)
+            return False
 
     def send_result_flex(
         self, name: str, top3: str, bottom2: str, flag: str = "🎯"
