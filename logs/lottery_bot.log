@@ -2136,3 +2136,30 @@ HTTP response body: {"message":"A message (messages[0]) in the request body is 
 
 2026-08-18 17:32:49 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
 2026-08-18 17:32:50 | INFO     | lottery_bot | LINE Combined Flex Message sent successfully for: 🇱🇦 ลาว TV + 🇨🇳 จีนเช้า
+2026-08-18 17:59:45 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 17:59:48 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 17:59:52 | INFO     | lottery_bot | Successfully fetched 65 lottery results from SMLOT
+2026-08-18 17:59:52 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'SMLOT Reward Report' is not yet available on member.smlot.net/reports/reward
+2026-08-18 17:59:59 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 18:00:01 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 18:00:06 | INFO     | lottery_bot | Successfully fetched 65 lottery results from SMLOT
+2026-08-18 18:00:06 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=584 bottom2=91
+2026-08-18 18:00:13 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 18:00:15 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 18:00:20 | INFO     | lottery_bot | Successfully fetched 65 lottery results from SMLOT
+2026-08-18 18:00:20 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 18:01:58 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 18:01:58 | ERROR    | lottery_bot | Failed to send LINE Flex Message for ฮานอยสามัคคี: 'NoneType' object is not subscriptable
+Traceback (most recent call last):
+  File "F:\Users\999\Desktop\บอทหวย\lotto_line_bot\line_sender.py", line 345, in send_result_flex
+    container = FlexContainer.from_dict(flex_dict)
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\models\flex_container.py", line 81, in from_dict
+    object_type = cls.get_discriminator_value(obj)
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\models\flex_container.py", line 50, in get_discriminator_value
+    discriminator_value = obj[cls.__discriminator_property_name]
+                          ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+2026-08-18 18:01:58 | INFO     | lottery_bot | LINE text message sent successfully (38 chars)
+2026-08-18 18:03:21 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 19:22:17 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 19:22:17 | INFO     | lottery_bot | LINE Flex Message sent successfully for ฮานอยสามัคคี

@@ -206,6 +206,8 @@ class LineSender:
                 }
             ],
         }
+        return clean_flex
+
     def create_combined_clean_flex_message_dict(self, items: list) -> dict:
         """Create a clean combined Flex Message bubble for multiple lotteries."""
         body_contents = []
