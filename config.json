@@ -1,13 +1,5 @@
 [
   {
-    "name": "ลาว Extra",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "08:30",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
-  },
-  {
     "name": "ฮานอยอาเซียน",
     "url": "https://member.smlot.net/reports/reward",
     "time": "09:30",
@@ -46,14 +38,6 @@
     "parser": "smlot_reward",
     "type": "vip",
     "flag": "⭐🇨🇳"
-  },
-  {
-    "name": "ลาว TV",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "10:30",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
   },
   {
     "name": "ฮั่งเส็งเช้า",
@@ -136,14 +120,6 @@
     "flag": "🇰🇷"
   },
   {
-    "name": "ลาว HD",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "13:45",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
-  },
-  {
     "name": "จีนบ่าย",
     "url": "https://member.smlot.net/reports/reward",
     "time": "14:00",
@@ -182,14 +158,6 @@
     "parser": "smlot_reward",
     "type": "vip",
     "flag": "⭐🇭🇰"
-  },
-  {
-    "name": "ลาว Star",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "15:45",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
   },
   {
     "name": "หุ้นสิงคโปร์",
@@ -264,30 +232,6 @@
     "flag": "⭐🇻🇳"
   },
   {
-    "name": "หวยลาว",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "20:30",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
-  },
-  {
-    "name": "หวยลาวสามัคคี",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "20:30",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
-  },
-  {
-    "name": "หวยลาวSTAR VIP",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "22:00",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "⭐🇱🇦"
-  },
-  {
     "name": "หุ้นเยอรมัน",
     "url": "https://member.smlot.net/reports/reward",
     "time": "22:45",
@@ -336,14 +280,6 @@
     "flag": "⭐🇷🇺"
   },
   {
-    "name": "หวยลาว กาชาด",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "23:30",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
-  },
-  {
     "name": "หวยดาวโจนส์ VIP",
     "url": "https://member.smlot.net/reports/reward",
     "time": "00:30",
@@ -382,38 +318,6 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸"
-  },
-  {
-    "name": "ลาวประตูชัย",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "10:00",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
-  },
-  {
-    "name": "ลาวสันติภาพ",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "11:00",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
-  },
-  {
-    "name": "ประชาชนลาว",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "12:00",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
-  },
-  {
-    "name": "ลาวอาเซียน",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "21:00",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
   },
   {
     "name": "เวียดนาม VIP เช้า",
@@ -472,27 +376,11 @@
     "flag": "🇲🇾"
   },
   {
-    "name": "ลาวเวียงจันทน์",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "22:30",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
-  },
-  {
     "name": "ฮานอยEXTRA",
     "url": "https://member.smlot.net/reports/reward",
     "time": "22:30",
     "parser": "smlot_reward",
     "type": "5digit",
     "flag": "🇻🇳"
-  },
-  {
-    "name": "ลาวดาว",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "23:30",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
   }
 ]
