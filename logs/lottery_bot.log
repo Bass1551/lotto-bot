@@ -1958,3 +1958,16 @@ HTTP response body: {"message":"A message (messages[0]) in the request body is 
 2026-08-18 16:34:14 | INFO     | lottery_bot | ฮานอย กาชาด result sent successfully – stop polling
 2026-08-18 16:39:24 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
 2026-08-18 16:39:25 | INFO     | lottery_bot | LINE Flex Message sent successfully for หุ้นสิงคโปร์
+2026-08-18 16:45:00 | INFO     | lottery_bot | === Start checking หุ้นไทยเย็น (polling up to 30 min) ===
+2026-08-18 16:45:00 | INFO     | lottery_bot | หุ้นไทยเย็น attempt 1/30 (waiting for site to update)...
+2026-08-18 16:45:00 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 16:45:02 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 16:45:08 | INFO     | lottery_bot | Successfully fetched 60 lottery results from SMLOT
+2026-08-18 16:45:08 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=062 bottom2=82
+2026-08-18 16:45:08 | INFO     | lottery_bot | Prepared message:
+🇹🇭 หุ้นไทยเย็น
+🔺 0️⃣ 6️⃣ 2️⃣
+🔻 8️⃣ 2️⃣
+2026-08-18 16:45:09 | INFO     | lottery_bot | LINE Flex Message sent successfully for หุ้นไทยเย็น
+2026-08-18 16:45:09 | INFO     | lottery_bot | Saved result: หุ้นไทยเย็น | 2026-08-18 | top3=062 bottom2=82
+2026-08-18 16:45:09 | INFO     | lottery_bot | หุ้นไทยเย็น result sent successfully – stop polling
