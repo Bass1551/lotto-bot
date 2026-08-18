@@ -82,7 +82,7 @@
   {
     "name": "ไต้หวัน",
     "url": "https://member.smlot.net/reports/reward",
-    "time": "12:35",
+    "time": "12:30",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇹🇼"
@@ -216,20 +216,12 @@
     "flag": "🇪🇬"
   },
   {
-    "name": "หวยฮานอย",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "18:30",
-    "parser": "smlot_reward",
-    "type": "5digit",
-    "flag": "🇻🇳"
-  },
-  {
-    "name": "ฮานอย VIP",
+    "name": "ฮานอยพัฒนา",
     "url": "https://member.smlot.net/reports/reward",
     "time": "19:30",
     "parser": "smlot_reward",
     "type": "5digit",
-    "flag": "⭐🇻🇳"
+    "flag": "🇻🇳"
   },
   {
     "name": "หุ้นเยอรมัน",
@@ -346,7 +338,7 @@
   {
     "name": "หุ้นดาวโจนส์",
     "url": "https://member.smlot.net/reports/reward",
-    "time": "04:00",
+    "time": "03:55",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸"
@@ -358,14 +350,6 @@
     "parser": "smlot_reward",
     "type": "thai",
     "flag": "🇹🇭"
-  },
-  {
-    "name": "ฮานอยพิเศษ",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "17:30",
-    "parser": "smlot_reward",
-    "type": "5digit",
-    "flag": "🇻🇳"
   },
   {
     "name": "มาเลเซีย",
@@ -462,14 +446,6 @@
     "parser": "smlot_reward",
     "type": "laos",
     "flag": "⭐🇱🇦"
-  },
-  {
-    "name": "ลาวเวียงจันทน์",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "22:30",
-    "parser": "smlot_reward",
-    "type": "laos",
-    "flag": "🇱🇦"
   },
   {
     "name": "หวยลาว กาชาด",
