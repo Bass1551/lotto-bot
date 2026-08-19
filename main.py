@@ -59,6 +59,7 @@ def main() -> None:
 
     bot = LotteryScheduler(config_path="config.json", db=db, sender=sender)
     bot.start()
+    bot.send_yesterday_summary()
     bot.check_pending_due_today()
 
     def handle_signal(signum, frame):

@@ -101,6 +101,39 @@ class LotteryScheduler:
         logger.info("Sending Daily Summary Report for %s:\n%s", today, report_text)
         self.sender.send_text(report_text)
 
+    def send_yesterday_summary(self) -> None:
+        """Send yesterday's summary report into the LINE group upon startup."""
+        if not self.sender:
+            logger.warning("No sender configured – cannot send yesterday summary report")
+            return
+
+        yesterday = datetime.now(TZ).date() - timedelta(days=1)
+        logger.info("Generating Yesterday's Summary Report for %s...", yesterday)
+
+        results = self.db.get_daily_results(result_date=yesterday)
+
+        if not results:
+            logger.info("Fetching yesterday's results from SMLOT/press.in.th...")
+            fetched_results = []
+            for lotto in self.lotteries:
+                try:
+                    res = self._scrape(lotto)
+                    if res:
+                        fetched_results.append({
+                            "lottery_name": lotto["name"],
+                            "top3": res["top3"],
+                            "bottom2": res["bottom2"],
+                            "flag": lotto.get("flag", "🎯")
+                        })
+                except Exception:
+                    pass
+            results = fetched_results
+
+        if results:
+            report_text = generate_summary_report(results, target_date=yesterday)
+            logger.info("Sending Yesterday's Summary Report:\n%s", report_text)
+            self.sender.send_text(report_text)
+
     def check_pending_due_today(self) -> None:
         """Check and send any lotteries whose draw time has passed today and not sent yet."""
         now_dt = datetime.now(TZ)
