@@ -2174,3 +2174,708 @@ TypeError: 'NoneType' object is not subscriptable
 2026-08-18 19:58:20 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
 2026-08-18 19:58:26 | INFO     | lottery_bot | Successfully fetched 68 lottery results from SMLOT
 2026-08-18 19:58:26 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:33:29 | INFO     | lottery_bot | ==================================================
+2026-08-18 20:33:29 | INFO     | lottery_bot | Lottery Bot starting...
+2026-08-18 20:33:29 | INFO     | lottery_bot | ==================================================
+2026-08-18 20:33:29 | INFO     | lottery_bot | Serving LIFF & Render Health check on 0.0.0.0:8000
+2026-08-18 20:33:29 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-08-18 20:33:29 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Loaded 65 lotteries from config.json
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 08:30 (ลาว Extra) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 09:30 (ฮานอยอาเซียน + นิเคอิเช้า) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 09:05 (นิเคอิเช้า VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 10:30 (จีนเช้า + ลาว TV) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 10:05 (จีนเช้า VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 11:05 (ฮั่งเส็งเช้า) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 10:35 (ฮั่งเส็งเช้า VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 11:30 (ฮานอย HD) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 11:35 (ไต้หวัน VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 12:30 (ฮานอย Star) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 12:35 (ไต้หวัน + เกาหลี VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 13:30 (นิเคอิบ่าย + หุ้นเกาหลี) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 13:25 (นิเคอิบ่าย VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 13:45 (ลาว HD) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 14:00 (จีนบ่าย) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 14:25 (จีนบ่าย VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 14:30 (ฮานอย TV) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 15:10 (ฮั่งเส็งบ่าย) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 15:25 (ฮั่งเส็งบ่าย VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 15:45 (ลาว Star) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 16:25 (หุ้นสิงคโปร์) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 16:30 (ฮานอย กาชาด) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 16:45 (หุ้นไทยเย็น) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 17:30 (ฮานอยสามัคคี + ฮานอยพิเศษ) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 17:05 (สิงคโปร์ VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 16:50 (หุ้นอินเดีย + หวยอินเดีย VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 18:00 (หุ้นอียิปต์) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 18:30 (หวยฮานอย + มาเลเซีย) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 19:30 (ฮานอย VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 20:30 (หวยลาว + หวยลาวสามัคคี + หุ้นลาว VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 21:30 (หวยลาวสามัคคี VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 22:00 (หวยลาวSTAR VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 22:45 (หุ้นเยอรมัน + หุ้นอังกฤษ + หุ้นรัสเซีย) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 21:50 (เยอรมันVIP + อังกฤษVIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 23:50 (รัสเซียVIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 23:30 (หวยลาว กาชาด + ลาวดาว) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 00:30 (หวยดาวโจนส์ VIP) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 04:30 (หวยดาวโจนส์ mid night) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 04:00 (หวยดาวโจนส์ STAR + หุ้นดาวโจนส์) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 05:00 (หวยดาวโจนส์ extra) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 06:00 (หวยดาวโจนส์ TV) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 10:00 (ลาวประตูชัย) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 11:00 (ลาวสันติภาพ) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 12:00 (ประชาชนลาว) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 21:00 (ลาวอาเซียน) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 09:00 (เวียดนาม VIP เช้า) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 13:00 (เวียดนาม VIP บ่าย) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 17:00 (เวียดนาม VIP เย็น) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 15:30 (หวยไทย) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduled time slot 22:30 (ลาวเวียงจันทน์ + ฮานอยEXTRA) (Asia/Bangkok)
+2026-08-18 20:33:29 | INFO     | lottery_bot | Scheduler started
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 17:30 (ฮานอยสามัคคี + ฮานอยพิเศษ) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 17:05 (สิงคโปร์ VIP) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 16:50 (หุ้นอินเดีย + หวยอินเดีย VIP) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 18:00 (หุ้นอียิปต์) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 18:30 (หวยฮานอย + มาเลเซีย) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 19:30 (ฮานอย VIP) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 20:30 (หวยลาว + หวยลาวสามัคคี + หุ้นลาว VIP) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 10:00 (ลาวประตูชัย) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 11:00 (ลาวสันติภาพ) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 12:00 (ประชาชนลาว) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | === Start checking time slot (หุ้นอียิปต์) (polling up to 30 min) ===
+2026-08-18 20:33:29 | INFO     | lottery_bot | === Start checking time slot (ฮานอยสามัคคี + ฮานอยพิเศษ) (polling up to 30 min) ===
+2026-08-18 20:33:29 | INFO     | lottery_bot | (หุ้นอียิปต์) attempt 1/30...
+2026-08-18 20:33:29 | INFO     | lottery_bot | (ฮานอยสามัคคี + ฮานอยพิเศษ) attempt 1/30...
+2026-08-18 20:33:29 | INFO     | lottery_bot | === Start checking time slot (สิงคโปร์ VIP) (polling up to 30 min) ===
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 09:00 (เวียดนาม VIP เช้า) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | === Start checking time slot (ฮานอย VIP) (polling up to 30 min) ===
+2026-08-18 20:33:29 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 1/30...
+2026-08-18 20:33:29 | INFO     | lottery_bot | (ฮานอย VIP) attempt 1/30...
+2026-08-18 20:33:29 | INFO     | lottery_bot | === Start checking time slot (หุ้นอินเดีย + หวยอินเดีย VIP) (polling up to 30 min) ===
+2026-08-18 20:33:29 | INFO     | lottery_bot | === Start checking time slot (หวยฮานอย + มาเลเซีย) (polling up to 30 min) ===
+2026-08-18 20:33:29 | INFO     | lottery_bot | === Start checking time slot (ลาวสันติภาพ) (polling up to 30 min) ===
+2026-08-18 20:33:29 | INFO     | lottery_bot | === Start checking time slot (ประชาชนลาว) (polling up to 30 min) ===
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 13:00 (เวียดนาม VIP บ่าย) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | === Start checking time slot (ลาวประตูชัย) (polling up to 30 min) ===
+2026-08-18 20:33:29 | INFO     | lottery_bot | (หุ้นอินเดีย + หวยอินเดีย VIP) attempt 1/30...
+2026-08-18 20:33:29 | INFO     | lottery_bot | (หวยฮานอย + มาเลเซีย) attempt 1/30...
+2026-08-18 20:33:29 | INFO     | lottery_bot | (ประชาชนลาว) attempt 1/30...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 17:00 (เวียดนาม VIP เย็น) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | (ลาวประตูชัย) attempt 1/30...
+2026-08-18 20:33:29 | INFO     | lottery_bot | (ลาวสันติภาพ) attempt 1/30...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 04:00 (หุ้นดาวโจนส์) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Time slot 15:30 (หวยไทย) has pending lotteries. Checking now...
+2026-08-18 20:33:29 | INFO     | lottery_bot | Bot is running 24/7 on Cloud Server.
+2026-08-18 20:33:29 | INFO     | lottery_bot | === Start checking time slot (หวยลาว + หวยลาวสามัคคี + หุ้นลาว VIP) (polling up to 30 min) ===
+2026-08-18 20:33:29 | INFO     | lottery_bot | (หวยลาว + หวยลาวสามัคคี + หุ้นลาว VIP) attempt 1/30...
+2026-08-18 20:33:30 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:33:32 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:33:37 | INFO     | lottery_bot | Successfully fetched 69 lottery results from SMLOT
+2026-08-18 20:33:37 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=584 bottom2=91
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=678 bottom2=29
+2026-08-18 20:33:37 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=183 bottom2=49
+2026-08-18 20:33:37 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=506 bottom2=04
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=483 bottom2=36
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=546 bottom2=70
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=924 bottom2=85
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=222 bottom2=82
+2026-08-18 20:33:37 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:33:37 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:33:37 | INFO     | lottery_bot | Prepared message:
+🇪🇬 หุ้นอียิปต์
+🔺 6️⃣ 7️⃣ 8️⃣
+🔻 2️⃣ 9️⃣
+2026-08-18 20:33:37 | INFO     | lottery_bot | Prepared message:
+🇱🇦 ลาวสันติภาพ
+🔺 5️⃣ 0️⃣ 6️⃣
+🔻 0️⃣ 4️⃣
+2026-08-18 20:33:37 | INFO     | lottery_bot | Prepared message:
+🇱🇦 ประชาชนลาว
+🔺 4️⃣ 8️⃣ 3️⃣
+🔻 3️⃣ 6️⃣
+2026-08-18 20:33:37 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=941 bottom2=80
+2026-08-18 20:33:37 | INFO     | lottery_bot | Prepared message:
+🇱🇦 ลาวประตูชัย
+🔺 9️⃣ 2️⃣ 4️⃣
+🔻 8️⃣ 5️⃣
+2026-08-18 20:33:37 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=222 bottom2=82
+2026-08-18 20:33:37 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:33:37 | INFO     | lottery_bot | Prepared message:
+🇻🇳 หวยฮานอย
+🔺 1️⃣ 8️⃣ 3️⃣
+🔻 4️⃣ 9️⃣
+2026-08-18 20:33:37 | INFO     | lottery_bot | Prepared message:
+🇻🇳 ฮานอยสามัคคี
+🔺 5️⃣ 8️⃣ 4️⃣
+🔻 9️⃣ 1️⃣
+2026-08-18 20:33:37 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=581 bottom2=34
+2026-08-18 20:33:37 | INFO     | lottery_bot | LINE Flex Message sent successfully for ลาวสันติภาพ
+2026-08-18 20:33:37 | INFO     | lottery_bot | LINE Flex Message sent successfully for หุ้นอียิปต์
+2026-08-18 20:33:38 | INFO     | lottery_bot | LINE Flex Message sent successfully for ประชาชนลาว
+2026-08-18 20:33:38 | INFO     | lottery_bot | Saved result: ลาวสันติภาพ | 2026-08-18 | top3=506 bottom2=04
+2026-08-18 20:33:38 | INFO     | lottery_bot | All lotteries in group (ลาวสันติภาพ) sent – stop polling
+2026-08-18 20:33:38 | INFO     | lottery_bot | Saved result: หุ้นอียิปต์ | 2026-08-18 | top3=678 bottom2=29
+2026-08-18 20:33:38 | INFO     | lottery_bot | All lotteries in group (หุ้นอียิปต์) sent – stop polling
+2026-08-18 20:33:38 | INFO     | lottery_bot | LINE Flex Message sent successfully for ฮานอยสามัคคี
+2026-08-18 20:33:38 | INFO     | lottery_bot | LINE Flex Message sent successfully for ลาวประตูชัย
+2026-08-18 20:33:38 | INFO     | lottery_bot | Saved result: ประชาชนลาว | 2026-08-18 | top3=483 bottom2=36
+2026-08-18 20:33:38 | INFO     | lottery_bot | All lotteries in group (ประชาชนลาว) sent – stop polling
+2026-08-18 20:33:38 | INFO     | lottery_bot | LINE Combined Flex Message sent successfully for: 🇱🇦 หวยลาว + 🇱🇦 หวยลาวสามัคคี + ⭐🇱🇦 หุ้นลาว VIP
+2026-08-18 20:33:38 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยฮานอย
+2026-08-18 20:33:38 | INFO     | lottery_bot | LINE Combined Flex Message sent successfully for: 🇮🇳 หุ้นอินเดีย + ⭐🇮🇳 หวยอินเดีย VIP
+2026-08-18 20:33:38 | INFO     | lottery_bot | Saved result: ฮานอยสามัคคี | 2026-08-18 | top3=584 bottom2=91
+2026-08-18 20:33:38 | INFO     | lottery_bot | Saved result: ลาวประตูชัย | 2026-08-18 | top3=924 bottom2=85
+2026-08-18 20:33:38 | INFO     | lottery_bot | All lotteries in group (ลาวประตูชัย) sent – stop polling
+2026-08-18 20:33:38 | INFO     | lottery_bot | Saved result: หวยลาว | 2026-08-18 | top3=222 bottom2=82
+2026-08-18 20:33:38 | INFO     | lottery_bot | Saved result: หุ้นอินเดีย | 2026-08-18 | top3=546 bottom2=70
+2026-08-18 20:33:38 | INFO     | lottery_bot | Saved result: หวยลาวสามัคคี | 2026-08-18 | top3=222 bottom2=82
+2026-08-18 20:33:38 | INFO     | lottery_bot | Saved result: หุ้นลาว VIP | 2026-08-18 | top3=581 bottom2=34
+2026-08-18 20:33:38 | INFO     | lottery_bot | All lotteries in group (หวยลาว + หวยลาวสามัคคี + หุ้นลาว VIP) sent – stop polling
+2026-08-18 20:33:38 | INFO     | lottery_bot | Saved result: หวยอินเดีย VIP | 2026-08-18 | top3=941 bottom2=80
+2026-08-18 20:33:38 | INFO     | lottery_bot | All lotteries in group (หุ้นอินเดีย + หวยอินเดีย VIP) sent – stop polling
+2026-08-18 20:33:39 | INFO     | lottery_bot | Saved result: หวยฮานอย | 2026-08-18 | top3=183 bottom2=49
+2026-08-18 20:34:37 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 2/30...
+2026-08-18 20:34:37 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:34:37 | INFO     | lottery_bot | (ฮานอย VIP) attempt 2/30...
+2026-08-18 20:34:38 | INFO     | lottery_bot | (ฮานอยสามัคคี + ฮานอยพิเศษ) attempt 2/30...
+2026-08-18 20:34:39 | INFO     | lottery_bot | (หวยฮานอย + มาเลเซีย) attempt 2/30...
+2026-08-18 20:34:39 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:34:44 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:34:44 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:34:44 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:34:44 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:34:44 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:34:44 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:34:44 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:34:44 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:34:44 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:35:44 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 3/30...
+2026-08-18 20:35:44 | INFO     | lottery_bot | (ฮานอย VIP) attempt 3/30...
+2026-08-18 20:35:44 | INFO     | lottery_bot | (ฮานอยสามัคคี + ฮานอยพิเศษ) attempt 3/30...
+2026-08-18 20:35:44 | INFO     | lottery_bot | (หวยฮานอย + มาเลเซีย) attempt 3/30...
+2026-08-18 20:35:44 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:35:44 | INFO     | lottery_bot | Received signal 2 – shutting down...
+2026-08-18 20:35:44 | INFO     | lottery_bot | Scheduler shut down
+2026-08-18 20:35:44 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: 'PlaywrightContextManager' object has no attribute '_playwright'
+2026-08-18 20:35:44 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:35:45 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: BrowserType.launch: Connection closed while reading from the driver
+2026-08-18 20:35:45 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:35:45 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: 'PlaywrightContextManager' object has no attribute '_playwright'
+2026-08-18 20:35:45 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:35:45 | INFO     | lottery_bot | Received signal 2 – shutting down...
+2026-08-18 20:35:45 | INFO     | lottery_bot | Received signal 2 – shutting down...
+2026-08-18 20:35:45 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: 'PlaywrightContextManager' object has no attribute '_playwright'
+2026-08-18 20:35:45 | INFO     | lottery_bot | Received signal 2 – shutting down...
+2026-08-18 20:35:50 | INFO     | lottery_bot | ==================================================
+2026-08-18 20:35:50 | INFO     | lottery_bot | Lottery Bot starting...
+2026-08-18 20:35:50 | INFO     | lottery_bot | ==================================================
+2026-08-18 20:35:50 | INFO     | lottery_bot | Serving LIFF & Render Health check on 0.0.0.0:8000
+2026-08-18 20:35:50 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-08-18 20:35:50 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-18 20:35:50 | INFO     | lottery_bot | Loaded 62 lotteries from config.json
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 08:30 (ลาว Extra) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 09:30 (ฮานอยอาเซียน + นิเคอิเช้า) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 09:05 (นิเคอิเช้า VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 10:30 (จีนเช้า + ลาว TV) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 10:05 (จีนเช้า VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 11:05 (ฮั่งเส็งเช้า) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 10:35 (ฮั่งเส็งเช้า VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 11:30 (ฮานอย HD) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 11:35 (ไต้หวัน VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 12:30 (ฮานอย Star) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 12:35 (ไต้หวัน + เกาหลี VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 13:30 (นิเคอิบ่าย + หุ้นเกาหลี) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 13:25 (นิเคอิบ่าย VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 13:45 (ลาว HD) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 14:00 (จีนบ่าย) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 14:25 (จีนบ่าย VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 14:30 (ฮานอย TV) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 15:10 (ฮั่งเส็งบ่าย) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 15:25 (ฮั่งเส็งบ่าย VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 15:45 (ลาว Star) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 16:25 (หุ้นสิงคโปร์) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 16:30 (ฮานอย กาชาด) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 16:45 (หุ้นไทยเย็น) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 17:30 (ฮานอยสามัคคี + ฮานอยพิเศษ) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 17:05 (สิงคโปร์ VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 16:50 (หุ้นอินเดีย) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 18:00 (หุ้นอียิปต์) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 18:30 (หวยฮานอย + มาเลเซีย) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 19:30 (ฮานอย VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 20:30 (หวยลาว + หวยลาวสามัคคี) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 22:00 (หวยลาวSTAR VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 22:45 (หุ้นเยอรมัน + หุ้นอังกฤษ + หุ้นรัสเซีย) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 21:50 (เยอรมันVIP + อังกฤษVIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 23:50 (รัสเซียVIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 23:30 (หวยลาว กาชาด + ลาวดาว) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 00:30 (หวยดาวโจนส์ VIP) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 04:30 (หวยดาวโจนส์ mid night) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 04:00 (หวยดาวโจนส์ STAR + หุ้นดาวโจนส์) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 05:00 (หวยดาวโจนส์ extra) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 06:00 (หวยดาวโจนส์ TV) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 10:00 (ลาวประตูชัย) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 11:00 (ลาวสันติภาพ) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 12:00 (ประชาชนลาว) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 21:00 (ลาวอาเซียน) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 09:00 (เวียดนาม VIP เช้า) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 13:00 (เวียดนาม VIP บ่าย) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 17:00 (เวียดนาม VIP เย็น) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 15:30 (หวยไทย) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduled time slot 22:30 (ลาวเวียงจันทน์ + ฮานอยEXTRA) (Asia/Bangkok)
+2026-08-18 20:35:50 | INFO     | lottery_bot | Scheduler started
+2026-08-18 20:35:50 | INFO     | lottery_bot | Time slot 17:05 (สิงคโปร์ VIP) has pending lotteries. Checking now...
+2026-08-18 20:35:50 | INFO     | lottery_bot | Time slot 19:30 (ฮานอย VIP) has pending lotteries. Checking now...
+2026-08-18 20:35:50 | INFO     | lottery_bot | Time slot 09:00 (เวียดนาม VIP เช้า) has pending lotteries. Checking now...
+2026-08-18 20:35:50 | INFO     | lottery_bot | Time slot 13:00 (เวียดนาม VIP บ่าย) has pending lotteries. Checking now...
+2026-08-18 20:35:50 | INFO     | lottery_bot | === Start checking time slot (สิงคโปร์ VIP) (polling up to 30 min) ===
+2026-08-18 20:35:50 | INFO     | lottery_bot | Time slot 17:00 (เวียดนาม VIP เย็น) has pending lotteries. Checking now...
+2026-08-18 20:35:50 | INFO     | lottery_bot | === Start checking time slot (ฮานอย VIP) (polling up to 30 min) ===
+2026-08-18 20:35:50 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 1/30...
+2026-08-18 20:35:50 | INFO     | lottery_bot | (ฮานอย VIP) attempt 1/30...
+2026-08-18 20:35:50 | INFO     | lottery_bot | Time slot 04:00 (หุ้นดาวโจนส์) has pending lotteries. Checking now...
+2026-08-18 20:35:50 | INFO     | lottery_bot | Time slot 15:30 (หวยไทย) has pending lotteries. Checking now...
+2026-08-18 20:35:50 | INFO     | lottery_bot | Time slot 17:30 (ฮานอยพิเศษ) has pending lotteries. Checking now...
+2026-08-18 20:35:50 | INFO     | lottery_bot | === Start checking time slot (เวียดนาม VIP บ่าย) (polling up to 30 min) ===
+2026-08-18 20:35:50 | INFO     | lottery_bot | === Start checking time slot (เวียดนาม VIP เช้า) (polling up to 30 min) ===
+2026-08-18 20:35:50 | INFO     | lottery_bot | === Start checking time slot (หุ้นดาวโจนส์) (polling up to 30 min) ===
+2026-08-18 20:35:50 | INFO     | lottery_bot | === Start checking time slot (เวียดนาม VIP เย็น) (polling up to 30 min) ===
+2026-08-18 20:35:50 | INFO     | lottery_bot | (เวียดนาม VIP บ่าย) attempt 1/30...
+2026-08-18 20:35:50 | INFO     | lottery_bot | Time slot 18:30 (มาเลเซีย) has pending lotteries. Checking now...
+2026-08-18 20:35:50 | INFO     | lottery_bot | (เวียดนาม VIP เช้า) attempt 1/30...
+2026-08-18 20:35:50 | INFO     | lottery_bot | === Start checking time slot (หวยไทย) (polling up to 30 min) ===
+2026-08-18 20:35:50 | INFO     | lottery_bot | (หุ้นดาวโจนส์) attempt 1/30...
+2026-08-18 20:35:50 | INFO     | lottery_bot | (เวียดนาม VIP เย็น) attempt 1/30...
+2026-08-18 20:35:50 | INFO     | lottery_bot | === Start checking time slot (ฮานอยพิเศษ) (polling up to 30 min) ===
+2026-08-18 20:35:50 | INFO     | lottery_bot | Bot is running 24/7 on Cloud Server.
+2026-08-18 20:35:50 | INFO     | lottery_bot | (หวยไทย) attempt 1/30...
+2026-08-18 20:35:50 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 1/30...
+2026-08-18 20:35:50 | INFO     | lottery_bot | === Start checking time slot (มาเลเซีย) (polling up to 30 min) ===
+2026-08-18 20:35:50 | INFO     | lottery_bot | (มาเลเซีย) attempt 1/30...
+2026-08-18 20:35:50 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:35:53 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:35:58 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:35:58 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:35:58 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:35:58 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=198 bottom2=27
+2026-08-18 20:35:58 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=456 bottom2=11
+2026-08-18 20:35:58 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=978 bottom2=63
+2026-08-18 20:35:58 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:35:58 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=615 bottom2=53
+2026-08-18 20:35:58 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=649 bottom2=01
+2026-08-18 20:35:58 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:35:58 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:35:58 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:35:58 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:35:58 | INFO     | lottery_bot | Prepared message:
+⭐🇻🇳 เวียดนาม VIP เช้า
+🔺 4️⃣ 5️⃣ 6️⃣
+🔻 1️⃣ 1️⃣
+2026-08-18 20:35:58 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:35:58 | INFO     | lottery_bot | Prepared message:
+⭐🇻🇳 เวียดนาม VIP บ่าย
+🔺 1️⃣ 9️⃣ 8️⃣
+🔻 2️⃣ 7️⃣
+2026-08-18 20:35:58 | INFO     | lottery_bot | Prepared message:
+🇺🇸 หุ้นดาวโจนส์
+🔺 9️⃣ 7️⃣ 8️⃣
+🔻 6️⃣ 3️⃣
+2026-08-18 20:35:58 | INFO     | lottery_bot | Prepared message:
+⭐🇻🇳 เวียดนาม VIP เย็น
+🔺 6️⃣ 4️⃣ 9️⃣
+🔻 0️⃣ 1️⃣
+2026-08-18 20:35:58 | INFO     | lottery_bot | Prepared message:
+🇹🇭 หวยไทย
+🔺 6️⃣ 1️⃣ 5️⃣
+🔻 5️⃣ 3️⃣
+2026-08-18 20:35:58 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยไทย
+2026-08-18 20:35:58 | INFO     | lottery_bot | LINE Flex Message sent successfully for เวียดนาม VIP เย็น
+2026-08-18 20:35:58 | INFO     | lottery_bot | LINE Flex Message sent successfully for เวียดนาม VIP บ่าย
+2026-08-18 20:35:58 | INFO     | lottery_bot | LINE Flex Message sent successfully for เวียดนาม VIP เช้า
+2026-08-18 20:35:58 | INFO     | lottery_bot | LINE Flex Message sent successfully for หุ้นดาวโจนส์
+2026-08-18 20:35:58 | INFO     | lottery_bot | Saved result: หวยไทย | 2026-08-18 | top3=615 bottom2=53
+2026-08-18 20:35:58 | INFO     | lottery_bot | All lotteries in group (หวยไทย) sent – stop polling
+2026-08-18 20:35:59 | INFO     | lottery_bot | Saved result: เวียดนาม VIP เช้า | 2026-08-18 | top3=456 bottom2=11
+2026-08-18 20:35:59 | INFO     | lottery_bot | All lotteries in group (เวียดนาม VIP เช้า) sent – stop polling
+2026-08-18 20:35:59 | INFO     | lottery_bot | Saved result: เวียดนาม VIP เย็น | 2026-08-18 | top3=649 bottom2=01
+2026-08-18 20:35:59 | INFO     | lottery_bot | All lotteries in group (เวียดนาม VIP เย็น) sent – stop polling
+2026-08-18 20:35:59 | INFO     | lottery_bot | Saved result: เวียดนาม VIP บ่าย | 2026-08-18 | top3=198 bottom2=27
+2026-08-18 20:35:59 | INFO     | lottery_bot | All lotteries in group (เวียดนาม VIP บ่าย) sent – stop polling
+2026-08-18 20:35:59 | INFO     | lottery_bot | Saved result: หุ้นดาวโจนส์ | 2026-08-18 | top3=978 bottom2=63
+2026-08-18 20:35:59 | INFO     | lottery_bot | All lotteries in group (หุ้นดาวโจนส์) sent – stop polling
+2026-08-18 20:36:58 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 2/30...
+2026-08-18 20:36:58 | INFO     | lottery_bot | (ฮานอย VIP) attempt 2/30...
+2026-08-18 20:36:58 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:36:58 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 2/30...
+2026-08-18 20:36:58 | INFO     | lottery_bot | (มาเลเซีย) attempt 2/30...
+2026-08-18 20:37:02 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:37:06 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:37:06 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:37:06 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:37:06 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:37:06 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:37:06 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:37:06 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:37:06 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:37:06 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:38:07 | INFO     | lottery_bot | (ฮานอย VIP) attempt 3/30...
+2026-08-18 20:38:07 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 3/30...
+2026-08-18 20:38:07 | INFO     | lottery_bot | (มาเลเซีย) attempt 3/30...
+2026-08-18 20:38:07 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 3/30...
+2026-08-18 20:38:07 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:38:10 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:38:14 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:38:14 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:38:14 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:38:14 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:38:14 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:38:14 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:38:14 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:38:14 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:38:14 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:39:14 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 4/30...
+2026-08-18 20:39:14 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 4/30...
+2026-08-18 20:39:14 | INFO     | lottery_bot | (ฮานอย VIP) attempt 4/30...
+2026-08-18 20:39:14 | INFO     | lottery_bot | (มาเลเซีย) attempt 4/30...
+2026-08-18 20:39:14 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:39:16 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:39:21 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:39:21 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:39:21 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:39:21 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:39:21 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:39:21 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:39:21 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:39:21 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:39:21 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:40:21 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 5/30...
+2026-08-18 20:40:21 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 5/30...
+2026-08-18 20:40:21 | INFO     | lottery_bot | (ฮานอย VIP) attempt 5/30...
+2026-08-18 20:40:21 | INFO     | lottery_bot | (มาเลเซีย) attempt 5/30...
+2026-08-18 20:40:21 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:40:24 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:40:28 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:40:28 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:40:28 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:40:28 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:40:28 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:40:28 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:40:28 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:40:28 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:40:28 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:41:28 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 6/30...
+2026-08-18 20:41:28 | INFO     | lottery_bot | (ฮานอย VIP) attempt 6/30...
+2026-08-18 20:41:28 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 6/30...
+2026-08-18 20:41:28 | INFO     | lottery_bot | (มาเลเซีย) attempt 6/30...
+2026-08-18 20:41:28 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:41:31 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:41:36 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:41:36 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:41:36 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:41:36 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:41:36 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:41:36 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:41:36 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:41:36 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:41:36 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:42:36 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 7/30...
+2026-08-18 20:42:36 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 7/30...
+2026-08-18 20:42:36 | INFO     | lottery_bot | (ฮานอย VIP) attempt 7/30...
+2026-08-18 20:42:36 | INFO     | lottery_bot | (มาเลเซีย) attempt 7/30...
+2026-08-18 20:42:36 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:42:38 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:42:43 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:42:43 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:42:43 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:42:43 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:42:43 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:42:43 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:42:43 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:42:43 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:42:43 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:43:43 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 8/30...
+2026-08-18 20:43:43 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 8/30...
+2026-08-18 20:43:43 | INFO     | lottery_bot | (มาเลเซีย) attempt 8/30...
+2026-08-18 20:43:43 | INFO     | lottery_bot | (ฮานอย VIP) attempt 8/30...
+2026-08-18 20:43:43 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:43:45 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:43:49 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:43:49 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:43:49 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:43:49 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:43:49 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:43:49 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:43:49 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:43:49 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:43:49 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:44:49 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 9/30...
+2026-08-18 20:44:49 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 9/30...
+2026-08-18 20:44:49 | INFO     | lottery_bot | (ฮานอย VIP) attempt 9/30...
+2026-08-18 20:44:49 | INFO     | lottery_bot | (มาเลเซีย) attempt 9/30...
+2026-08-18 20:44:49 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:44:51 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:44:56 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:44:56 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:44:56 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:44:56 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:44:56 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:44:56 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:44:56 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:44:56 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:44:56 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:45:56 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 10/30...
+2026-08-18 20:45:56 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 10/30...
+2026-08-18 20:45:56 | INFO     | lottery_bot | (มาเลเซีย) attempt 10/30...
+2026-08-18 20:45:56 | INFO     | lottery_bot | (ฮานอย VIP) attempt 10/30...
+2026-08-18 20:45:56 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:45:58 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:46:02 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:46:02 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:46:02 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:46:02 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:46:02 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:46:02 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:46:02 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:46:02 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:46:02 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:47:02 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 11/30...
+2026-08-18 20:47:02 | INFO     | lottery_bot | (มาเลเซีย) attempt 11/30...
+2026-08-18 20:47:02 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 11/30...
+2026-08-18 20:47:02 | INFO     | lottery_bot | (ฮานอย VIP) attempt 11/30...
+2026-08-18 20:47:02 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:47:05 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:47:09 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:47:09 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:47:09 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:47:09 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:47:09 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:47:09 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:47:09 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:47:09 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:47:09 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:48:09 | INFO     | lottery_bot | (มาเลเซีย) attempt 12/30...
+2026-08-18 20:48:09 | INFO     | lottery_bot | (ฮานอย VIP) attempt 12/30...
+2026-08-18 20:48:09 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 12/30...
+2026-08-18 20:48:09 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 12/30...
+2026-08-18 20:48:09 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:48:11 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:48:16 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:48:16 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:48:16 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:48:16 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:48:16 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:48:16 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:48:16 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:48:16 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:48:16 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:49:16 | INFO     | lottery_bot | (มาเลเซีย) attempt 13/30...
+2026-08-18 20:49:16 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 13/30...
+2026-08-18 20:49:16 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 13/30...
+2026-08-18 20:49:16 | INFO     | lottery_bot | (ฮานอย VIP) attempt 13/30...
+2026-08-18 20:49:16 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:49:18 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:49:22 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:49:22 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:49:22 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:49:22 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:49:22 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:49:22 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:49:22 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:49:22 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:49:22 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:50:22 | INFO     | lottery_bot | (มาเลเซีย) attempt 14/30...
+2026-08-18 20:50:22 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 14/30...
+2026-08-18 20:50:22 | INFO     | lottery_bot | (ฮานอย VIP) attempt 14/30...
+2026-08-18 20:50:22 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 14/30...
+2026-08-18 20:50:22 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:50:24 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:50:29 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:50:29 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:50:29 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:50:29 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:50:29 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:50:29 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:50:29 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:50:29 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:50:29 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:51:29 | INFO     | lottery_bot | (ฮานอย VIP) attempt 15/30...
+2026-08-18 20:51:29 | INFO     | lottery_bot | (มาเลเซีย) attempt 15/30...
+2026-08-18 20:51:29 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 15/30...
+2026-08-18 20:51:29 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 15/30...
+2026-08-18 20:51:29 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:51:31 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:51:36 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:51:36 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:51:36 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:51:36 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:51:36 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:51:36 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:51:36 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:51:36 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:51:36 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:52:36 | INFO     | lottery_bot | (สิงคโปร์ VIP) attempt 16/30...
+2026-08-18 20:52:36 | INFO     | lottery_bot | (ฮานอย VIP) attempt 16/30...
+2026-08-18 20:52:36 | INFO     | lottery_bot | (ฮานอยพิเศษ) attempt 16/30...
+2026-08-18 20:52:36 | INFO     | lottery_bot | (มาเลเซีย) attempt 16/30...
+2026-08-18 20:52:36 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-18 20:52:38 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-18 20:52:42 | INFO     | lottery_bot | Successfully fetched 70 lottery results from SMLOT
+2026-08-18 20:52:42 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:52:42 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:52:42 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:52:42 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:52:42 | WARNING  | lottery_bot | ParseError for สิงคโปร์ VIP: SMLOT parser: Result for 'สิงคโปร์ VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:52:42 | WARNING  | lottery_bot | ParseError for ฮานอย VIP: SMLOT parser: Result for 'ฮานอย VIP' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:52:42 | WARNING  | lottery_bot | ParseError for มาเลเซีย: SMLOT parser: Result for 'มาเลเซีย' is not yet available on member.smlot.net/reports/reward
+2026-08-18 20:52:42 | WARNING  | lottery_bot | ParseError for ฮานอยพิเศษ: SMLOT parser: Result for 'ฮานอยพิเศษ' is not yet available on member.smlot.net/reports/reward
+2026-08-19 08:03:32 | INFO     | lottery_bot | ==================================================
+2026-08-19 08:03:32 | INFO     | lottery_bot | Lottery Bot starting...
+2026-08-19 08:03:32 | INFO     | lottery_bot | ==================================================
+2026-08-19 08:03:32 | INFO     | lottery_bot | Serving LIFF & Render Health check on 0.0.0.0:8000
+2026-08-19 08:03:32 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-08-19 08:03:32 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-19 08:03:32 | INFO     | lottery_bot | Loaded 58 lotteries from config.json
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 09:30 (ฮานอยอาเซียน + นิเคอิเช้า) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 09:05 (นิเคอิเช้า VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 10:30 (จีนเช้า) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 10:05 (จีนเช้า VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 11:05 (ฮั่งเส็งเช้า) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 10:35 (ฮั่งเส็งเช้า VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 11:30 (ฮานอย HD) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 11:35 (ไต้หวัน VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 12:30 (ฮานอย Star + ไต้หวัน) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 12:35 (เกาหลี VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 13:30 (นิเคอิบ่าย + หุ้นเกาหลี) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 13:25 (นิเคอิบ่าย VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 14:00 (จีนบ่าย) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 14:25 (จีนบ่าย VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 14:30 (ฮานอย TV) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 15:10 (ฮั่งเส็งบ่าย) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 15:25 (ฮั่งเส็งบ่าย VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 16:25 (หุ้นสิงคโปร์) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 16:30 (ฮานอย กาชาด) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 16:45 (หุ้นไทยเย็น) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 17:30 (ฮานอยสามัคคี) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 17:05 (สิงคโปร์ VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 16:50 (หุ้นอินเดีย) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 18:00 (หุ้นอียิปต์) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 19:30 (ฮานอยพัฒนา) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 22:45 (หุ้นเยอรมัน + หุ้นอังกฤษ + หุ้นรัสเซีย) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 21:50 (เยอรมันVIP + อังกฤษVIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 23:50 (รัสเซียVIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 00:30 (หวยดาวโจนส์ VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 04:30 (หวยดาวโจนส์ mid night) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 04:00 (หวยดาวโจนส์ STAR) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 05:00 (หวยดาวโจนส์ extra) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 06:00 (หวยดาวโจนส์ TV) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 09:00 (เวียดนาม VIP เช้า) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 13:00 (เวียดนาม VIP บ่าย) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 17:00 (เวียดนาม VIP เย็น) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 03:55 (หุ้นดาวโจนส์) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 15:30 (หวยไทย) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 18:30 (มาเลเซีย) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 22:30 (ฮานอยEXTRA) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 08:30 (ลาว Extra) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 03:30 (หวยดาวโจนส์) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 10:00 (ลาวประตูชัย) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 11:00 (ลาวสันติภาพ) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 12:00 (ประชาชนลาว) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 13:45 (ลาว HD) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 15:45 (ลาว Star) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 20:30 (ลาวสามัคคี) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 21:00 (ลาวอาเซียน) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 22:00 (หวยลาวSTAR VIP) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduled time slot 23:30 (หวยลาว กาชาด + ลาวดาว) (Asia/Bangkok)
+2026-08-19 08:03:32 | INFO     | lottery_bot | Scheduler started
+2026-08-19 08:03:32 | INFO     | lottery_bot | Time slot 00:30 (หวยดาวโจนส์ VIP) has pending lotteries. Checking now...
+2026-08-19 08:03:32 | INFO     | lottery_bot | Time slot 04:30 (หวยดาวโจนส์ mid night) has pending lotteries. Checking now...
+2026-08-19 08:03:32 | INFO     | lottery_bot | Time slot 04:00 (หวยดาวโจนส์ STAR) has pending lotteries. Checking now...
+2026-08-19 08:03:32 | INFO     | lottery_bot | Time slot 05:00 (หวยดาวโจนส์ extra) has pending lotteries. Checking now...
+2026-08-19 08:03:32 | INFO     | lottery_bot | === Start checking time slot (หวยดาวโจนส์ VIP) (polling up to 30 min) ===
+2026-08-19 08:03:32 | INFO     | lottery_bot | Time slot 06:00 (หวยดาวโจนส์ TV) has pending lotteries. Checking now...
+2026-08-19 08:03:32 | INFO     | lottery_bot | (หวยดาวโจนส์ VIP) attempt 1/30...
+2026-08-19 08:03:32 | INFO     | lottery_bot | Time slot 03:55 (หุ้นดาวโจนส์) has pending lotteries. Checking now...
+2026-08-19 08:03:32 | INFO     | lottery_bot | Time slot 03:30 (หวยดาวโจนส์) has pending lotteries. Checking now...
+2026-08-19 08:03:32 | INFO     | lottery_bot | Bot is running 24/7 on Cloud Server.
+2026-08-19 08:03:32 | INFO     | lottery_bot | === Start checking time slot (หวยดาวโจนส์ STAR) (polling up to 30 min) ===
+2026-08-19 08:03:32 | INFO     | lottery_bot | === Start checking time slot (หวยดาวโจนส์ TV) (polling up to 30 min) ===
+2026-08-19 08:03:32 | INFO     | lottery_bot | === Start checking time slot (หวยดาวโจนส์ mid night) (polling up to 30 min) ===
+2026-08-19 08:03:32 | INFO     | lottery_bot | === Start checking time slot (หวยดาวโจนส์ extra) (polling up to 30 min) ===
+2026-08-19 08:03:32 | INFO     | lottery_bot | === Start checking time slot (หุ้นดาวโจนส์) (polling up to 30 min) ===
+2026-08-19 08:03:32 | INFO     | lottery_bot | (หวยดาวโจนส์ STAR) attempt 1/30...
+2026-08-19 08:03:32 | INFO     | lottery_bot | === Start checking time slot (หวยดาวโจนส์) (polling up to 30 min) ===
+2026-08-19 08:03:32 | INFO     | lottery_bot | (หวยดาวโจนส์ TV) attempt 1/30...
+2026-08-19 08:03:32 | INFO     | lottery_bot | (หวยดาวโจนส์ extra) attempt 1/30...
+2026-08-19 08:03:32 | INFO     | lottery_bot | (หวยดาวโจนส์) attempt 1/30...
+2026-08-19 08:03:32 | INFO     | lottery_bot | (หุ้นดาวโจนส์) attempt 1/30...
+2026-08-19 08:03:32 | INFO     | lottery_bot | (หวยดาวโจนส์ mid night) attempt 1/30...
+2026-08-19 08:03:33 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-08-19 08:03:41 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-08-19 08:03:46 | INFO     | lottery_bot | Successfully fetched 9 lottery results from SMLOT
+2026-08-19 08:03:46 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=802 bottom2=93
+2026-08-19 08:03:46 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=202 bottom2=88
+2026-08-19 08:03:46 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=365 bottom2=27
+2026-08-19 08:03:46 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=704 bottom2=76
+2026-08-19 08:03:46 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=704 bottom2=76
+2026-08-19 08:03:46 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=456 bottom2=80
+2026-08-19 08:03:46 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=340 bottom2=38
+2026-08-19 08:03:46 | INFO     | lottery_bot | Prepared message:
+⭐🇺🇸 หวยดาวโจนส์ VIP
+🔺 8️⃣ 0️⃣ 2️⃣
+🔻 9️⃣ 3️⃣
+2026-08-19 08:03:46 | INFO     | lottery_bot | Prepared message:
+🇺🇸 หวยดาวโจนส์ TV
+🔺 2️⃣ 0️⃣ 2️⃣
+🔻 8️⃣ 8️⃣
+2026-08-19 08:03:46 | INFO     | lottery_bot | Prepared message:
+🇺🇸 หุ้นดาวโจนส์
+🔺 3️⃣ 4️⃣ 0️⃣
+🔻 3️⃣ 8️⃣
+2026-08-19 08:03:46 | INFO     | lottery_bot | Prepared message:
+🇺🇸 หวยดาวโจนส์
+🔺 7️⃣ 0️⃣ 4️⃣
+🔻 7️⃣ 6️⃣
+2026-08-19 08:03:46 | INFO     | lottery_bot | Prepared message:
+⭐🇺🇸 หวยดาวโจนส์ STAR
+🔺 7️⃣ 0️⃣ 4️⃣
+🔻 7️⃣ 6️⃣
+2026-08-19 08:03:46 | INFO     | lottery_bot | Prepared message:
+🇺🇸 หวยดาวโจนส์ mid night
+🔺 4️⃣ 5️⃣ 6️⃣
+🔻 8️⃣ 0️⃣
+2026-08-19 08:03:46 | INFO     | lottery_bot | Prepared message:
+🇺🇸 หวยดาวโจนส์ extra
+🔺 3️⃣ 6️⃣ 5️⃣
+🔻 2️⃣ 7️⃣
+2026-08-19 08:03:46 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์ TV
+2026-08-19 08:03:46 | INFO     | lottery_bot | LINE Flex Message sent successfully for หุ้นดาวโจนส์
+2026-08-19 08:03:46 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์ mid night
+2026-08-19 08:03:47 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์ extra
+2026-08-19 08:03:47 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์ STAR
+2026-08-19 08:03:47 | INFO     | lottery_bot | Saved result: หุ้นดาวโจนส์ | 2026-08-19 | top3=340 bottom2=38
+2026-08-19 08:03:47 | INFO     | lottery_bot | All lotteries in group (หุ้นดาวโจนส์) sent – stop polling
+2026-08-19 08:03:47 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์ VIP
+2026-08-19 08:03:47 | INFO     | lottery_bot | LINE Flex Message sent successfully for หวยดาวโจนส์
+2026-08-19 08:03:47 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ mid night | 2026-08-19 | top3=456 bottom2=80
+2026-08-19 08:03:47 | INFO     | lottery_bot | All lotteries in group (หวยดาวโจนส์ mid night) sent – stop polling
+2026-08-19 08:03:47 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ extra | 2026-08-19 | top3=365 bottom2=27
+2026-08-19 08:03:47 | INFO     | lottery_bot | All lotteries in group (หวยดาวโจนส์ extra) sent – stop polling
+2026-08-19 08:03:47 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ VIP | 2026-08-19 | top3=802 bottom2=93
+2026-08-19 08:03:47 | INFO     | lottery_bot | All lotteries in group (หวยดาวโจนส์ VIP) sent – stop polling
+2026-08-19 08:03:47 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ STAR | 2026-08-19 | top3=704 bottom2=76
+2026-08-19 08:03:47 | INFO     | lottery_bot | All lotteries in group (หวยดาวโจนส์ STAR) sent – stop polling
+2026-08-19 08:03:47 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ TV | 2026-08-19 | top3=202 bottom2=88
+2026-08-19 08:03:47 | INFO     | lottery_bot | All lotteries in group (หวยดาวโจนส์ TV) sent – stop polling
+2026-08-19 08:03:48 | INFO     | lottery_bot | Saved result: หวยดาวโจนส์ | 2026-08-19 | top3=704 bottom2=76
+2026-08-19 08:03:48 | INFO     | lottery_bot | All lotteries in group (หวยดาวโจนส์) sent – stop polling
+2026-08-19 08:18:41 | INFO     | lottery_bot | PressHanoiParser found result for ฮานอยสามัคคี: top3=158 bottom2=11 (date=18/08/26)
+2026-08-19 08:18:41 | INFO     | lottery_bot.parsers | Parsed Unknown → top3=158 bottom2=11
+2026-08-19 08:18:42 | INFO     | lottery_bot | PressHanoiParser found result for ฮานอยพัฒนา: top3=744 bottom2=65 (date=18/08/26)
+2026-08-19 08:18:42 | INFO     | lottery_bot.parsers | Parsed Unknown → top3=744 bottom2=65
+2026-08-19 08:20:48 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-08-19 08:20:48 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-08-19 08:20:48 | INFO     | lottery_bot | LINE text message sent successfully (214 chars)

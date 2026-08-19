@@ -141,3 +141,34 @@ def safe_int(value: str, default: int = 0) -> int:
         return int(re.sub(r"\D", "", value) or default)
     except (ValueError, TypeError):
         return default
+
+
+THAI_DAYS = ["จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์", "อาทิตย์"]
+
+def generate_summary_report(results: list[dict], target_date: Optional[date] = None) -> str:
+    """Format daily results in clean text template format matching user's specification."""
+    from datetime import date as dt_date
+    if target_date is None:
+        target_date = dt_date.today()
+
+    day_name = THAI_DAYS[target_date.weekday()]
+    date_str = target_date.strftime("%d-%m-%y")
+
+    lines = [
+        f"สรุปผลวัน{day_name} {date_str}",
+        "",
+        "┅┅┅┅┅┅┅┅┅┅┅┅┅┅"
+    ]
+
+    for item in results:
+        name = item.get("lottery_name", item.get("name", ""))
+        top3 = str(item.get("top3", "")).zfill(3)[-3:]
+        bot2 = str(item.get("bottom2", "")).zfill(2)[-2:]
+        flag = item.get("flag", "")
+        
+        flag_prefix = f" {flag}" if flag else ""
+        lines.append(f"{top3}-{bot2}{flag_prefix} {name}")
+
+    lines.append("┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
+    return "\n".join(lines)
+

@@ -185,9 +185,9 @@
   },
   {
     "name": "ฮานอยสามัคคี",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.press.in.th/hanoi-lotto/",
     "time": "17:30",
-    "parser": "smlot_reward",
+    "parser": "press_hanoi",
     "type": "5digit",
     "flag": "🇻🇳"
   },
@@ -217,9 +217,9 @@
   },
   {
     "name": "ฮานอยพัฒนา",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.press.in.th/hanoi-lotto/",
     "time": "19:30",
-    "parser": "smlot_reward",
+    "parser": "press_hanoi",
     "type": "5digit",
     "flag": "🇻🇳"
   },

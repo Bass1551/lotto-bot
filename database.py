@@ -150,3 +150,21 @@ class Database:
                 (lottery_name,),
             ).fetchone()
         return dict(row) if row else None
+
+    def get_daily_results(self, result_date: Optional[date] = None) -> list[dict]:
+        """Return all recorded results for a specific date."""
+        if result_date is None:
+            result_date = date.today()
+        date_str = result_date.isoformat()
+
+        with self._connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT * FROM results
+                WHERE result_date = ?
+                ORDER BY id ASC
+                """,
+                (date_str,),
+            ).fetchall()
+        return [dict(r) for r in rows]
+

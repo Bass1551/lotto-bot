@@ -26,7 +26,7 @@ from database import Database
 from line_sender import LineSender
 from parsers import get_parser
 from parsers.base import ParseError
-from utils import format_result_message, setup_logging
+from utils import format_result_message, generate_summary_report, setup_logging
 
 logger = setup_logging()
 TZ = ZoneInfo("Asia/Bangkok")
@@ -73,8 +73,33 @@ class LotteryScheduler:
             )
             logger.info("Scheduled time slot %s (%s) (Asia/Bangkok)", time_str, names_str)
 
+        # Schedule nightly summary report at 23:59
+        self.scheduler.add_job(
+            self.send_daily_summary,
+            trigger=CronTrigger(hour=23, minute=59, timezone=TZ),
+            id="daily_summary_report",
+            replace_existing=True,
+        )
+        logger.info("Scheduled daily summary report at 23:59 (Asia/Bangkok)")
+
         self.scheduler.start()
         logger.info("Scheduler started")
+
+    def send_daily_summary(self, target_date: date | None = None) -> None:
+        """Send the full formatted summary text report for the day into the LINE group."""
+        if not self.sender:
+            logger.warning("No sender configured – cannot send daily summary report")
+            return
+
+        today = target_date or datetime.now(TZ).date()
+        daily_results = self.db.get_daily_results(result_date=today)
+        if not daily_results:
+            logger.info("No lottery results recorded for %s – skip summary report", today)
+            return
+
+        report_text = generate_summary_report(daily_results, target_date=today)
+        logger.info("Sending Daily Summary Report for %s:\n%s", today, report_text)
+        self.sender.send_text(report_text)
 
     def check_pending_due_today(self) -> None:
         """Check and send any lotteries whose draw time has passed today and not sent yet."""

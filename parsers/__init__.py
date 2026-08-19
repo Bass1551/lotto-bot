@@ -40,9 +40,12 @@ from parsers.vip_stock import (
 
 from parsers.smlot_reward import SmlotRewardParser
 
+from parsers.press_hanoi import PressHanoiParser
+
 PARSER_MAP: dict[str, Type[BaseParser]] = {
     # Central SMLOT Report Parser
     "smlot_reward": SmlotRewardParser,
+    "press_hanoi": PressHanoiParser,
     # Hanoi
     "hanoi_hd": HanoiHdParser,
     "hanoi_star": HanoiStarParser,
@@ -87,4 +90,6 @@ def get_parser(parser_key: str, url: str | None = None, lotto_name: str | None =
         )
     if cls is SmlotRewardParser:
         return SmlotRewardParser(url=url, lotto_name=lotto_name)
+    if cls is PressHanoiParser:
+        return PressHanoiParser(url=url, lotto_name=lotto_name)
     return cls(url=url)
