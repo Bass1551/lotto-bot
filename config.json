@@ -462,5 +462,13 @@
     "parser": "smlot_reward",
     "type": "laos",
     "flag": "🇱🇦"
+  },
+  {
+    "name": "ลาว TV",
+    "url": "https://member.smlot.net/reports/reward",
+    "time": "10:30",
+    "parser": "smlot_reward",
+    "type": "laos",
+    "flag": "🇱🇦"
   }
 ]
