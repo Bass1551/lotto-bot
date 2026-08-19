@@ -102,36 +102,45 @@ class LotteryScheduler:
         self.sender.send_text(report_text)
 
     def send_yesterday_summary(self) -> None:
-        """Send yesterday's summary report into the LINE group upon startup."""
+        """Send yesterday's summary report for ALL configured lotteries into the LINE group upon startup."""
         if not self.sender:
             logger.warning("No sender configured – cannot send yesterday summary report")
             return
 
         yesterday = datetime.now(TZ).date() - timedelta(days=1)
-        logger.info("Generating Yesterday's Summary Report for %s...", yesterday)
+        logger.info("Generating Yesterday's Full Summary Report for %s...", yesterday)
 
-        results = self.db.get_daily_results(result_date=yesterday)
+        db_results = {r["lottery_name"]: r for r in self.db.get_daily_results(result_date=yesterday)}
 
-        if not results:
-            logger.info("Fetching yesterday's results from SMLOT/press.in.th...")
-            fetched_results = []
-            for lotto in self.lotteries:
+        full_results = []
+        for lotto in self.lotteries:
+            name = lotto["name"]
+            flag = lotto.get("flag", "🎯")
+
+            if name in db_results:
+                r = db_results[name]
+                full_results.append({
+                    "lottery_name": name,
+                    "top3": r["top3"],
+                    "bottom2": r["bottom2"],
+                    "flag": flag,
+                })
+            else:
                 try:
                     res = self._scrape(lotto)
                     if res:
-                        fetched_results.append({
-                            "lottery_name": lotto["name"],
+                        full_results.append({
+                            "lottery_name": name,
                             "top3": res["top3"],
                             "bottom2": res["bottom2"],
-                            "flag": lotto.get("flag", "🎯")
+                            "flag": flag,
                         })
                 except Exception:
                     pass
-            results = fetched_results
 
-        if results:
-            report_text = generate_summary_report(results, target_date=yesterday)
-            logger.info("Sending Yesterday's Summary Report:\n%s", report_text)
+        if full_results:
+            report_text = generate_summary_report(full_results, target_date=yesterday)
+            logger.info("Sending Yesterday's Full Summary Report (%d lotteries):\n%s", len(full_results), report_text)
             self.sender.send_text(report_text)
 
     def check_pending_due_today(self) -> None:
