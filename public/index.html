@@ -183,13 +183,17 @@
             const titleEl = document.getElementById('title');
             const descEl = document.getElementById('desc');
 
-            if (!liff.isLoggedIn()) {
-                liff.login({ redirectUri: window.location.href });
+            if (!globalFlexMessage) {
+                descEl.innerText = "กำลังเตรียมข้อมูล...";
                 return;
             }
 
-            if (!globalFlexMessage) {
-                descEl.innerText = "กำลังเตรียมข้อมูล...";
+            if (!liff.isLoggedIn() && !liff.isInClient()) {
+                try {
+                    liff.login();
+                } catch (e) {
+                    alert("กรุณาเปิดลิงก์นี้ภายในแอป LINE บนมือถือเพื่อแชร์ผลสลากครับ");
+                }
                 return;
             }
 
@@ -204,7 +208,7 @@
                         liff.closeWindow();
                     }
                 } else {
-                    alert('อุปกรณ์นี้ไม่รองรับ Share Target Picker');
+                    alert('อุปกรณ์นี้ไม่รองรับ Share Target Picker กรุณาเปิดในแอป LINE');
                 }
             } catch (err) {
                 console.error("Share Error:", err);
