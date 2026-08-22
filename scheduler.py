@@ -194,12 +194,15 @@ class LotteryScheduler:
                     pending_lottos.remove(lotto)
                     continue
 
-                res = self._scrape(lotto)
-                if res:
-                    collected_results.append({
-                        "lotto": lotto,
-                        "result": res
-                    })
+                try:
+                    res = self._scrape(lotto)
+                    if res:
+                        collected_results.append({
+                            "lotto": lotto,
+                            "result": res
+                        })
+                except Exception as exc:
+                    logger.warning("Error scraping %s on attempt %d: %s", lotto["name"], attempt, exc)
 
             if collected_results:
                 is_group_full = (len(collected_results) == len(pending_lottos)) or (attempt == max_attempts)
