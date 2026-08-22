@@ -147,10 +147,13 @@ class LotteryScheduler:
         """Check and send any lotteries whose draw time has passed today and not sent yet."""
         now_dt = datetime.now(TZ)
         today = now_dt.date()
+        is_weekend = (today.weekday() in (5, 6))
         current_time_str = now_dt.strftime("%H:%M")
 
         grouped_by_time = defaultdict(list)
         for lotto in self.lotteries:
+            if is_weekend and not lotto.get("weekend", False):
+                continue
             if lotto["time"] <= current_time_str and not self.db.already_sent(lotto["name"], today):
                 grouped_by_time[lotto["time"]].append(lotto)
 
@@ -167,8 +170,13 @@ class LotteryScheduler:
     def _check_group_loop(self, lotto_list: list[dict[str, Any]]) -> None:
         """Poll lotteries in a group every 60s up to 30 times. Batch send when available."""
         today = datetime.now(TZ).date()
+        is_weekend = (today.weekday() in (5, 6))
 
-        pending_lottos = [l for l in lotto_list if not self.db.already_sent(l["name"], today)]
+        if is_weekend:
+            pending_lottos = [l for l in lotto_list if l.get("weekend", False) and not self.db.already_sent(l["name"], today)]
+        else:
+            pending_lottos = [l for l in lotto_list if not self.db.already_sent(l["name"], today)]
+
         if not pending_lottos:
             return
 

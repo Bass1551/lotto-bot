@@ -5,7 +5,8 @@
     "time": "09:30",
     "parser": "smlot_reward",
     "type": "5digit",
-    "flag": "🇻🇳"
+    "flag": "🇻🇳",
+    "weekend": true
   },
   {
     "name": "นิเคอิเช้า",
@@ -13,7 +14,8 @@
     "time": "09:30",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇯🇵"
+    "flag": "🇯🇵",
+    "weekend": false
   },
   {
     "name": "นิเคอิเช้า VIP",
@@ -21,7 +23,8 @@
     "time": "09:05",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇯🇵"
+    "flag": "⭐🇯🇵",
+    "weekend": true
   },
   {
     "name": "จีนเช้า",
@@ -29,7 +32,8 @@
     "time": "10:30",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇨🇳"
+    "flag": "🇨🇳",
+    "weekend": false
   },
   {
     "name": "จีนเช้า VIP",
@@ -37,7 +41,8 @@
     "time": "10:05",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇨🇳"
+    "flag": "⭐🇨🇳",
+    "weekend": true
   },
   {
     "name": "ฮั่งเส็งเช้า",
@@ -45,7 +50,8 @@
     "time": "11:05",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇭🇰"
+    "flag": "🇭🇰",
+    "weekend": false
   },
   {
     "name": "ฮั่งเส็งเช้า VIP",
@@ -53,7 +59,8 @@
     "time": "10:35",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇭🇰"
+    "flag": "⭐🇭🇰",
+    "weekend": true
   },
   {
     "name": "ฮานอย HD",
@@ -61,7 +68,8 @@
     "time": "11:30",
     "parser": "smlot_reward",
     "type": "5digit",
-    "flag": "🇻🇳"
+    "flag": "🇻🇳",
+    "weekend": true
   },
   {
     "name": "ไต้หวัน VIP",
@@ -69,7 +77,8 @@
     "time": "11:35",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇹🇼"
+    "flag": "⭐🇹🇼",
+    "weekend": true
   },
   {
     "name": "ฮานอย Star",
@@ -77,7 +86,8 @@
     "time": "12:30",
     "parser": "smlot_reward",
     "type": "5digit",
-    "flag": "🇻🇳"
+    "flag": "🇻🇳",
+    "weekend": true
   },
   {
     "name": "ไต้หวัน",
@@ -85,7 +95,8 @@
     "time": "12:30",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇹🇼"
+    "flag": "🇹🇼",
+    "weekend": false
   },
   {
     "name": "เกาหลี VIP",
@@ -93,7 +104,8 @@
     "time": "12:35",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇰🇷"
+    "flag": "⭐🇰🇷",
+    "weekend": true
   },
   {
     "name": "นิเคอิบ่าย",
@@ -101,7 +113,8 @@
     "time": "13:30",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇯🇵"
+    "flag": "🇯🇵",
+    "weekend": false
   },
   {
     "name": "นิเคอิบ่าย VIP",
@@ -109,7 +122,8 @@
     "time": "13:25",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇯🇵"
+    "flag": "⭐🇯🇵",
+    "weekend": true
   },
   {
     "name": "หุ้นเกาหลี",
@@ -117,7 +131,8 @@
     "time": "13:30",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇰🇷"
+    "flag": "🇰🇷",
+    "weekend": false
   },
   {
     "name": "จีนบ่าย",
@@ -125,7 +140,8 @@
     "time": "14:00",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇨🇳"
+    "flag": "🇨🇳",
+    "weekend": false
   },
   {
     "name": "จีนบ่าย VIP",
@@ -133,7 +149,8 @@
     "time": "14:25",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇨🇳"
+    "flag": "⭐🇨🇳",
+    "weekend": true
   },
   {
     "name": "ฮานอย TV",
@@ -141,7 +158,8 @@
     "time": "14:30",
     "parser": "smlot_reward",
     "type": "5digit",
-    "flag": "🇻🇳"
+    "flag": "🇻🇳",
+    "weekend": true
   },
   {
     "name": "ฮั่งเส็งบ่าย",
@@ -149,7 +167,8 @@
     "time": "15:10",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇭🇰"
+    "flag": "🇭🇰",
+    "weekend": false
   },
   {
     "name": "ฮั่งเส็งบ่าย VIP",
@@ -157,7 +176,8 @@
     "time": "15:25",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇭🇰"
+    "flag": "⭐🇭🇰",
+    "weekend": true
   },
   {
     "name": "หุ้นสิงคโปร์",
@@ -165,7 +185,8 @@
     "time": "16:25",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇸🇬"
+    "flag": "🇸🇬",
+    "weekend": false
   },
   {
     "name": "ฮานอย กาชาด",
@@ -173,7 +194,8 @@
     "time": "16:30",
     "parser": "smlot_reward",
     "type": "5digit",
-    "flag": "🇻🇳"
+    "flag": "🇻🇳",
+    "weekend": true
   },
   {
     "name": "หุ้นไทยเย็น",
@@ -181,7 +203,8 @@
     "time": "16:45",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇹🇭"
+    "flag": "🇹🇭",
+    "weekend": false
   },
   {
     "name": "ฮานอยสามัคคี",
@@ -189,7 +212,8 @@
     "time": "17:30",
     "parser": "press_hanoi",
     "type": "5digit",
-    "flag": "🇻🇳"
+    "flag": "🇻🇳",
+    "weekend": false
   },
   {
     "name": "สิงคโปร์ VIP",
@@ -197,7 +221,8 @@
     "time": "17:05",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇸🇬"
+    "flag": "⭐🇸🇬",
+    "weekend": true
   },
   {
     "name": "หุ้นอินเดีย",
@@ -205,7 +230,8 @@
     "time": "16:50",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇮🇳"
+    "flag": "🇮🇳",
+    "weekend": false
   },
   {
     "name": "หุ้นอียิปต์",
@@ -213,7 +239,8 @@
     "time": "18:00",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇪🇬"
+    "flag": "🇪🇬",
+    "weekend": false
   },
   {
     "name": "ฮานอยพัฒนา",
@@ -221,7 +248,8 @@
     "time": "19:30",
     "parser": "press_hanoi",
     "type": "5digit",
-    "flag": "🇻🇳"
+    "flag": "🇻🇳",
+    "weekend": true
   },
   {
     "name": "หุ้นเยอรมัน",
@@ -229,7 +257,8 @@
     "time": "22:45",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇩🇪"
+    "flag": "🇩🇪",
+    "weekend": false
   },
   {
     "name": "หุ้นอังกฤษ",
@@ -237,7 +266,8 @@
     "time": "22:45",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇬🇧"
+    "flag": "🇬🇧",
+    "weekend": false
   },
   {
     "name": "หุ้นรัสเซีย",
@@ -245,7 +275,8 @@
     "time": "22:45",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇷🇺"
+    "flag": "🇷🇺",
+    "weekend": false
   },
   {
     "name": "เยอรมันVIP",
@@ -253,7 +284,8 @@
     "time": "21:50",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇩🇪"
+    "flag": "⭐🇩🇪",
+    "weekend": true
   },
   {
     "name": "อังกฤษVIP",
@@ -261,7 +293,8 @@
     "time": "21:50",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇬🇧"
+    "flag": "⭐🇬🇧",
+    "weekend": true
   },
   {
     "name": "รัสเซียVIP",
@@ -269,7 +302,8 @@
     "time": "23:50",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇷🇺"
+    "flag": "⭐🇷🇺",
+    "weekend": true
   },
   {
     "name": "หวยดาวโจนส์ VIP",
@@ -277,7 +311,8 @@
     "time": "00:30",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇺🇸"
+    "flag": "⭐🇺🇸",
+    "weekend": true
   },
   {
     "name": "หวยดาวโจนส์ mid night",
@@ -285,7 +320,8 @@
     "time": "04:30",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇺🇸"
+    "flag": "🇺🇸",
+    "weekend": false
   },
   {
     "name": "หวยดาวโจนส์ STAR",
@@ -293,7 +329,8 @@
     "time": "04:00",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "⭐🇺🇸"
+    "flag": "⭐🇺🇸",
+    "weekend": false
   },
   {
     "name": "หวยดาวโจนส์ extra",
@@ -301,7 +338,8 @@
     "time": "05:00",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇺🇸"
+    "flag": "🇺🇸",
+    "weekend": false
   },
   {
     "name": "หวยดาวโจนส์ TV",
@@ -309,7 +347,8 @@
     "time": "06:00",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇺🇸"
+    "flag": "🇺🇸",
+    "weekend": false
   },
   {
     "name": "เวียดนาม VIP เช้า",
@@ -317,7 +356,8 @@
     "time": "09:00",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇻🇳"
+    "flag": "⭐🇻🇳",
+    "weekend": false
   },
   {
     "name": "เวียดนาม VIP บ่าย",
@@ -325,7 +365,8 @@
     "time": "13:00",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇻🇳"
+    "flag": "⭐🇻🇳",
+    "weekend": false
   },
   {
     "name": "เวียดนาม VIP เย็น",
@@ -333,7 +374,8 @@
     "time": "17:00",
     "parser": "smlot_reward",
     "type": "vip",
-    "flag": "⭐🇻🇳"
+    "flag": "⭐🇻🇳",
+    "weekend": false
   },
   {
     "name": "หุ้นดาวโจนส์",
@@ -341,7 +383,8 @@
     "time": "03:55",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇺🇸"
+    "flag": "🇺🇸",
+    "weekend": false
   },
   {
     "name": "หวยไทย",
@@ -349,7 +392,8 @@
     "time": "15:30",
     "parser": "smlot_reward",
     "type": "thai",
-    "flag": "🇹🇭"
+    "flag": "🇹🇭",
+    "weekend": false
   },
   {
     "name": "มาเลเซีย",
@@ -357,7 +401,8 @@
     "time": "18:30",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇲🇾"
+    "flag": "🇲🇾",
+    "weekend": false
   },
   {
     "name": "ฮานอยEXTRA",
@@ -365,7 +410,8 @@
     "time": "22:30",
     "parser": "smlot_reward",
     "type": "5digit",
-    "flag": "🇻🇳"
+    "flag": "🇻🇳",
+    "weekend": true
   },
   {
     "name": "ลาว Extra",
@@ -373,7 +419,8 @@
     "time": "08:30",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": true
   },
   {
     "name": "หวยดาวโจนส์",
@@ -381,7 +428,8 @@
     "time": "03:30",
     "parser": "smlot_reward",
     "type": "stock",
-    "flag": "🇺🇸"
+    "flag": "🇺🇸",
+    "weekend": false
   },
   {
     "name": "ลาวประตูชัย",
@@ -389,7 +437,8 @@
     "time": "10:00",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": false
   },
   {
     "name": "ลาวสันติภาพ",
@@ -397,7 +446,8 @@
     "time": "11:00",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": false
   },
   {
     "name": "ประชาชนลาว",
@@ -405,7 +455,8 @@
     "time": "12:00",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": false
   },
   {
     "name": "ลาว HD",
@@ -413,7 +464,8 @@
     "time": "13:45",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": true
   },
   {
     "name": "ลาว Star",
@@ -421,7 +473,8 @@
     "time": "15:45",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": true
   },
   {
     "name": "ลาวสามัคคี",
@@ -429,7 +482,8 @@
     "time": "20:30",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": true
   },
   {
     "name": "ลาวอาเซียน",
@@ -437,7 +491,8 @@
     "time": "21:00",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": true
   },
   {
     "name": "หวยลาวSTAR VIP",
@@ -445,7 +500,8 @@
     "time": "22:00",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "⭐🇱🇦"
+    "flag": "⭐🇱🇦",
+    "weekend": true
   },
   {
     "name": "หวยลาว กาชาด",
@@ -453,7 +509,8 @@
     "time": "23:30",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": true
   },
   {
     "name": "ลาวดาว",
@@ -461,7 +518,8 @@
     "time": "23:30",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": false
   },
   {
     "name": "ลาว TV",
@@ -469,6 +527,25 @@
     "time": "10:30",
     "parser": "smlot_reward",
     "type": "laos",
-    "flag": "🇱🇦"
+    "flag": "🇱🇦",
+    "weekend": true
+  },
+  {
+    "name": "ฮานอยพิเศษ",
+    "url": "https://www.press.in.th/hanoi-lotto/",
+    "time": "17:30",
+    "parser": "press_hanoi",
+    "type": "hanoi",
+    "flag": "🇻🇳",
+    "weekend": true
+  },
+  {
+    "name": "ฮานอยปกติ",
+    "url": "https://www.press.in.th/hanoi-lotto/",
+    "time": "18:30",
+    "parser": "press_hanoi",
+    "type": "hanoi",
+    "flag": "🇻🇳",
+    "weekend": true
   }
 ]
