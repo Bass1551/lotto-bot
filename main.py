@@ -39,6 +39,21 @@ def start_http_server():
     except Exception as e:
         logger.error("HTTP server error: %s", e)
 
+
+def keep_alive_loop():
+    """Ping Render Web Service every 4 minutes to prevent Render Free Tier from sleeping."""
+    import requests
+    render_url = os.environ.get("RENDER_EXTERNAL_URL", "https://lotto-bot-uy9t.onrender.com")
+    time.sleep(20)
+    while True:
+        try:
+            r = requests.get(render_url, timeout=15)
+            logger.info("Keep-Alive Ping to %s -> Status %d (Prevents Render Sleep)", render_url, r.status_code)
+        except Exception as err:
+            logger.debug("Keep-Alive ping note: %s", err)
+        time.sleep(240)  # Ping every 4 minutes (240s)
+
+
 def main() -> None:
     logger.info("=" * 50)
     logger.info("Lottery Bot starting...")
@@ -47,6 +62,10 @@ def main() -> None:
     # Start HTTP server thread for Render Web Service Health Check
     http_thread = threading.Thread(target=start_http_server, daemon=True)
     http_thread.start()
+
+    # Start Keep-Alive Ping Thread to prevent Render Free Tier Sleep
+    ping_thread = threading.Thread(target=keep_alive_loop, daemon=True)
+    ping_thread.start()
 
     db = Database("lottery_results.db")
 
