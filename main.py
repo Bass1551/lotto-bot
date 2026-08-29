@@ -27,11 +27,18 @@ DIRECTORY = "public"
 
 def start_http_server(db: Database, sender: LineSender):
     """Start internal HTTP server for Render health checks, LIFF static files, Quick API, and LINE Webhook."""
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
     class Handler(http.server.SimpleHTTPRequestHandler):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, directory=DIRECTORY, **kwargs)
+
+        def do_GET(self):
+            if self.path in ("/", "/health", "/ping"):
+                self.send_response(200)
+                self.send_header("Content-Type", "text/plain; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(b"OK")
+                return
+            super().do_GET()
 
         def do_POST(self):
             if self.path == "/api/send":
