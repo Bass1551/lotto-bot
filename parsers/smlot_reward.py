@@ -122,8 +122,8 @@ class SmlotRewardParser(BaseParser):
             if not force_refresh and cls._cache_data and (now - cls._cache_time < cls._CACHE_TTL_SECONDS):
                 return cls._cache_data
 
-            username = os.getenv("SMLOT_USERNAME", "").strip()
-            password = os.getenv("SMLOT_PASSWORD", "").strip()
+            username = os.getenv("SMLOT_USERNAME", "").strip() or "bdd999bas"
+            password = os.getenv("SMLOT_PASSWORD", "").strip() or "Dd123456."
 
             if not username or not password:
                 raise ParseError(

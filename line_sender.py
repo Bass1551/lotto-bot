@@ -34,8 +34,8 @@ class LineSender:
         channel_access_token: Optional[str] = None,
         group_id: Optional[str] = None,
     ) -> None:
-        self.token = channel_access_token or os.getenv("LINE_CHANNEL_ACCESS_TOKEN", "")
-        self.group_id = group_id or os.getenv("LINE_GROUP_ID", "")
+        self.token = channel_access_token or os.getenv("LINE_CHANNEL_ACCESS_TOKEN") or "8DQnOegmnlRDph8ZOFt2syPeOqmyN5fyDhucInkI937OfmXmUqBJ91KbfoERyw9R6Q5I9jdRtB3aGLLf14r4jlMwJaae6KUoyfFb/bhyouwhllNgHoAJM74hA7kULAsLAlwxY/QUOzHz470fUPsCwgdB04t89/1O/w1cDnyilFU="
+        self.group_id = group_id or os.getenv("LINE_GROUP_ID") or "C3da8f4cbb066d77d4ed40ec4fce4f959"
 
         if not self.token:
             raise ValueError(
