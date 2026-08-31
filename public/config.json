@@ -1,126 +1,126 @@
 [
   {
     "name": "ฮานอยอาเซียน",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "09:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": true
   },
   {
     "name": "นิเคอิเช้า",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "09:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "stock",
     "flag": "🇯🇵",
     "weekend": false
   },
   {
     "name": "นิเคอิเช้า VIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "09:05",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇯🇵",
     "weekend": true
   },
   {
     "name": "จีนเช้า",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "10:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "stock",
     "flag": "🇨🇳",
     "weekend": false
   },
   {
     "name": "จีนเช้า VIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "10:05",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇨🇳",
     "weekend": true
   },
   {
     "name": "ฮั่งเส็งเช้า",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "11:05",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "stock",
     "flag": "🇭🇰",
     "weekend": false
   },
   {
     "name": "ฮั่งเส็งเช้า VIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "10:35",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇭🇰",
     "weekend": true
   },
   {
     "name": "ฮานอย HD",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "11:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": true
   },
   {
     "name": "ไต้หวัน VIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "11:35",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇹🇼",
     "weekend": true
   },
   {
     "name": "ฮานอย Star",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "12:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": true
   },
   {
     "name": "ไต้หวัน",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "12:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "stock",
     "flag": "🇹🇼",
     "weekend": false
   },
   {
     "name": "เกาหลี VIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "12:35",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇰🇷",
     "weekend": true
   },
   {
     "name": "นิเคอิบ่าย",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "13:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "stock",
     "flag": "🇯🇵",
     "weekend": false
   },
   {
     "name": "นิเคอิบ่าย VIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "13:25",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇯🇵",
     "weekend": true
@@ -136,45 +136,45 @@
   },
   {
     "name": "จีนบ่าย",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "14:00",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "stock",
     "flag": "🇨🇳",
     "weekend": false
   },
   {
     "name": "จีนบ่าย VIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "14:25",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇨🇳",
     "weekend": true
   },
   {
     "name": "ฮานอย TV",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "14:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": true
   },
   {
     "name": "ฮั่งเส็งบ่าย",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "15:10",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "stock",
     "flag": "🇭🇰",
     "weekend": false
   },
   {
     "name": "ฮั่งเส็งบ่าย VIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "15:25",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇭🇰",
     "weekend": true
@@ -190,9 +190,9 @@
   },
   {
     "name": "ฮานอย กาชาด",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "16:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": true
@@ -208,9 +208,9 @@
   },
   {
     "name": "ฮานอยสามัคคี",
-    "url": "https://www.press.in.th/hanoi-lotto/",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "17:30",
-    "parser": "press_hanoi",
+    "parser": "youtube_live",
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": false
@@ -244,9 +244,9 @@
   },
   {
     "name": "ฮานอยพัฒนา",
-    "url": "https://www.press.in.th/hanoi-lotto/",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "19:30",
-    "parser": "press_hanoi",
+    "parser": "youtube_live",
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": true
@@ -280,27 +280,27 @@
   },
   {
     "name": "เยอรมันVIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "21:50",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇩🇪",
     "weekend": true
   },
   {
     "name": "อังกฤษVIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "21:50",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇬🇧",
     "weekend": true
   },
   {
     "name": "รัสเซียVIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "23:50",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "vip",
     "flag": "⭐🇷🇺",
     "weekend": true
@@ -406,18 +406,18 @@
   },
   {
     "name": "ฮานอยEXTRA",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "22:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": true
   },
   {
     "name": "ลาว Extra",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "08:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true
@@ -433,117 +433,117 @@
   },
   {
     "name": "ลาวประตูชัย",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "10:00",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": false
   },
   {
     "name": "ลาวสันติภาพ",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "11:00",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": false
   },
   {
     "name": "ประชาชนลาว",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "12:00",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": false
   },
   {
     "name": "ลาว HD",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "13:45",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true
   },
   {
     "name": "ลาว Star",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "15:45",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true
   },
   {
     "name": "ลาวสามัคคี",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "20:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true
   },
   {
     "name": "ลาวอาเซียน",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "21:00",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true
   },
   {
     "name": "หวยลาวSTAR VIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "22:00",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "⭐🇱🇦",
     "weekend": true
   },
   {
     "name": "หวยลาว กาชาด",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "23:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true
   },
   {
     "name": "ลาวดาว",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "23:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": false
   },
   {
     "name": "ลาว TV",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "10:30",
-    "parser": "smlot_reward",
+    "parser": "youtube_live",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true
   },
   {
     "name": "ฮานอยพิเศษ",
-    "url": "https://www.press.in.th/hanoi-lotto/",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "17:30",
-    "parser": "press_hanoi",
+    "parser": "youtube_live",
     "type": "hanoi",
     "flag": "🇻🇳",
     "weekend": true
   },
   {
     "name": "ฮานอยปกติ",
-    "url": "https://www.press.in.th/hanoi-lotto/",
+    "url": "https://www.youtube.com/@banmahahenglivenow/live",
     "time": "18:30",
-    "parser": "press_hanoi",
+    "parser": "youtube_live",
     "type": "hanoi",
     "flag": "🇻🇳",
     "weekend": true

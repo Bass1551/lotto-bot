@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Parser for YouTube Live streams from channel 'บ้านมหาเฮง - LIVE NOW' (UCUZt27_J1xRgzc5kQ5YMTvA)."""
+"""Parser for YouTube Live streams from channel 'บ้านมหาเฮง - LIVE NOW' with SMLOT / PressHanoi fallback."""
 
 from __future__ import annotations
 
@@ -8,6 +8,8 @@ import requests
 import xml.etree.ElementTree as ET
 
 from parsers.base import BaseParser, ParseError
+from parsers.press_hanoi import PressHanoiParser
+from parsers.smlot_reward import SmlotRewardParser
 from utils import setup_logging
 
 logger = setup_logging()
@@ -15,7 +17,7 @@ CHANNEL_RSS_URL = "https://www.youtube.com/feeds/videos.xml?channel_id=UCUZt27_J
 
 
 class YoutubeLiveParser(BaseParser):
-    """Scrapes YouTube Live Streams for instant lottery results from 'บ้านมหาเฮง - LIVE NOW'."""
+    """Scrapes YouTube Live Streams for instant lottery results with SMLOT fallback."""
 
     def __init__(self, url: str | None = None, lotto_name: str | None = None) -> None:
         target_url = url or "https://www.youtube.com/@banmahahenglivenow/live"
@@ -31,10 +33,10 @@ class YoutubeLiveParser(BaseParser):
             )
         }
 
-        # 1. Fetch latest stream URLs from YouTube RSS feed
+        # 1. Check YouTube Live Streams and RSS feed FIRST
         video_urls = [self.url]
         try:
-            r = requests.get(CHANNEL_RSS_URL, headers=headers, timeout=10)
+            r = requests.get(CHANNEL_RSS_URL, headers=headers, timeout=8)
             if r.status_code == 200:
                 root = ET.fromstring(r.text)
                 ns = {"atom": "http://www.w3.org/2005/Atom"}
@@ -45,10 +47,9 @@ class YoutubeLiveParser(BaseParser):
         except Exception as exc:
             logger.debug("Failed to fetch YouTube RSS feed: %s", exc)
 
-        # 2. Check each video URL for lotto_name and results
         for v_url in video_urls:
             try:
-                resp = requests.get(v_url, headers=headers, timeout=10)
+                resp = requests.get(v_url, headers=headers, timeout=8)
                 if resp.status_code != 200:
                     continue
                 resp.encoding = "utf-8"
@@ -69,11 +70,10 @@ class YoutubeLiveParser(BaseParser):
                         top3 = match.group("top3")
                         bot2 = match.group("bot2")
                         logger.info(
-                            "YoutubeLiveParser found result for %s: top3=%s bottom2=%s from %s",
+                            "⚡ YouTube Live Stream found instant result for %s: top3=%s bottom2=%s",
                             self.lotto_name,
                             top3,
                             bot2,
-                            v_url,
                         )
                         return {
                             "name": self.lotto_name,
@@ -82,6 +82,19 @@ class YoutubeLiveParser(BaseParser):
                             "full": top3 + bot2,
                         }
             except Exception as exc:
-                logger.debug("Error checking video URL %s: %s", v_url, exc)
+                logger.debug("YouTube URL check error %s: %s", v_url, exc)
 
-        raise ParseError(f"Live result for '{self.lotto_name}' is not yet available on YouTube Channel 'บ้านมหาเฮง - LIVE NOW'")
+        # 2. Fallback to SMLOT or PressHanoi if YouTube Stream doesn't have text result yet
+        logger.info("YouTube Live Stream not available yet for '%s' – trying fallback parser...", self.lotto_name)
+        if "ฮานอย" in self.lotto_name and "VIP" not in self.lotto_name:
+            try:
+                p = PressHanoiParser(lotto_name=self.lotto_name)
+                return p.parse()
+            except Exception as exc:
+                logger.debug("PressHanoi fallback exception: %s", exc)
+
+        try:
+            smlot_p = SmlotRewardParser(lotto_name=self.lotto_name)
+            return smlot_p.parse()
+        except Exception as exc:
+            raise ParseError(f"Result for '{self.lotto_name}' not yet available on YouTube Live or fallback sources") from exc
