@@ -42,12 +42,16 @@ from parsers.smlot_reward import SmlotRewardParser
 
 from parsers.press_hanoi import PressHanoiParser
 from parsers.youtube_live import YoutubeLiveParser
+from parsers.realtime_stock import RealtimeStockParser
+from parsers.lao_direct import LaoDirectParser
 
 PARSER_MAP: dict[str, Type[BaseParser]] = {
     # Central SMLOT Report Parser
     "smlot_reward": SmlotRewardParser,
     "press_hanoi": PressHanoiParser,
     "youtube_live": YoutubeLiveParser,
+    "realtime_stock": RealtimeStockParser,
+    "lao_direct": LaoDirectParser,
     # Hanoi
     "hanoi_hd": HanoiHdParser,
     "hanoi_star": HanoiStarParser,
@@ -96,4 +100,8 @@ def get_parser(parser_key: str, url: str | None = None, lotto_name: str | None =
         return PressHanoiParser(url=url, lotto_name=lotto_name)
     if cls is YoutubeLiveParser:
         return YoutubeLiveParser(url=url, lotto_name=lotto_name)
+    if cls is RealtimeStockParser:
+        return RealtimeStockParser(url=url, lotto_name=lotto_name)
+    if cls is LaoDirectParser:
+        return LaoDirectParser(url=url, lotto_name=lotto_name)
     return cls(url=url)
