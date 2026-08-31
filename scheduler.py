@@ -278,11 +278,17 @@ class LotteryScheduler:
         flag = lotto.get("flag", "🎯")
         top3 = result["top3"]
         bottom2 = result["bottom2"]
-        full = result.get("full", "")
-        result_date = today or datetime.now(TZ).date()
+        now_dt = datetime.now(TZ)
+        if today is None:
+            if now_dt.strftime("%H:%M") < "06:00" or lotto.get("overnight", False):
+                result_date = now_dt.date() - timedelta(days=1)
+            else:
+                result_date = now_dt.date()
+        else:
+            result_date = today
 
         if self.db.already_sent(name, result_date):
-            logger.info("%s was already sent by another process – skip", name)
+            logger.info("%s was already sent for date %s – skip", name, result_date)
             return
 
         message = format_result_message(name, top3, bottom2, flag=flag)
