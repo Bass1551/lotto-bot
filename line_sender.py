@@ -144,6 +144,23 @@ class LineSender:
                             },
                         ],
                     },
+                    # Signature Watermark (Mysterious Sci-Fi - กลางการ์ด ป้องกันการตัดรูป)
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "justifyContent": "center",
+                        "alignItems": "center",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "🪐 แอดBaras 🛸",
+                                "size": "xs",
+                                "color": "#00E5FF",
+                                "weight": "bold",
+                                "align": "center",
+                            }
+                        ],
+                    },
                     # 2 ตัวล่าง (Theme น้ำเงิน/ฟ้า)
                     {
                         "type": "box",
@@ -168,24 +185,6 @@ class LineSender:
                                 "color": "#00D2FF",
                                 "align": "center",
                             },
-                        ],
-                    },
-                    # Signature Watermark (Mysterious Sci-Fi)
-                    {
-                        "type": "box",
-                        "layout": "horizontal",
-                        "justifyContent": "center",
-                        "alignItems": "center",
-                        "paddingTop": "sm",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "text": "🪐 แอดBaras 🛸",
-                                "size": "xs",
-                                "color": "#00E5FF",
-                                "weight": "bold",
-                                "align": "center",
-                            }
                         ],
                     },
                 ],
@@ -260,6 +259,22 @@ class LineSender:
                 },
                 {
                     "type": "box",
+                    "layout": "horizontal",
+                    "justifyContent": "center",
+                    "alignItems": "center",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": "🪐 แอดBaras 🛸",
+                            "size": "xs",
+                            "color": "#00E5FF",
+                            "weight": "bold",
+                            "align": "center",
+                        }
+                    ],
+                },
+                {
+                    "type": "box",
                     "layout": "vertical",
                     "backgroundColor": "#142438",
                     "cornerRadius": "md",
@@ -271,25 +286,6 @@ class LineSender:
                     ]
                 }
             ])
-
-        # Watermark for combined card (Mysterious Sci-Fi)
-        body_contents.append({
-            "type": "box",
-            "layout": "horizontal",
-            "justifyContent": "center",
-            "alignItems": "center",
-            "paddingTop": "sm",
-            "contents": [
-                {
-                    "type": "text",
-                    "text": "🪐 แอดBaras 🛸",
-                    "size": "xs",
-                    "color": "#00E5FF",
-                    "weight": "bold",
-                    "align": "center",
-                }
-            ],
-        })
 
         header_title = f"🎯 ผลสลากรวม ({len(items)} หวย)"
         return {
