@@ -356,6 +356,7 @@ class LotteryScheduler:
         flag = lotto.get("flag", "🎯")
         top3 = result["top3"]
         bottom2 = result["bottom2"]
+        full = result.get("full", top3 + bottom2)
         now_dt = datetime.now(TZ)
         if today is None:
             if now_dt.strftime("%H:%M") < "06:00" or lotto.get("overnight", False):
