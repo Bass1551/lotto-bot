@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
+import holidays
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
@@ -30,6 +31,25 @@ from utils import format_result_message, generate_summary_report, generate_histo
 
 logger = setup_logging()
 TZ = ZoneInfo("Asia/Bangkok")
+
+# International stock exchange holiday calendars (from Investing.com)
+STOCK_HOLIDAYS_MAP = {
+    "นิเคอิเช้า": (holidays.Japan(), "ญี่ปุ่น (Tokyo Stock Exchange)"),
+    "นิเคอิบ่าย": (holidays.Japan(), "ญี่ปุ่น (Tokyo Stock Exchange)"),
+    "จีนเช้า": (holidays.China(), "จีน (Shanghai/Shenzhen Stock Exchange)"),
+    "จีนบ่าย": (holidays.China(), "จีน (Shanghai/Shenzhen Stock Exchange)"),
+    "ฮั่งเส็งเช้า": (holidays.HongKong(), "ฮ่องกง (Hong Kong Stock Exchange)"),
+    "ฮั่งเส็งบ่าย": (holidays.HongKong(), "ฮ่องกง (Hong Kong Stock Exchange)"),
+    "ไต้หวัน": (holidays.Taiwan(), "ไต้หวัน (Taiwan Stock Exchange)"),
+    "หุ้นเกาหลี": (holidays.SouthKorea(), "เกาหลีใต้ (Korea Exchange)"),
+    "หุ้นสิงคโปร์": (holidays.Singapore(), "สิงคโปร์ (Singapore Exchange)"),
+    "หุ้นไทยเย็น": (holidays.Thailand(), "ไทย (ตลาดหลักทรัพย์แห่งประเทศไทย)"),
+    "หุ้นอังกฤษ": (holidays.UnitedKingdom(), "อังกฤษ (London Stock Exchange)"),
+    "หุ้นเยอรมัน": (holidays.Germany(), "เยอรมัน (Frankfurt Stock Exchange)"),
+    "หุ้นรัสเซีย": (holidays.Russia(), "รัสเซีย (Moscow Exchange)"),
+    "หุ้นดาวโจนส์": (holidays.UnitedStates(), "สหรัฐอเมริกา (New York Stock Exchange)"),
+    "หวยดาวโจนส์": (holidays.UnitedStates(), "สหรัฐอเมริกา (New York Stock Exchange)"),
+}
 
 
 class LotteryScheduler:
@@ -255,6 +275,35 @@ class LotteryScheduler:
         else:
             pending_lottos = [l for l in lotto_list if not self.db.already_sent(l["name"], today)]
 
+        if not pending_lottos:
+            return
+
+        # Check for stock market holidays (Investing.com calendar)
+        active_lottos = []
+        for lotto in pending_lottos:
+            name = lotto["name"]
+            if name in STOCK_HOLIDAYS_MAP:
+                cal, market_name = STOCK_HOLIDAYS_MAP[name]
+                if today in cal:
+                    h_name = cal.get(today)
+                    flag = lotto.get("flag", "📈")
+                    holiday_msg = (
+                        f"🛑 {flag} แจ้งเตือนตลาดปิด : {name}\n"
+                        f"🪐 แอดBaras 🛸\n"
+                        f"➖➖➖➖➖➖➖➖\n"
+                        f"📅 วันนี้ {today.strftime('%d/%m/%Y')} ตลาดหลักทรัพย์{market_name} ปิดทำการ\n"
+                        f"เนื่องในวันหยุด: {h_name}\n"
+                        f"⚠️ รอบนี้ไม่มีการออกผลรางวัลครับ"
+                    )
+                    logger.info("Stock market closed for %s on %s (%s). Sending notification...", name, today, h_name)
+                    if self.sender:
+                        self.sender.send_text(holiday_msg)
+                    # Mark as recorded for today so we don't notify repeatedly
+                    self.db.save_result(name, "000", "00", full_result="HOLIDAY")
+                    continue
+            active_lottos.append(lotto)
+
+        pending_lottos = active_lottos
         if not pending_lottos:
             return
 
