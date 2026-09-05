@@ -352,9 +352,9 @@ class LineSender:
         return clean_flex
 
     def send_combined_result_flex(self, items: list) -> bool:
-        """Send a combined Flex Message card containing multiple lotteries (clean without share button)."""
+        """Send a combined Flex Message card containing multiple lotteries with share button."""
         try:
-            flex_dict = self.create_combined_clean_flex_message_dict(items)
+            flex_dict = self.create_combined_flex_message_dict(items)
             names_title = " + ".join([f"{x.get('flag', '🎯')} {x['name']}" for x in items])
             container = FlexContainer.from_dict(flex_dict)
             alt_text = f"🎯 ผลสลากรวม: {names_title}"
@@ -376,9 +376,9 @@ class LineSender:
     def send_result_flex(
         self, name: str, top3: str, bottom2: str, flag: str = "🎯"
     ) -> bool:
-        """Push a clean Flex Message result card to the LINE group (without share button)."""
+        """Push a Flex Message result card to the LINE group with share button."""
         try:
-            flex_dict = self.create_clean_flex_message_dict(
+            flex_dict = self.create_flex_message_dict(
                 name=name, top3=top3, bottom2=bottom2, flag=flag
             )
             container = FlexContainer.from_dict(flex_dict)
