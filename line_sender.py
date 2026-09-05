@@ -170,6 +170,24 @@ class LineSender:
                             },
                         ],
                     },
+                    # Signature Watermark
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "justifyContent": "center",
+                        "alignItems": "center",
+                        "paddingTop": "sm",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "👑 แอดBaras 💎",
+                                "size": "xs",
+                                "color": "#E5C158",
+                                "weight": "bold",
+                                "align": "center",
+                            }
+                        ],
+                    },
                 ],
             },
         }
@@ -253,6 +271,25 @@ class LineSender:
                     ]
                 }
             ])
+
+        # Watermark for combined card
+        body_contents.append({
+            "type": "box",
+            "layout": "horizontal",
+            "justifyContent": "center",
+            "alignItems": "center",
+            "paddingTop": "sm",
+            "contents": [
+                {
+                    "type": "text",
+                    "text": "👑 แอดBaras 💎",
+                    "size": "xs",
+                    "color": "#E5C158",
+                    "weight": "bold",
+                    "align": "center",
+                }
+            ],
+        })
 
         header_title = f"🎯 ผลสลากรวม ({len(items)} หวย)"
         return {
