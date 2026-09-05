@@ -321,7 +321,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸",
-    "weekend": false
+    "weekend": true
   },
   {
     "name": "หวยดาวโจนส์ STAR",
@@ -330,7 +330,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "⭐🇺🇸",
-    "weekend": false
+    "weekend": true
   },
   {
     "name": "หวยดาวโจนส์ extra",
@@ -339,7 +339,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸",
-    "weekend": false
+    "weekend": true
   },
   {
     "name": "หวยดาวโจนส์ TV",
@@ -348,7 +348,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸",
-    "weekend": false
+    "weekend": true
   },
   {
     "name": "เวียดนาม VIP เช้า",
@@ -384,7 +384,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸",
-    "weekend": false
+    "weekend": true
   },
   {
     "name": "หวยไทย",
@@ -429,7 +429,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸",
-    "weekend": false
+    "weekend": true
   },
   {
     "name": "ลาวประตูชัย",

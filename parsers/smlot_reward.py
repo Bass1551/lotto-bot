@@ -208,6 +208,32 @@ class SmlotRewardParser(BaseParser):
 
         return results
 
+    @staticmethod
+    def _get_lotto_tokens(name: str) -> set[str]:
+        main_names = [
+            "นิเคอิ", "ฮั่งเส็ง", "จีน", "ไต้หวัน", "เกาหลี", "สิงคโปร์", "สิงค์โปร์",
+            "อังกฤษ", "เยอรมัน", "รัสเซีย", "ดาวโจนส์", "ไทย", "อียิปต์", "อินเดีย",
+            "มาเลเซีย", "ฮานอย", "ลาว",
+        ]
+        sessions = ["เช้า", "บ่าย", "เย็น", "ดึก"]
+        suffixes = [
+            "vip", "star", "extra", "tv", "hd", "อาเซียน", "กาชาด", "สามัคคี",
+            "พัฒนา", "สันติภาพ", "ประตูชัย", "ประชาชน", "midnight", "mid night",
+            "พิเศษ", "ปกติ", "เฉพาะกิจ",
+        ]
+        name_lower = name.lower()
+        tokens = set()
+        for m in main_names:
+            if m in name_lower:
+                tokens.add(m.replace("สิงค์โปร์", "สิงคโปร์"))
+        for s in sessions:
+            if s in name_lower:
+                tokens.add(s)
+        for suf in suffixes:
+            if suf in name_lower:
+                tokens.add(suf)
+        return tokens
+
     def parse(self) -> dict[str, str]:
         target_name = self.target_lotto_name or self.name
         all_results = self.fetch_all_smlot_results()
@@ -222,12 +248,24 @@ class SmlotRewardParser(BaseParser):
             if mapped:
                 result = all_results.get(mapped)
 
-        # 3) Strict clean search (Strictly separating VIP and Normal stock)
+        # 3) Smart normalized token matching (handles word reordering e.g. ฮั่งเส็ง VIP เช้า vs ฮั่งเส็งเช้า VIP)
+        if not result:
+            target_tokens = self._get_lotto_tokens(target_name)
+            for key, val in all_results.items():
+                is_key_vip = "VIP" in key.upper()
+                if is_target_vip != is_key_vip:
+                    continue
+
+                key_tokens = self._get_lotto_tokens(key)
+                if target_tokens and key_tokens and target_tokens == key_tokens:
+                    result = val
+                    break
+
+        # 4) Fallback clean substring search
         if not result:
             clean_target = re.sub(r"[^\wก-๙]", "", target_name).lower()
             for key, val in all_results.items():
                 is_key_vip = "VIP" in key.upper()
-                # MUST NOT mix VIP and Normal stock lotteries!
                 if is_target_vip != is_key_vip:
                     continue
 
