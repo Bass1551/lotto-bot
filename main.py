@@ -105,7 +105,7 @@ def start_http_server(db: Database, sender: LineSender):
                                         pass
                                     target_name = matched_lotto["name"] if matched_lotto else lotto_query
                                     flag = matched_lotto.get("flag", "🎯") if matched_lotto else "🎯"
-                                    history = db.get_history_results(target_name, limit=10)
+                                    history = db.get_history_results(target_name, limit=15)
                                     if history:
                                         from utils import generate_history_report
                                         report = generate_history_report(target_name, history, flag=flag)

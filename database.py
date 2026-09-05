@@ -168,18 +168,31 @@ class Database:
             ).fetchall()
         return [dict(r) for r in rows]
 
-    def get_history_results(self, lottery_name: str, limit: int = 10) -> list[dict]:
-        """Return the most recent `limit` historical results for a lottery, sorted chronologically."""
-        # Clean search to match both 'ลาว Extra' and 'หวยลาวExtra'
+    def get_history_results(
+        self,
+        lottery_name: str,
+        limit: int = 15,
+        before_date: Optional[date] = None,
+        include_today: bool = False,
+    ) -> list[dict]:
+        """Return the most recent `limit` historical results for a lottery strictly before today, sorted chronologically."""
+        if before_date is None:
+            before_date = date.today()
+        date_str = before_date.isoformat()
+
+        op = "<=" if include_today else "<"
+        query = f"""
+            SELECT * FROM results
+            WHERE (lottery_name = ? OR lottery_name LIKE ?)
+              AND result_date {op} ?
+            ORDER BY result_date DESC
+            LIMIT ?
+        """
+
         with self._connect() as conn:
             rows = conn.execute(
-                """
-                SELECT * FROM results
-                WHERE lottery_name = ? OR lottery_name LIKE ?
-                ORDER BY result_date DESC
-                LIMIT ?
-                """,
-                (lottery_name, f"%{lottery_name}%", limit),
+                query,
+                (lottery_name, f"%{lottery_name}%", date_str, limit),
             ).fetchall()
         results = [dict(r) for r in rows]
         results.reverse()  # Chronological order (oldest to newest)
