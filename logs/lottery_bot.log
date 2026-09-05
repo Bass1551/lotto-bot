@@ -23183,3 +23183,76 @@ Call log:
 2026-09-05 08:43:50 | INFO     | lottery_bot | Saved result: หุ้นดาวโจนส์ | 2026-09-05 | top3=425 bottom2=86
 2026-09-05 08:47:56 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
 2026-09-05 08:47:56 | INFO     | lottery_bot | LINE text message sent successfully (1354 chars)
+2026-09-05 08:50:35 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 200 (Prevents Render Sleep)
+2026-09-05 08:52:41 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-09-05 08:52:41 | INFO     | lottery_bot | LINE text message sent successfully (1354 chars)
+2026-09-05 08:54:36 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-05 08:58:37 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-05 09:02:38 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-05 09:05:00 | INFO     | lottery_bot | === Start checking time slot (นิเคอิเช้า VIP) (polling up to 30 min) ===
+2026-09-05 09:05:00 | INFO     | lottery_bot | (นิเคอิเช้า VIP) attempt 1/30...
+2026-09-05 09:05:00 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-09-05 09:05:03 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-05 09:05:07 | INFO     | lottery_bot | Successfully fetched 12 lottery results from SMLOT
+2026-09-05 09:05:07 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'นิเคอิเช้า VIP' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:05:07 | WARNING  | lottery_bot | ParseError for นิเคอิเช้า VIP: SMLOT parser: Result for 'นิเคอิเช้า VIP' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:06:07 | INFO     | lottery_bot | (นิเคอิเช้า VIP) attempt 2/30...
+2026-09-05 09:06:07 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-09-05 09:06:09 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-05 09:06:14 | INFO     | lottery_bot | Successfully fetched 12 lottery results from SMLOT
+2026-09-05 09:06:14 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'นิเคอิเช้า VIP' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:06:14 | WARNING  | lottery_bot | ParseError for นิเคอิเช้า VIP: SMLOT parser: Result for 'นิเคอิเช้า VIP' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:06:51 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 200 (Prevents Render Sleep)
+2026-09-05 09:07:14 | INFO     | lottery_bot | (นิเคอิเช้า VIP) attempt 3/30...
+2026-09-05 09:07:14 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-09-05 09:07:16 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-05 09:07:20 | INFO     | lottery_bot | Successfully fetched 12 lottery results from SMLOT
+2026-09-05 09:07:20 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'นิเคอิเช้า VIP' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:07:20 | WARNING  | lottery_bot | ParseError for นิเคอิเช้า VIP: SMLOT parser: Result for 'นิเคอิเช้า VIP' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:08:20 | INFO     | lottery_bot | (นิเคอิเช้า VIP) attempt 4/30...
+2026-09-05 09:08:20 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-09-05 09:08:22 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-05 09:08:26 | INFO     | lottery_bot | Successfully fetched 12 lottery results from SMLOT
+2026-09-05 09:08:26 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'นิเคอิเช้า VIP' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:08:26 | WARNING  | lottery_bot | ParseError for นิเคอิเช้า VIP: SMLOT parser: Result for 'นิเคอิเช้า VIP' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:09:26 | INFO     | lottery_bot | (นิเคอิเช้า VIP) attempt 5/30...
+2026-09-05 09:09:26 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-09-05 09:09:28 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-05 09:09:33 | INFO     | lottery_bot | Successfully fetched 14 lottery results from SMLOT
+2026-09-05 09:09:33 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=514 bottom2=71
+2026-09-05 09:09:33 | INFO     | lottery_bot | Prepared message:
+⭐🇯🇵 นิเคอิเช้า VIP
+🔺 5️⃣ 1️⃣ 4️⃣
+🔻 7️⃣ 1️⃣
+2026-09-05 09:09:33 | INFO     | lottery_bot | LINE Flex Message sent successfully for นิเคอิเช้า VIP
+2026-09-05 09:10:51 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 200 (Prevents Render Sleep)
+2026-09-05 09:14:52 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-05 09:18:53 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-05 09:22:54 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-05 09:29:56 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-09-05 09:29:56 | INFO     | lottery_bot | LINE text message sent successfully (268 chars)
+2026-09-05 09:30:00 | INFO     | lottery_bot | === Start checking time slot (ฮานอยอาเซียน) (polling up to 30 min) ===
+2026-09-05 09:30:00 | INFO     | lottery_bot | (ฮานอยอาเซียน) attempt 1/30...
+2026-09-05 09:30:00 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-09-05 09:30:02 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-05 09:30:21 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.wait_for_selector: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("table, tr") to be visible
+
+2026-09-05 09:30:21 | WARNING  | lottery_bot | Error scraping ฮานอยอาเซียน on attempt 1: Page.wait_for_selector: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator("table, tr") to be visible
+
+2026-09-05 09:31:11 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-05 09:31:21 | INFO     | lottery_bot | (ฮานอยอาเซียน) attempt 2/30...
+2026-09-05 09:31:21 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-09-05 09:31:23 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-05 09:31:28 | INFO     | lottery_bot | Successfully fetched 14 lottery results from SMLOT
+2026-09-05 09:31:28 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยอาเซียน' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:31:28 | WARNING  | lottery_bot | ParseError for ฮานอยอาเซียน: SMLOT parser: Result for 'ฮานอยอาเซียน' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:32:28 | INFO     | lottery_bot | (ฮานอยอาเซียน) attempt 3/30...
+2026-09-05 09:32:28 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-09-05 09:32:30 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-05 09:32:36 | INFO     | lottery_bot | Successfully fetched 14 lottery results from SMLOT
+2026-09-05 09:32:36 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยอาเซียน' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:32:36 | WARNING  | lottery_bot | ParseError for ฮานอยอาเซียน: SMLOT parser: Result for 'ฮานอยอาเซียน' is not yet available on member.smlot.net/reports/reward

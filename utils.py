@@ -172,3 +172,43 @@ def generate_summary_report(results: list[dict], target_date: Optional[date] = N
     lines.append("┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
     return "\n".join(lines)
 
+
+THAI_MONTHS_SHORT = ["", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."]
+
+def generate_history_report(lottery_name: str, results: list[dict], flag: str = "") -> str:
+    """Format 10-day historical statistics report matching user's exact template.
+    
+    Example output:
+        🇱🇦 สถิติย้อนหลัง ลาว Extra 🇱🇦
+        ➖➖➖➖➖➖➖➖
+        🇱🇦 18 ส.ค. 69 | 968-93
+        🇱🇦 19 ส.ค. 69 | 214-94
+        ...
+    """
+    flag_str = f"{flag} " if flag else ""
+    flag_suffix = f" {flag}" if flag else ""
+    lines = [
+        f"{flag_str}สถิติย้อนหลัง {lottery_name}{flag_suffix}".strip(),
+        "➖➖➖➖➖➖➖➖"
+    ]
+    
+    for r in results:
+        r_date = r.get("result_date", "")
+        top3 = str(r.get("top3", "")).zfill(3)[-3:]
+        bot2 = str(r.get("bottom2", "")).zfill(2)[-2:]
+        
+        # Parse ISO date YYYY-MM-DD to Thai short date e.g. "18 ส.ค. 69"
+        thai_date_str = r_date
+        if r_date and len(r_date.split("-")) == 3:
+            y, m, d = map(int, r_date.split("-"))
+            d_str = f"{d:02d}"
+            m_str = THAI_MONTHS_SHORT[m] if 1 <= m <= 12 else str(m)
+            th_year_short = str((y + 543) % 100).zfill(2)
+            thai_date_str = f"{d_str} {m_str} {th_year_short}"
+            
+        line_flag = f"{flag} " if flag else ""
+        lines.append(f"{line_flag}{thai_date_str} | {top3}-{bot2}")
+        
+    return "\n".join(lines)
+
+

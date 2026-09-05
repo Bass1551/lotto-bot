@@ -88,6 +88,31 @@ def start_http_server(db: Database, sender: LineSender):
                     for ev in events:
                         if ev.get("type") == "message" and ev.get("message", {}).get("type") == "text":
                             txt = ev["message"]["text"].strip()
+                            
+                            # 1) Handle 'สถิติ [ชื่อหวย]' command
+                            if txt.startswith("สถิติ"):
+                                lotto_query = txt.replace("สถิติ", "").strip()
+                                if lotto_query:
+                                    matched_lotto = None
+                                    try:
+                                        with open("config.json", encoding="utf-8") as f:
+                                            cfg = json.load(f)
+                                            for c in cfg:
+                                                if lotto_query in c["name"] or c["name"] in lotto_query:
+                                                    matched_lotto = c
+                                                    break
+                                    except Exception:
+                                        pass
+                                    target_name = matched_lotto["name"] if matched_lotto else lotto_query
+                                    flag = matched_lotto.get("flag", "🎯") if matched_lotto else "🎯"
+                                    history = db.get_history_results(target_name, limit=10)
+                                    if history:
+                                        from utils import generate_history_report
+                                        report = generate_history_report(target_name, history, flag=flag)
+                                        sender.send_text(report)
+                                continue
+
+                            # 2) Handle quick result dispatch format e.g. "นอยHD 123 45"
                             pattern = re.compile(r"^(?:ส่งผล\s*)?(?P<name>[\u0E00-\u0E7Fa-zA-Z0-9\s]+?)\s+(?P<top3>\d{3})[\s\-\/]+(?P<bot2>\d{2})$")
                             m = pattern.match(txt)
                             if m:

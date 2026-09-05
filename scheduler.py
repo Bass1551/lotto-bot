@@ -26,7 +26,7 @@ from database import Database
 from line_sender import LineSender
 from parsers import get_parser
 from parsers.base import ParseError
-from utils import format_result_message, generate_summary_report, setup_logging
+from utils import format_result_message, generate_summary_report, generate_history_report, setup_logging
 
 logger = setup_logging()
 TZ = ZoneInfo("Asia/Bangkok")
@@ -73,6 +73,27 @@ class LotteryScheduler:
             )
             logger.info("Scheduled time slot %s (%s) (Asia/Bangkok)", time_str, names_str)
 
+        # Schedule 10-day history reports when betting closes (close_time)
+        grouped_by_close = defaultdict(list)
+        for lotto in self.lotteries:
+            c_time = lotto.get("close_time")
+            if c_time:
+                grouped_by_close[c_time].append(lotto)
+
+        for close_str, lotto_list in grouped_by_close.items():
+            c_hour, c_minute = map(int, close_str.split(":"))
+            c_trigger = CronTrigger(hour=c_hour, minute=c_minute, timezone=TZ)
+            c_names = " + ".join([x["name"] for x in lotto_list])
+            self.scheduler.add_job(
+                self.send_close_time_history,
+                trigger=c_trigger,
+                args=[lotto_list],
+                id=f"history_close_{close_str.replace(':', '_')}",
+                replace_existing=True,
+                misfire_grace_time=300,
+            )
+            logger.info("Scheduled history reports at close time %s (%s)", close_str, c_names)
+
         # Schedule nightly summary report at 23:59
         self.scheduler.add_job(
             self.send_daily_summary,
@@ -84,6 +105,27 @@ class LotteryScheduler:
 
         self.scheduler.start()
         logger.info("Scheduler started")
+
+    def send_close_time_history(self, lotto_list: list[dict[str, Any]]) -> None:
+        """Send 10-day historical statistics report immediately after betting closes for lotteries."""
+        if not self.sender:
+            return
+
+        today = datetime.now(TZ).date()
+        is_weekend = (today.weekday() in (5, 6))
+
+        for lotto in lotto_list:
+            if is_weekend and not lotto.get("weekend", False):
+                continue
+
+            name = lotto["name"]
+            flag = lotto.get("flag", "🎯")
+            history = self.db.get_history_results(name, limit=10)
+            if history:
+                report_text = generate_history_report(name, history, flag=flag)
+                logger.info("Sending 10-day history report on close time for %s", name)
+                self.sender.send_text(report_text)
+                time.sleep(1)
 
     def send_daily_summary(self, target_date: date | None = None) -> None:
         """Send the full formatted summary text report for the day into the LINE group."""
