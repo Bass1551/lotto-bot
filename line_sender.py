@@ -170,7 +170,7 @@ class LineSender:
                             },
                         ],
                     },
-                    # Signature Watermark
+                    # Signature Watermark (Mysterious Sci-Fi)
                     {
                         "type": "box",
                         "layout": "horizontal",
@@ -180,9 +180,9 @@ class LineSender:
                         "contents": [
                             {
                                 "type": "text",
-                                "text": "👑 แอดBaras 💎",
+                                "text": "🪐 แอดBaras 🛸",
                                 "size": "xs",
-                                "color": "#E5C158",
+                                "color": "#00E5FF",
                                 "weight": "bold",
                                 "align": "center",
                             }
@@ -272,7 +272,7 @@ class LineSender:
                 }
             ])
 
-        # Watermark for combined card
+        # Watermark for combined card (Mysterious Sci-Fi)
         body_contents.append({
             "type": "box",
             "layout": "horizontal",
@@ -282,9 +282,9 @@ class LineSender:
             "contents": [
                 {
                     "type": "text",
-                    "text": "👑 แอดBaras 💎",
+                    "text": "🪐 แอดBaras 🛸",
                     "size": "xs",
-                    "color": "#E5C158",
+                    "color": "#00E5FF",
                     "weight": "bold",
                     "align": "center",
                 }

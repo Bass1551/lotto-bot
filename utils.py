@@ -189,7 +189,7 @@ def generate_history_report(lottery_name: str, results: list[dict], flag: str = 
     flag_suffix = f" {flag}" if flag else ""
     lines = [
         f"{flag_str}สถิติย้อนหลัง {lottery_name}{flag_suffix}".strip(),
-        "👑 แอดBaras 💎",
+        "🪐 แอดBaras 🛸",
         "➖➖➖➖➖➖➖➖"
     ]
     
