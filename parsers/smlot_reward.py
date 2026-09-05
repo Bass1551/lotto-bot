@@ -193,10 +193,30 @@ class SmlotRewardParser(BaseParser):
                     time.sleep(2)
 
                     if "/reports/reward" not in page.url:
-                        page.goto("https://member.smlot.net/reports/reward", wait_until="networkidle", timeout=30000)
+                        page.goto("https://member.smlot.net/reports/reward", wait_until="domcontentloaded", timeout=30000)
                         time.sleep(1)
 
-                page.wait_for_selector("table, tr", timeout=15000)
+                # Close any modal / announcement popups that block the table
+                try:
+                    page.keyboard.press("Escape")
+                    time.sleep(0.5)
+                    page.evaluate("""() => {
+                        const closeBtns = Array.from(document.querySelectorAll("button, .btn, .close, [data-dismiss='modal']"));
+                        closeBtns.forEach(b => {
+                            if (b.innerText.includes("ปิด") || b.innerText.includes("Close") || b.classList.contains("close")) {
+                                b.click();
+                            }
+                        });
+                    }""")
+                    time.sleep(0.5)
+                except Exception:
+                    pass
+
+                try:
+                    page.wait_for_selector("table, tr", state="attached", timeout=15000)
+                except Exception:
+                    pass
+
                 html = page.content()
                 browser.close()
 

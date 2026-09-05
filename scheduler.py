@@ -144,7 +144,7 @@ class LotteryScheduler:
         logger.info("Scheduler started")
 
     def send_history_by_names(self, lotto_names: list[str]) -> None:
-        """Send 10-day historical statistics report for the specified list of next-round lotteries."""
+        """Send 15-day historical statistics report for the specified list of next-round lotteries."""
         if not self.sender:
             return
 
@@ -152,7 +152,7 @@ class LotteryScheduler:
         reports = []
         for name in lotto_names:
             flag = name_to_flag.get(name, "🎯")
-            history = self.db.get_history_results(name, limit=10)
+            history = self.db.get_history_results(name, limit=15)
             if history:
                 report_text = generate_history_report(name, history, flag=flag)
                 reports.append(report_text)
@@ -160,7 +160,7 @@ class LotteryScheduler:
         if reports:
             combined_message = "\n----------------------------\n".join(reports)
             names_summary = " + ".join(lotto_names)
-            logger.info("Sending next-round 10-day history report for: %s", names_summary)
+            logger.info("Sending next-round 15-day history report for: %s", names_summary)
             self.sender.send_text(combined_message)
 
     def send_daily_summary(self, target_date: date | None = None) -> None:
