@@ -7,7 +7,7 @@
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": true,
-    "close_time": "09:05"
+    "close_time": "09:20"
   },
   {
     "name": "นิเคอิเช้า",
@@ -27,7 +27,7 @@
     "type": "vip",
     "flag": "⭐🇯🇵",
     "weekend": true,
-    "close_time": "08:55"
+    "close_time": "09:05"
   },
   {
     "name": "จีนเช้า",
@@ -37,7 +37,7 @@
     "type": "stock",
     "flag": "🇨🇳",
     "weekend": false,
-    "close_time": "10:15"
+    "close_time": "10:20"
   },
   {
     "name": "จีนเช้า VIP",
@@ -47,7 +47,7 @@
     "type": "vip",
     "flag": "⭐🇨🇳",
     "weekend": true,
-    "close_time": "09:55"
+    "close_time": "10:25"
   },
   {
     "name": "ฮั่งเส็งเช้า",
@@ -57,7 +57,7 @@
     "type": "stock",
     "flag": "🇭🇰",
     "weekend": false,
-    "close_time": "10:45"
+    "close_time": "11:05"
   },
   {
     "name": "ฮั่งเส็งเช้า VIP",
@@ -137,7 +137,7 @@
     "type": "vip",
     "flag": "⭐🇯🇵",
     "weekend": true,
-    "close_time": "13:15"
+    "close_time": "13:35"
   },
   {
     "name": "หุ้นเกาหลี",
@@ -147,7 +147,7 @@
     "type": "stock",
     "flag": "🇰🇷",
     "weekend": false,
-    "close_time": "12:35"
+    "close_time": "12:50"
   },
   {
     "name": "จีนบ่าย",
@@ -157,7 +157,7 @@
     "type": "stock",
     "flag": "🇨🇳",
     "weekend": false,
-    "close_time": "13:40"
+    "close_time": "14:05"
   },
   {
     "name": "จีนบ่าย VIP",
@@ -197,7 +197,7 @@
     "type": "vip",
     "flag": "⭐🇭🇰",
     "weekend": true,
-    "close_time": "15:15"
+    "close_time": "15:35"
   },
   {
     "name": "หุ้นสิงคโปร์",
@@ -207,7 +207,7 @@
     "type": "stock",
     "flag": "🇸🇬",
     "weekend": false,
-    "close_time": "15:50"
+    "close_time": "16:15"
   },
   {
     "name": "ฮานอย กาชาด",
@@ -217,7 +217,7 @@
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": true,
-    "close_time": "16:05"
+    "close_time": "16:15"
   },
   {
     "name": "หุ้นไทยเย็น",
@@ -247,7 +247,7 @@
     "type": "vip",
     "flag": "⭐🇸🇬",
     "weekend": true,
-    "close_time": "16:50"
+    "close_time": "17:05"
   },
   {
     "name": "หุ้นอินเดีย",
@@ -287,7 +287,7 @@
     "type": "stock",
     "flag": "🇩🇪",
     "weekend": false,
-    "close_time": "22:30"
+    "close_time": "22:45"
   },
   {
     "name": "หุ้นอังกฤษ",
@@ -297,7 +297,7 @@
     "type": "stock",
     "flag": "🇬🇧",
     "weekend": false,
-    "close_time": "22:30"
+    "close_time": "22:45"
   },
   {
     "name": "หุ้นรัสเซีย",
@@ -307,7 +307,7 @@
     "type": "stock",
     "flag": "🇷🇺",
     "weekend": false,
-    "close_time": "22:30"
+    "close_time": "22:45"
   },
   {
     "name": "เยอรมันVIP",
@@ -317,7 +317,7 @@
     "type": "vip",
     "flag": "⭐🇩🇪",
     "weekend": true,
-    "close_time": "21:40"
+    "close_time": "23:40"
   },
   {
     "name": "อังกฤษVIP",
@@ -347,7 +347,7 @@
     "type": "vip",
     "flag": "⭐🇺🇸",
     "weekend": true,
-    "close_time": "00:05"
+    "close_time": "01:00"
   },
   {
     "name": "หวยดาวโจนส์ mid night",
@@ -457,7 +457,7 @@
     "type": "5digit",
     "flag": "🇻🇳",
     "weekend": true,
-    "close_time": "22:05"
+    "close_time": "22:45"
   },
   {
     "name": "ลาว Extra",
@@ -517,7 +517,7 @@
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true,
-    "close_time": "13:35"
+    "close_time": "14:05"
   },
   {
     "name": "ลาว Star",
@@ -527,7 +527,7 @@
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true,
-    "close_time": "15:35"
+    "close_time": "16:15"
   },
   {
     "name": "ลาวสามัคคี",
@@ -537,7 +537,7 @@
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true,
-    "close_time": "20:15"
+    "close_time": "21:40"
   },
   {
     "name": "ลาวอาเซียน",
@@ -547,7 +547,7 @@
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true,
-    "close_time": "20:50"
+    "close_time": "21:40"
   },
   {
     "name": "หวยลาวSTAR VIP",
@@ -567,7 +567,7 @@
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true,
-    "close_time": "23:20"
+    "close_time": "01:00"
   },
   {
     "name": "ลาวดาว",

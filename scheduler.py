@@ -107,13 +107,14 @@ class LotteryScheduler:
         logger.info("Scheduler started")
 
     def send_close_time_history(self, lotto_list: list[dict[str, Any]]) -> None:
-        """Send 10-day historical statistics report immediately after betting closes for lotteries."""
+        """Send 10-day historical statistics report immediately after betting closes for lotteries in the same round."""
         if not self.sender:
             return
 
         today = datetime.now(TZ).date()
         is_weekend = (today.weekday() in (5, 6))
 
+        reports = []
         for lotto in lotto_list:
             if is_weekend and not lotto.get("weekend", False):
                 continue
@@ -123,9 +124,13 @@ class LotteryScheduler:
             history = self.db.get_history_results(name, limit=10)
             if history:
                 report_text = generate_history_report(name, history, flag=flag)
-                logger.info("Sending 10-day history report on close time for %s", name)
-                self.sender.send_text(report_text)
-                time.sleep(1)
+                reports.append(report_text)
+
+        if reports:
+            combined_message = "\n----------------------------\n".join(reports)
+            names_summary = " + ".join([l["name"] for l in lotto_list])
+            logger.info("Sending 10-day history report for round: %s", names_summary)
+            self.sender.send_text(combined_message)
 
     def send_daily_summary(self, target_date: date | None = None) -> None:
         """Send the full formatted summary text report for the day into the LINE group."""

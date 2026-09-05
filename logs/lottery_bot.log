@@ -23272,3 +23272,8 @@ Call log:
 🔺 5️⃣ 8️⃣ 7️⃣
 🔻 6️⃣ 2️⃣
 2026-09-05 09:34:50 | INFO     | lottery_bot | LINE Flex Message sent successfully for ฮานอยอาเซียน
+2026-09-05 09:39:27 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-05 09:40:17 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-09-05 09:40:30 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-09-05 09:40:30 | INFO     | lottery_bot | LineSender initialized for group C3da8f4c...
+2026-09-05 09:40:30 | INFO     | lottery_bot | LINE text message sent successfully (562 chars)
