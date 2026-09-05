@@ -276,7 +276,7 @@
     "parser": "press_hanoi",
     "type": "5digit",
     "flag": "🇻🇳",
-    "weekend": true,
+    "weekend": false,
     "close_time": "19:05"
   },
   {
@@ -356,7 +356,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸",
-    "weekend": true,
+    "weekend": false,
     "close_time": "04:10"
   },
   {
@@ -366,7 +366,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "⭐🇺🇸",
-    "weekend": true,
+    "weekend": false,
     "close_time": "03:40"
   },
   {
@@ -376,7 +376,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸",
-    "weekend": true,
+    "weekend": false,
     "close_time": "04:40"
   },
   {
@@ -386,7 +386,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸",
-    "weekend": true,
+    "weekend": false,
     "close_time": "05:40"
   },
   {
@@ -426,7 +426,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸",
-    "weekend": true,
+    "weekend": false,
     "close_time": "01:00"
   },
   {
@@ -476,7 +476,7 @@
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇺🇸",
-    "weekend": true,
+    "weekend": false,
     "close_time": "01:00"
   },
   {
@@ -596,7 +596,7 @@
     "parser": "press_hanoi",
     "type": "hanoi",
     "flag": "🇻🇳",
-    "weekend": true,
+    "weekend": false,
     "close_time": "17:05"
   },
   {
@@ -606,7 +606,7 @@
     "parser": "press_hanoi",
     "type": "hanoi",
     "flag": "🇻🇳",
-    "weekend": true,
+    "weekend": false,
     "close_time": "18:05"
   }
 ]

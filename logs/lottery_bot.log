@@ -23256,3 +23256,19 @@ Call log:
 2026-09-05 09:32:36 | INFO     | lottery_bot | Successfully fetched 14 lottery results from SMLOT
 2026-09-05 09:32:36 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยอาเซียน' is not yet available on member.smlot.net/reports/reward
 2026-09-05 09:32:36 | WARNING  | lottery_bot | ParseError for ฮานอยอาเซียน: SMLOT parser: Result for 'ฮานอยอาเซียน' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:33:36 | INFO     | lottery_bot | (ฮานอยอาเซียน) attempt 4/30...
+2026-09-05 09:33:36 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-09-05 09:33:38 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-05 09:33:42 | INFO     | lottery_bot | Successfully fetched 14 lottery results from SMLOT
+2026-09-05 09:33:42 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอยอาเซียน' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:33:42 | WARNING  | lottery_bot | ParseError for ฮานอยอาเซียน: SMLOT parser: Result for 'ฮานอยอาเซียน' is not yet available on member.smlot.net/reports/reward
+2026-09-05 09:34:42 | INFO     | lottery_bot | (ฮานอยอาเซียน) attempt 5/30...
+2026-09-05 09:34:42 | INFO     | lottery_bot | Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward
+2026-09-05 09:34:44 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-05 09:34:49 | INFO     | lottery_bot | Successfully fetched 15 lottery results from SMLOT
+2026-09-05 09:34:49 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=587 bottom2=62
+2026-09-05 09:34:49 | INFO     | lottery_bot | Prepared message:
+🇻🇳 ฮานอยอาเซียน
+🔺 5️⃣ 8️⃣ 7️⃣
+🔻 6️⃣ 2️⃣
+2026-09-05 09:34:50 | INFO     | lottery_bot | LINE Flex Message sent successfully for ฮานอยอาเซียน
