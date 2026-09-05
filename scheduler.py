@@ -73,26 +73,63 @@ class LotteryScheduler:
             )
             logger.info("Scheduled time slot %s (%s) (Asia/Bangkok)", time_str, names_str)
 
-        # Schedule 10-day history reports when betting closes (close_time)
-        grouped_by_close = defaultdict(list)
-        for lotto in self.lotteries:
-            c_time = lotto.get("close_time")
-            if c_time:
-                grouped_by_close[c_time].append(lotto)
+        # Exact chain: When Round N closes -> Send 10-day history of Round N+1 immediately!
+        self.WEEKEND_CHAIN = [
+            ("07:30", ["ลาว Extra"]),
+            ("08:20", ["นิเคอิเช้า VIP", "ฮานอยอาเซียน"]),
+            ("09:05", ["จีนเช้า VIP", "ลาว TV", "ฮั่งเส็งเช้า VIP"]),
+            ("10:25", ["ฮานอย HD", "ไต้หวัน VIP"]),
+            ("11:25", ["ฮานอย Star", "เกาหลี VIP"]),
+            ("12:25", ["นิเคอิบ่าย VIP", "ลาว HD"]),
+            ("13:35", ["ฮานอย TV", "จีนบ่าย VIP"]),
+            ("14:15", ["ฮั่งเส็งบ่าย VIP", "ลาว Star"]),
+            ("15:35", ["ฮานอย กาชาด", "สิงคโปร์ VIP"]),
+            ("17:05", ["ลาวสามัคคี", "ลาวอาเซียน"]),
+            ("20:50", ["หวยลาวSTAR VIP", "อังกฤษVIP"]),
+            ("21:40", ["รัสเซียVIP", "เยอรมันVIP", "ฮานอยEXTRA"]),
+            ("22:05", ["หวยลาว กาชาด", "หวยดาวโจนส์ VIP"]),
+        ]
 
-        for close_str, lotto_list in grouped_by_close.items():
-            c_hour, c_minute = map(int, close_str.split(":"))
-            c_trigger = CronTrigger(hour=c_hour, minute=c_minute, timezone=TZ)
-            c_names = " + ".join([x["name"] for x in lotto_list])
+        self.WEEKDAY_CHAIN = [
+            ("07:30", ["ลาว Extra"]),
+            ("08:20", ["นิเคอิเช้า", "ฮานอยอาเซียน"]),
+            ("09:20", ["จีนเช้า", "ลาว TV"]),
+            ("10:20", ["ฮั่งเส็งเช้า", "ฮานอย HD"]),
+            ("11:05", ["ไต้หวัน", "ฮานอย Star"]),
+            ("12:05", ["หุ้นเกาหลี", "นิเคอิบ่าย"]),
+            ("12:50", ["ฮานอย TV", "จีนบ่าย", "ลาว HD"]),
+            ("14:05", ["ฮั่งเส็งบ่าย"]),
+            ("14:50", ["ฮานอย กาชาด", "หุ้นสิงคโปร์", "ลาว Star", "หุ้นไทยเย็น"]),
+            ("16:15", ["ลาวสามัคคี", "ลาวอาเซียน", "หวยลาวSTAR VIP"]),
+            ("21:40", ["หุ้นอังกฤษ", "หุ้นรัสเซีย", "หุ้นเยอรมัน", "ฮานอยEXTRA"]),
+            ("22:05", ["หวยลาว กาชาด", "หวยดาวโจนส์ VIP", "หุ้นดาวโจนส์"]),
+        ]
+
+        # Register weekend chain
+        for trig_time, next_lottos in self.WEEKEND_CHAIN:
+            h, m = map(int, trig_time.split(":"))
+            trig = CronTrigger(hour=h, minute=m, day_of_week="sat,sun", timezone=TZ)
             self.scheduler.add_job(
-                self.send_close_time_history,
-                trigger=c_trigger,
-                args=[lotto_list],
-                id=f"history_close_{close_str.replace(':', '_')}",
+                self.send_history_by_names,
+                trigger=trig,
+                args=[next_lottos],
+                id=f"chain_wk_{trig_time.replace(':', '_')}",
                 replace_existing=True,
                 misfire_grace_time=300,
             )
-            logger.info("Scheduled history reports at close time %s (%s)", close_str, c_names)
+
+        # Register weekday chain
+        for trig_time, next_lottos in self.WEEKDAY_CHAIN:
+            h, m = map(int, trig_time.split(":"))
+            trig = CronTrigger(hour=h, minute=m, day_of_week="mon-fri", timezone=TZ)
+            self.scheduler.add_job(
+                self.send_history_by_names,
+                trigger=trig,
+                args=[next_lottos],
+                id=f"chain_wd_{trig_time.replace(':', '_')}",
+                replace_existing=True,
+                misfire_grace_time=300,
+            )
 
         # Schedule nightly summary report at 23:59
         self.scheduler.add_job(
@@ -106,21 +143,15 @@ class LotteryScheduler:
         self.scheduler.start()
         logger.info("Scheduler started")
 
-    def send_close_time_history(self, lotto_list: list[dict[str, Any]]) -> None:
-        """Send 10-day historical statistics report immediately after betting closes for lotteries in the same round."""
+    def send_history_by_names(self, lotto_names: list[str]) -> None:
+        """Send 10-day historical statistics report for the specified list of next-round lotteries."""
         if not self.sender:
             return
 
-        today = datetime.now(TZ).date()
-        is_weekend = (today.weekday() in (5, 6))
-
+        name_to_flag = {l["name"]: l.get("flag", "🎯") for l in self.lotteries}
         reports = []
-        for lotto in lotto_list:
-            if is_weekend and not lotto.get("weekend", False):
-                continue
-
-            name = lotto["name"]
-            flag = lotto.get("flag", "🎯")
+        for name in lotto_names:
+            flag = name_to_flag.get(name, "🎯")
             history = self.db.get_history_results(name, limit=10)
             if history:
                 report_text = generate_history_report(name, history, flag=flag)
@@ -128,8 +159,8 @@ class LotteryScheduler:
 
         if reports:
             combined_message = "\n----------------------------\n".join(reports)
-            names_summary = " + ".join([l["name"] for l in lotto_list])
-            logger.info("Sending 10-day history report for round: %s", names_summary)
+            names_summary = " + ".join(lotto_names)
+            logger.info("Sending next-round 10-day history report for: %s", names_summary)
             self.sender.send_text(combined_message)
 
     def send_daily_summary(self, target_date: date | None = None) -> None:
