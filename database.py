@@ -185,7 +185,7 @@ class Database:
             from parsers.edaylotto import get_product_code, EdaylottoClient
             if get_product_code(lottery_name):
                 client = EdaylottoClient()
-                eday_history = client.get_history(lottery_name, limit=limit)
+                eday_history = client.get_history(lottery_name, limit=limit + 3)
                 if eday_history:
                     filtered = []
                     for h in eday_history:

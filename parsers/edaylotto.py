@@ -8,7 +8,7 @@ import logging
 import os
 import re
 import time
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Optional
 
@@ -207,9 +207,46 @@ class EdaylottoClient:
             raise ParseError(f"Unknown edaylotto lottery: {lottery_name}")
 
         awards = self.fetch_product_awards(code)
-        # Sort chronologically by date ascending
-        awards.sort(key=lambda x: x["result_date"])
-        return awards[-limit:]
+        awards_by_date = {a["result_date"]: a for a in awards}
+
+        # If get_by_product returned fewer than requested limit, backfill via list_award
+        if len(awards_by_date) < limit and awards_by_date:
+            sid = self.get_valid_session_id()
+            headers = {"Authorization": f"Bearer {sid}"}
+            oldest_dt = datetime.strptime(min(awards_by_date.keys()), "%Y-%m-%d")
+            curr = oldest_dt - timedelta(days=1)
+            # Step backwards up to 40 days to find missing draws (especially for weekday-only lotteries)
+            while len(awards_by_date) < limit and (oldest_dt - curr).days < 40:
+                dt_str = curr.strftime("%Y-%m-%d")
+                curr -= timedelta(days=1)
+                try:
+                    url = f"{EDAYLOTTO_API_BASE}/api/rewardcalc/award/list_award/{dt_str}"
+                    resp = requests.get(url, headers=headers, timeout=8)
+                    if resp.status_code == 200:
+                        catalogs = resp.json().get("data", {}).get("catalog", []) or []
+                        for cat in catalogs:
+                            for p in cat.get("products", []):
+                                if p.get("code") == code:
+                                    aw = p.get("award") or (p.get("period") or {}).get("award")
+                                    if aw:
+                                        top3, bot2 = None, None
+                                        for item in aw.get("set_items", []):
+                                            if item.get("code") == "AW01" or "3D Top" in item.get("name", "") or "3 ตัวบน" in item.get("names", {}).get("th", ""):
+                                                top3 = item.get("value", [""])[0]
+                                            elif item.get("code") == "AW02" or "2D Bottom" in item.get("name", "") or "2 ตัวล่าง" in item.get("names", {}).get("th", ""):
+                                                bot2 = item.get("value", [""])[0]
+                                        if top3 and bot2:
+                                            awards_by_date[dt_str] = {
+                                                "result_date": dt_str,
+                                                "draw_name": f"{code} {dt_str}",
+                                                "top3": str(top3).zfill(3)[-3:],
+                                                "bottom2": str(bot2).zfill(2)[-2:],
+                                            }
+                except Exception as e:
+                    logger.debug("Error fetching list_award for %s: %s", dt_str, e)
+
+        sorted_results = [awards_by_date[k] for k in sorted(awards_by_date.keys())]
+        return sorted_results[-limit:]
 
 
 _client = EdaylottoClient()
