@@ -195,7 +195,13 @@ class LotteryScheduler:
             logger.info("No lottery results recorded for %s – skip summary report", today)
             return
 
-        report_text = generate_summary_report(daily_results, target_date=today)
+        is_weekend = (today.weekday() in (5, 6))
+        valid_names = {l["name"] for l in self.lotteries if (l.get("weekend", False) if is_weekend else True)}
+        filtered_results = [r for r in daily_results if r["lottery_name"] in valid_names]
+        if not filtered_results:
+            return
+
+        report_text = generate_summary_report(filtered_results, target_date=today)
         logger.info("Sending Daily Summary Report for %s:\n%s", today, report_text)
         self.sender.send_text(report_text)
 
@@ -207,11 +213,14 @@ class LotteryScheduler:
 
         yesterday = datetime.now(TZ).date() - timedelta(days=1)
         logger.info("Generating Yesterday's Full Summary Report for %s...", yesterday)
+        is_weekend = (yesterday.weekday() in (5, 6))
 
         db_results = {r["lottery_name"]: r for r in self.db.get_daily_results(result_date=yesterday)}
 
+        target_lottos = [l for l in self.lotteries if (l.get("weekend", False) if is_weekend else True)]
+
         full_results = []
-        for lotto in self.lotteries:
+        for lotto in target_lottos:
             name = lotto["name"]
             flag = lotto.get("flag", "🎯")
 
