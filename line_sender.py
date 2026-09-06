@@ -26,8 +26,6 @@ load_dotenv()
 logger = setup_logging()
 
 
-
-
 class LineSender:
     """Send text, Flex, and Image messages to a LINE group via Messaging API."""
 
@@ -110,16 +108,6 @@ class LineSender:
                         "size": "xl",
                         "color": "#FFFFFF",
                         "flex": 1,
-                    },
-                    {
-                        "type": "text",
-                        "text": "🪐 แอดBaras 🛸",
-                        "size": "xs",
-                        "color": "#00E5FF",
-                        "weight": "bold",
-                        "align": "end",
-                        "gravity": "center",
-                        "flex": 0,
                     },
                 ],
             },
@@ -252,11 +240,9 @@ class LineSender:
                     "type": "box",
                     "layout": "horizontal",
                     "margin": "md",
-                    "alignItems": "center",
                     "contents": [
                         {"type": "text", "text": item.get("flag", "🎯"), "size": "md", "flex": 0},
-                        {"type": "text", "text": " " + item["name"], "weight": "bold", "size": "md", "color": "#FFFFFF", "flex": 1},
-                        {"type": "text", "text": "🪐 แอดBaras 🛸", "size": "xxs", "color": "#00E5FF", "weight": "bold", "align": "end", "gravity": "center", "flex": 0}
+                        {"type": "text", "text": " " + item["name"], "weight": "bold", "size": "md", "color": "#FFFFFF", "flex": 1}
                     ]
                 },
                 {
@@ -312,8 +298,7 @@ class LineSender:
                 "paddingAll": "lg",
                 "alignItems": "center",
                 "contents": [
-                    {"type": "text", "text": header_title, "weight": "bold", "size": "lg", "color": "#FFFFFF", "flex": 1},
-                    {"type": "text", "text": "🪐 แอดBaras 🛸", "size": "xs", "color": "#00E5FF", "weight": "bold", "align": "end", "gravity": "center", "flex": 0}
+                    {"type": "text", "text": header_title, "weight": "bold", "size": "lg", "color": "#FFFFFF", "flex": 1}
                 ]
             },
             "body": {
