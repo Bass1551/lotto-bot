@@ -225,7 +225,13 @@ class LotteryScheduler:
                 })
             else:
                 try:
-                    res = self._scrape(lotto)
+                    if lotto.get("parser") == "smlot_reward":
+                        from parsers.smlot_reward import SmlotRewardParser
+                        smlot_all = SmlotRewardParser.fetch_all_smlot_results(force_refresh=True, date_type="yesterday")
+                        res = smlot_all.get(name)
+                    else:
+                        res = self._scrape(lotto)
+
                     if res:
                         full_results.append({
                             "lottery_name": name,
@@ -233,6 +239,7 @@ class LotteryScheduler:
                             "bottom2": res["bottom2"],
                             "flag": flag,
                         })
+                        self.db.save_result(name, res["top3"], res["bottom2"], res.get("full", ""), result_date=yesterday)
                 except Exception:
                     pass
 

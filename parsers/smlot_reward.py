@@ -148,10 +148,10 @@ class SmlotRewardParser(BaseParser):
         self.target_lotto_name = lotto_name
 
     @classmethod
-    def fetch_all_smlot_results(cls, force_refresh: bool = False) -> dict[str, dict[str, str]]:
+    def fetch_all_smlot_results(cls, force_refresh: bool = False, date_type: str = "today") -> dict[str, dict[str, str]]:
         with cls._lock:
             now = time.time()
-            if not force_refresh and cls._cache_data and (now - cls._cache_time < cls._CACHE_TTL_SECONDS):
+            if not force_refresh and date_type == "today" and cls._cache_data and (now - cls._cache_time < cls._CACHE_TTL_SECONDS):
                 return cls._cache_data
 
             username = os.getenv("SMLOT_USERNAME", "").strip() or "bdd999bas"
@@ -168,7 +168,7 @@ class SmlotRewardParser(BaseParser):
             except ImportError as exc:
                 raise ParseError("Playwright is required for SMLOT scraping") from exc
 
-            logger.info("Opening SMLOT report page via Playwright: https://member.smlot.net/reports/reward")
+            logger.info("Opening SMLOT report page via Playwright (date_type=%s): https://member.smlot.net/reports/reward", date_type)
             results: dict[str, dict[str, str]] = {}
 
             with sync_playwright() as p:
@@ -211,6 +211,15 @@ class SmlotRewardParser(BaseParser):
                     time.sleep(0.5)
                 except Exception:
                     pass
+
+                if date_type == "yesterday":
+                    try:
+                        page.click("label[for='inlineRadio2']")
+                        time.sleep(0.5)
+                        page.click("button.btn-primary")
+                        time.sleep(3)
+                    except Exception as exc:
+                        logger.warning("Failed to select 'yesterday' radio on SMLOT: %s", exc)
 
                 try:
                     page.wait_for_selector("table, tr", state="attached", timeout=15000)
