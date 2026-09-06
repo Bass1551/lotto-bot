@@ -193,7 +193,10 @@ def generate_history_report(lottery_name: str, results: list[dict], flag: str = 
         "➖➖➖➖➖➖➖➖"
     ]
     
-    for r in results:
+    watermark_chars = ["🪐", "แ", "อ", "ด", "B", "a", "r", "a", "s", "🛸"]
+    total = len(results)
+
+    for i, r in enumerate(results):
         r_date = r.get("result_date", "")
         top3 = str(r.get("top3", "")).zfill(3)[-3:]
         bot2 = str(r.get("bottom2", "")).zfill(2)[-2:]
@@ -208,7 +211,13 @@ def generate_history_report(lottery_name: str, results: list[dict], flag: str = 
             thai_date_str = f"{d_str} {m_str} {th_year_short}"
             
         line_flag = f"{flag} " if flag else ""
-        lines.append(f"{line_flag}{thai_date_str} | {top3}-{bot2}")
+
+        if i == total - 1 and total > len(watermark_chars):
+            ch = "🛸"
+        else:
+            ch = watermark_chars[i % len(watermark_chars)]
+
+        lines.append(f"{ch} {line_flag}{thai_date_str} | {top3}-{bot2} {ch}")
         
     return "\n".join(lines)
 

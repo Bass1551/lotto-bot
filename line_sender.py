@@ -26,6 +26,28 @@ load_dotenv()
 logger = setup_logging()
 
 
+def _make_vertical_watermark_box() -> dict:
+    chars = ["🪐", "แ", "อ", "ด", "B", "a", "r", "a", "s", "🛸"]
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "width": "18px",
+        "justifyContent": "space-between",
+        "alignItems": "center",
+        "contents": [
+            {
+                "type": "text",
+                "text": ch,
+                "size": "xxs",
+                "color": "#00E5FF",
+                "weight": "bold",
+                "align": "center",
+            }
+            for ch in chars
+        ],
+    }
+
+
 class LineSender:
     """Send text, Flex, and Image messages to a LINE group via Messaging API."""
 
@@ -109,84 +131,104 @@ class LineSender:
                         "color": "#FFFFFF",
                         "flex": 1,
                     },
+                    {
+                        "type": "text",
+                        "text": "🪐 แอดBaras 🛸",
+                        "size": "xs",
+                        "color": "#00E5FF",
+                        "weight": "bold",
+                        "align": "end",
+                        "gravity": "center",
+                        "flex": 0,
+                    },
                 ],
             },
             "body": {
                 "type": "box",
-                "layout": "vertical",
+                "layout": "horizontal",
                 "backgroundColor": "#181A20",
-                "spacing": "md",
-                "paddingAll": "lg",
+                "paddingAll": "md",
+                "spacing": "sm",
                 "contents": [
-                    # 3 ตัวบน (Theme แดง/ส้ม)
+                    _make_vertical_watermark_box(),
                     {
                         "type": "box",
                         "layout": "vertical",
-                        "backgroundColor": "#2A181A",
-                        "cornerRadius": "md",
-                        "paddingAll": "md",
-                        "spacing": "xs",
+                        "flex": 1,
+                        "spacing": "md",
                         "contents": [
+                            # 3 ตัวบน (Theme แดง/ส้ม)
                             {
-                                "type": "text",
-                                "text": "🔺 3 ตัวบน",
-                                "size": "sm",
-                                "color": "#FF6B6B",
-                                "weight": "bold",
+                                "type": "box",
+                                "layout": "vertical",
+                                "backgroundColor": "#2A181A",
+                                "cornerRadius": "md",
+                                "paddingAll": "md",
+                                "spacing": "xs",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "🔺 3 ตัวบน",
+                                        "size": "sm",
+                                        "color": "#FF6B6B",
+                                        "weight": "bold",
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": top3_fmt,
+                                        "size": "3xl",
+                                        "weight": "bold",
+                                        "color": "#FF4D4D",
+                                        "align": "center",
+                                    },
+                                ],
                             },
+                            # Signature Watermark (Mysterious Sci-Fi - กลางการ์ด ป้องกันการตัดรูป)
                             {
-                                "type": "text",
-                                "text": top3_fmt,
-                                "size": "3xl",
-                                "weight": "bold",
-                                "color": "#FF4D4D",
-                                "align": "center",
+                                "type": "box",
+                                "layout": "horizontal",
+                                "justifyContent": "center",
+                                "alignItems": "center",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "🪐 แอดBaras 🛸",
+                                        "size": "xs",
+                                        "color": "#00E5FF",
+                                        "weight": "bold",
+                                        "align": "center",
+                                    }
+                                ],
+                            },
+                            # 2 ตัวล่าง (Theme น้ำเงิน/ฟ้า)
+                            {
+                                "type": "box",
+                                "layout": "vertical",
+                                "backgroundColor": "#142438",
+                                "cornerRadius": "md",
+                                "paddingAll": "md",
+                                "spacing": "xs",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "🔻 2 ตัวล่าง",
+                                        "size": "sm",
+                                        "color": "#4DABFF",
+                                        "weight": "bold",
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": bottom2_fmt,
+                                        "size": "3xl",
+                                        "weight": "bold",
+                                        "color": "#00D2FF",
+                                        "align": "center",
+                                    },
+                                ],
                             },
                         ],
                     },
-                    # Signature Watermark (Mysterious Sci-Fi - กลางการ์ด ป้องกันการตัดรูป)
-                    {
-                        "type": "box",
-                        "layout": "horizontal",
-                        "justifyContent": "center",
-                        "alignItems": "center",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "text": "🪐 แอดBaras 🛸",
-                                "size": "xs",
-                                "color": "#00E5FF",
-                                "weight": "bold",
-                                "align": "center",
-                            }
-                        ],
-                    },
-                    # 2 ตัวล่าง (Theme น้ำเงิน/ฟ้า)
-                    {
-                        "type": "box",
-                        "layout": "vertical",
-                        "backgroundColor": "#142438",
-                        "cornerRadius": "md",
-                        "paddingAll": "md",
-                        "spacing": "xs",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "text": "🔻 2 ตัวล่าง",
-                                "size": "sm",
-                                "color": "#4DABFF",
-                                "weight": "bold",
-                            },
-                            {
-                                "type": "text",
-                                "text": bottom2_fmt,
-                                "size": "3xl",
-                                "weight": "bold",
-                                "color": "#00D2FF",
-                                "align": "center",
-                            },
-                        ],
-                    },
+                    _make_vertical_watermark_box(),
                 ],
             },
         }
@@ -240,49 +282,68 @@ class LineSender:
                     "type": "box",
                     "layout": "horizontal",
                     "margin": "md",
+                    "alignItems": "center",
                     "contents": [
                         {"type": "text", "text": item.get("flag", "🎯"), "size": "md", "flex": 0},
-                        {"type": "text", "text": " " + item["name"], "weight": "bold", "size": "md", "color": "#FFFFFF", "flex": 1}
-                    ]
-                },
-                {
-                    "type": "box",
-                    "layout": "vertical",
-                    "backgroundColor": "#2A181A",
-                    "cornerRadius": "md",
-                    "paddingAll": "md",
-                    "spacing": "xs",
-                    "contents": [
-                        {"type": "text", "text": "🔺 3 ตัวบน", "size": "xs", "color": "#FF6B6B", "weight": "bold"},
-                        {"type": "text", "text": top3_fmt, "size": "xxl", "weight": "bold", "color": "#FF4D4D", "align": "center"}
+                        {"type": "text", "text": " " + item["name"], "weight": "bold", "size": "md", "color": "#FFFFFF", "flex": 1},
+                        {"type": "text", "text": "🪐 แอดBaras 🛸", "size": "xxs", "color": "#00E5FF", "weight": "bold", "align": "end", "gravity": "center", "flex": 0}
                     ]
                 },
                 {
                     "type": "box",
                     "layout": "horizontal",
-                    "justifyContent": "center",
-                    "alignItems": "center",
+                    "spacing": "sm",
                     "contents": [
+                        _make_vertical_watermark_box(),
                         {
-                            "type": "text",
-                            "text": "🪐 แอดBaras 🛸",
-                            "size": "xs",
-                            "color": "#00E5FF",
-                            "weight": "bold",
-                            "align": "center",
-                        }
-                    ],
-                },
-                {
-                    "type": "box",
-                    "layout": "vertical",
-                    "backgroundColor": "#142438",
-                    "cornerRadius": "md",
-                    "paddingAll": "md",
-                    "spacing": "xs",
-                    "contents": [
-                        {"type": "text", "text": "🔻 2 ตัวล่าง", "size": "xs", "color": "#4DABFF", "weight": "bold"},
-                        {"type": "text", "text": bottom2_fmt, "size": "xxl", "weight": "bold", "color": "#00D2FF", "align": "center"}
+                            "type": "box",
+                            "layout": "vertical",
+                            "flex": 1,
+                            "spacing": "xs",
+                            "contents": [
+                                {
+                                    "type": "box",
+                                    "layout": "vertical",
+                                    "backgroundColor": "#2A181A",
+                                    "cornerRadius": "md",
+                                    "paddingAll": "md",
+                                    "spacing": "xs",
+                                    "contents": [
+                                        {"type": "text", "text": "🔺 3 ตัวบน", "size": "xs", "color": "#FF6B6B", "weight": "bold"},
+                                        {"type": "text", "text": top3_fmt, "size": "xxl", "weight": "bold", "color": "#FF4D4D", "align": "center"}
+                                    ]
+                                },
+                                {
+                                    "type": "box",
+                                    "layout": "horizontal",
+                                    "justifyContent": "center",
+                                    "alignItems": "center",
+                                    "contents": [
+                                        {
+                                            "type": "text",
+                                            "text": "🪐 แอดBaras 🛸",
+                                            "size": "xs",
+                                            "color": "#00E5FF",
+                                            "weight": "bold",
+                                            "align": "center",
+                                        }
+                                    ],
+                                },
+                                {
+                                    "type": "box",
+                                    "layout": "vertical",
+                                    "backgroundColor": "#142438",
+                                    "cornerRadius": "md",
+                                    "paddingAll": "md",
+                                    "spacing": "xs",
+                                    "contents": [
+                                        {"type": "text", "text": "🔻 2 ตัวล่าง", "size": "xs", "color": "#4DABFF", "weight": "bold"},
+                                        {"type": "text", "text": bottom2_fmt, "size": "xxl", "weight": "bold", "color": "#00D2FF", "align": "center"}
+                                    ]
+                                }
+                            ]
+                        },
+                        _make_vertical_watermark_box()
                     ]
                 }
             ])
@@ -298,7 +359,8 @@ class LineSender:
                 "paddingAll": "lg",
                 "alignItems": "center",
                 "contents": [
-                    {"type": "text", "text": header_title, "weight": "bold", "size": "lg", "color": "#FFFFFF", "flex": 1}
+                    {"type": "text", "text": header_title, "weight": "bold", "size": "lg", "color": "#FFFFFF", "flex": 1},
+                    {"type": "text", "text": "🪐 แอดBaras 🛸", "size": "xs", "color": "#00E5FF", "weight": "bold", "align": "end", "gravity": "center", "flex": 0}
                 ]
             },
             "body": {
