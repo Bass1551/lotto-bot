@@ -180,6 +180,39 @@ class Database:
             before_date = date.today()
         date_str = before_date.isoformat()
 
+        # Check if this lottery belongs to edaylotto.com (Vietnam & Lao Phattana target lotteries)
+        try:
+            from parsers.edaylotto import get_product_code, EdaylottoClient
+            if get_product_code(lottery_name):
+                client = EdaylottoClient()
+                eday_history = client.get_history(lottery_name, limit=limit)
+                if eday_history:
+                    filtered = []
+                    for h in eday_history:
+                        r_date = h.get("result_date", "")
+                        if include_today:
+                            if r_date <= date_str:
+                                filtered.append(h)
+                        else:
+                            if r_date < date_str:
+                                filtered.append(h)
+                        # Cache into DB
+                        try:
+                            d_obj = datetime.strptime(r_date, "%Y-%m-%d").date()
+                            self.save_result(
+                                lottery_name=lottery_name,
+                                top3=h["top3"],
+                                bottom2=h["bottom2"],
+                                full_result=f"{h['top3']}{h['bottom2']}",
+                                result_date=d_obj,
+                            )
+                        except Exception:
+                            pass
+                    if filtered:
+                        return filtered[-limit:]
+        except Exception as exc:
+            logger.warning("Could not fetch edaylotto history for %s: %s (using local DB)", lottery_name, exc)
+
         op = "<=" if include_today else "<"
         query = f"""
             SELECT * FROM results

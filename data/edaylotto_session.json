@@ -1,0 +1,32 @@
+{
+  "auth": {
+    "id": 42598862,
+    "sessionId": "f4f501db-d397-409d-86f1-879521519d95",
+    "userId": 164542,
+    "username": "zpy0kadbdd555",
+    "dateCreated": "2026-09-06T16:25:24.086087206+07:00",
+    "lastUpdated": "2026-09-06T16:25:24.086087206+07:00",
+    "valid": true,
+    "expired": false,
+    "passwordMatch": true,
+    "accountLocked": false,
+    "backUser": false,
+    "loginIp": "2001:fb1:11f:6328:6825:adef:e8b2:fb1c",
+    "path": "1.14.898.157647.157665.164157.164193.164426.164542",
+    "authorities": [
+      {
+        "authority": "ROLE_M_CREDIT"
+      }
+    ],
+    "errorCode": 0,
+    "guiVersion": null,
+    "gauthState": 0
+  },
+  "storage": {
+    "localStorage": {
+      "v8.0.34-authf649fc9a5f55": "{\"id\":42598862,\"sessionId\":\"f4f501db-d397-409d-86f1-879521519d95\",\"userId\":164542,\"username\":\"zpy0kadbdd555\",\"dateCreated\":\"2026-09-06T16:25:24.086087206+07:00\",\"lastUpdated\":\"2026-09-06T16:25:24.086087206+07:00\",\"valid\":true,\"expired\":false,\"passwordMatch\":true,\"accountLocked\":false,\"backUser\":false,\"loginIp\":\"2001:fb1:11f:6328:6825:adef:e8b2:fb1c\",\"path\":\"1.14.898.157647.157665.164157.164193.164426.164542\",\"authorities\":[{\"authority\":\"ROLE_M_CREDIT\"}],\"errorCode\":0,\"guiVersion\":null,\"gauthState\":0}"
+    },
+    "sessionStorage": {}
+  },
+  "cookies": []
+}

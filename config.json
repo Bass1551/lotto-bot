@@ -590,23 +590,41 @@
     "close_time": "10:20"
   },
   {
-    "name": "ฮานอยพิเศษ",
+    "name": "หวยฮานอย พิเศษ",
     "url": "https://www.press.in.th/hanoi-lotto/",
     "time": "17:30",
-    "parser": "press_hanoi",
-    "type": "hanoi",
+    "parser": "edaylotto",
+    "type": "foreign",
     "flag": "🇻🇳",
-    "weekend": false,
+    "weekend": true,
     "close_time": "17:05"
   },
   {
-    "name": "ฮานอยปกติ",
+    "name": "หวยฮานอย",
     "url": "https://www.press.in.th/hanoi-lotto/",
     "time": "18:30",
-    "parser": "press_hanoi",
-    "type": "hanoi",
+    "parser": "edaylotto",
+    "type": "foreign",
     "flag": "🇻🇳",
-    "weekend": false,
+    "weekend": true,
     "close_time": "18:05"
+  },
+  {
+    "name": "หวยฮานอย VIP",
+    "time": "19:30",
+    "close_time": "19:05",
+    "parser": "edaylotto",
+    "type": "foreign",
+    "flag": "🇻🇳",
+    "weekend": true
+  },
+  {
+    "name": "หวยลาวพัฒนา (จ-ศ)",
+    "time": "20:30",
+    "close_time": "20:05",
+    "parser": "edaylotto",
+    "type": "foreign",
+    "flag": "🇱🇦",
+    "weekend": false
   }
 ]

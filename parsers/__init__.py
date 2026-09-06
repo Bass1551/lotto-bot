@@ -39,6 +39,7 @@ from parsers.vip_stock import (
 )
 
 from parsers.smlot_reward import SmlotRewardParser
+from parsers.edaylotto import EdaylottoParser
 
 from parsers.press_hanoi import PressHanoiParser
 from parsers.youtube_live import YoutubeLiveParser
@@ -48,6 +49,7 @@ from parsers.lao_direct import LaoDirectParser
 PARSER_MAP: dict[str, Type[BaseParser]] = {
     # Central SMLOT Report Parser
     "smlot_reward": SmlotRewardParser,
+    "edaylotto": EdaylottoParser,
     "press_hanoi": PressHanoiParser,
     "youtube_live": YoutubeLiveParser,
     "realtime_stock": RealtimeStockParser,
