@@ -51,6 +51,16 @@ STOCK_HOLIDAYS_MAP = {
     "หวยดาวโจนส์": (holidays.UnitedStates(), "สหรัฐอเมริกา (New York Stock Exchange)"),
 }
 
+WEEKDAY_STOCKS = {
+    "หุ้นดาวโจนส์", "หวยหุ้นดาวโจนส์",
+    "นิเคอิเช้า", "นิเคอิบ่าย",
+    "จีนเช้า", "จีนบ่าย",
+    "ฮั่งเส็งเช้า", "ฮั่งเส็งบ่าย",
+    "ไต้หวัน", "หุ้นเกาหลี",
+    "หุ้นสิงคโปร์", "หุ้นไทยเย็น",
+    "หุ้นอังกฤษ", "หุ้นเยอรมัน", "หุ้นรัสเซีย",
+}
+
 
 class LotteryScheduler:
     """Main orchestrator: schedule + scrape + send + deduplicate."""
@@ -196,8 +206,11 @@ class LotteryScheduler:
             return
 
         is_weekend = (today.weekday() in (5, 6))
-        valid_names = {l["name"] for l in self.lotteries if (l.get("weekend", False) if is_weekend else True)}
-        filtered_results = [r for r in daily_results if r["lottery_name"] in valid_names]
+        if is_weekend:
+            filtered_results = [r for r in daily_results if r["lottery_name"] not in WEEKDAY_STOCKS]
+        else:
+            filtered_results = daily_results
+
         if not filtered_results:
             return
 
@@ -206,7 +219,7 @@ class LotteryScheduler:
         self.sender.send_text(report_text)
 
     def send_yesterday_summary(self) -> None:
-        """Send yesterday's summary report for ALL configured lotteries into the LINE group upon startup."""
+        """Send yesterday's summary report for ALL lotteries from website into the LINE group upon startup."""
         if not self.sender:
             logger.warning("No sender configured – cannot send yesterday summary report")
             return
@@ -215,46 +228,28 @@ class LotteryScheduler:
         logger.info("Generating Yesterday's Full Summary Report for %s...", yesterday)
         is_weekend = (yesterday.weekday() in (5, 6))
 
+        # Ensure yesterday's results are filled from SMLOT if missing
         db_results = {r["lottery_name"]: r for r in self.db.get_daily_results(result_date=yesterday)}
-
-        target_lottos = [l for l in self.lotteries if (l.get("weekend", False) if is_weekend else True)]
-
-        full_results = []
-        for lotto in target_lottos:
-            name = lotto["name"]
-            flag = lotto.get("flag", "🎯")
-
-            if name in db_results:
-                r = db_results[name]
-                full_results.append({
-                    "lottery_name": name,
-                    "top3": r["top3"],
-                    "bottom2": r["bottom2"],
-                    "flag": flag,
-                })
-            else:
-                try:
-                    if lotto.get("parser") == "smlot_reward":
-                        from parsers.smlot_reward import SmlotRewardParser
-                        smlot_all = SmlotRewardParser.fetch_all_smlot_results(force_refresh=True, date_type="yesterday")
-                        res = smlot_all.get(name)
-                    else:
-                        res = self._scrape(lotto)
-
-                    if res:
-                        full_results.append({
-                            "lottery_name": name,
-                            "top3": res["top3"],
-                            "bottom2": res["bottom2"],
-                            "flag": flag,
-                        })
+        if len(db_results) < 20:
+            try:
+                from parsers.smlot_reward import SmlotRewardParser
+                smlot_all = SmlotRewardParser.fetch_all_smlot_results(force_refresh=True, date_type="yesterday")
+                for name, res in smlot_all.items():
+                    if name not in db_results:
                         self.db.save_result(name, res["top3"], res["bottom2"], res.get("full", ""), result_date=yesterday)
-                except Exception:
-                    pass
+                db_results = {r["lottery_name"]: r for r in self.db.get_daily_results(result_date=yesterday)}
+            except Exception as e:
+                logger.warning("Error backfilling yesterday results from SMLOT: %s", e)
 
-        if full_results:
-            report_text = generate_summary_report(full_results, target_date=yesterday)
-            logger.info("Sending Yesterday's Full Summary Report (%d lotteries):\n%s", len(full_results), report_text)
+        daily_results = list(db_results.values())
+        if is_weekend:
+            filtered_results = [r for r in daily_results if r["lottery_name"] not in WEEKDAY_STOCKS]
+        else:
+            filtered_results = daily_results
+
+        if filtered_results:
+            report_text = generate_summary_report(filtered_results, target_date=yesterday)
+            logger.info("Sending Yesterday's Full Summary Report (%d lotteries):\n%s", len(filtered_results), report_text)
             self.sender.send_text(report_text)
 
     def check_pending_due_today(self) -> None:
