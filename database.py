@@ -216,7 +216,7 @@ class Database:
         op = "<=" if include_today else "<"
         query = f"""
             SELECT * FROM results
-            WHERE (lottery_name = ? OR lottery_name LIKE ?)
+            WHERE lottery_name = ?
               AND result_date {op} ?
             ORDER BY result_date DESC
             LIMIT ?
@@ -225,7 +225,7 @@ class Database:
         with self._connect() as conn:
             rows = conn.execute(
                 query,
-                (lottery_name, f"%{lottery_name}%", date_str, limit),
+                (lottery_name, date_str, limit),
             ).fetchall()
         results = [dict(r) for r in rows]
         results.reverse()  # Chronological order (oldest to newest)
