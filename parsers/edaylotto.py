@@ -60,7 +60,7 @@ class EdaylottoClient:
 
     def __init__(
         self,
-        username: str = "zpy0kadbdd555",
+        username: str = "zpy0kadbdd111",
         password: str = "123456",
         session_file: Path = EDAYLOTTO_SESSION_FILE,
     ) -> None:

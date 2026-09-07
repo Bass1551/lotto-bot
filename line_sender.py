@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
-"""LINE Messaging API sender module."""
+"""LINE Messaging API sender module with multi-bot automatic failover chain."""
 
 from __future__ import annotations
 
+import json
 import os
 import urllib.parse
-from typing import Optional
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Optional
 
+import requests
 from dotenv import load_dotenv
 from linebot.v3.messaging import (
     ApiClient,
@@ -18,6 +22,7 @@ from linebot.v3.messaging import (
     PushMessageRequest,
     TextMessage,
 )
+from linebot.v3.messaging.exceptions import ApiException
 
 from card_generator import generate_card_image, upload_card_image
 from utils import setup_logging
@@ -27,29 +32,230 @@ logger = setup_logging()
 
 
 class LineSender:
-    """Send text, Flex, and Image messages to a LINE group via Messaging API."""
+    """Send text, Flex, and Image messages to LINE groups with multi-bot automatic failover."""
 
     def __init__(
         self,
         channel_access_token: Optional[str] = None,
         group_id: Optional[str] = None,
+        bot_chain_file: Optional[str | Path] = None,
     ) -> None:
-        self.token = channel_access_token or os.getenv("LINE_CHANNEL_ACCESS_TOKEN") or "8DQnOegmnlRDph8ZOFt2syPeOqmyN5fyDhucInkI937OfmXmUqBJ91KbfoERyw9R6Q5I9jdRtB3aGLLf14r4jlMwJaae6KUoyfFb/bhyouwhllNgHoAJM74hA7kULAsLAlwxY/QUOzHz470fUPsCwgdB04t89/1O/w1cDnyilFU="
-        self.group_id = group_id or os.getenv("LINE_GROUP_ID") or "C3da8f4cbb066d77d4ed40ec4fce4f959"
+        base_dir = Path(__file__).parent
+        self.bot_chain_file = Path(bot_chain_file) if bot_chain_file else base_dir / "data" / "bot_chain.json"
+        self.active_index_file = base_dir / "data" / "active_bot_index.json"
 
-        if not self.token:
-            raise ValueError(
-                "LINE_CHANNEL_ACCESS_TOKEN is not set. "
-                "Please set it in .env or pass it to the constructor."
-            )
-        if not self.group_id:
-            raise ValueError(
-                "LINE_GROUP_ID is not set. "
-                "Please set it in .env or pass it to the constructor."
-            )
+        self.bot_chain: list[dict[str, Any]] = []
 
-        self.configuration = Configuration(access_token=self.token)
-        logger.info("LineSender initialized for group %s", self.group_id[:8] + "...")
+        # If explicit token and group_id are passed, prioritize them (e.g. for custom/isolated testing)
+        if channel_access_token and group_id:
+            self.bot_chain = [
+                {
+                    "name": "Custom",
+                    "token": channel_access_token,
+                    "group_id": group_id,
+                    "channel_id": "",
+                    "channel_secret": "",
+                }
+            ]
+        elif self.bot_chain_file.exists():
+            try:
+                with open(self.bot_chain_file, "r", encoding="utf-8") as f:
+                    self.bot_chain = json.load(f)
+                logger.info("Loaded %d bots in failover chain from %s", len(self.bot_chain), self.bot_chain_file)
+            except Exception as e:
+                logger.error("Failed to load bot chain from %s: %s", self.bot_chain_file, e)
+
+        # Fallback if bot_chain is empty
+        if not self.bot_chain:
+            default_token = (
+                channel_access_token
+                or os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
+                or "8DQnOegmnlRDph8ZOFt2syPeOqmyN5fyDhucInkI937OfmXmUqBJ91KbfoERyw9R6Q5I9jdRtB3aGLLf14r4jlMwJaae6KUoyfFb/bhyouwhllNgHoAJM74hA7kULAsLAlwxY/QUOzHz470fUPsCwgdB04t89/1O/w1cDnyilFU="
+            )
+            default_group = group_id or os.getenv("LINE_GROUP_ID") or "C3da8f4cbb066d77d4ed40ec4fce4f959"
+            self.bot_chain = [
+                {
+                    "name": "ผลหวย",
+                    "token": default_token,
+                    "group_id": default_group,
+                    "channel_id": "",
+                    "channel_secret": "",
+                }
+            ]
+
+        active_idx = self._get_active_index()
+        active_bot = self.bot_chain[active_idx] if active_idx < len(self.bot_chain) else self.bot_chain[0]
+        logger.info(
+            "LineSender initialized with %d bots. Active bot: [%s] (index %d, group: %s...)",
+            len(self.bot_chain),
+            active_bot.get("name"),
+            active_idx,
+            active_bot.get("group_id", "")[:8],
+        )
+
+    @property
+    def current_bot(self) -> dict[str, Any]:
+        idx = self._get_active_index()
+        if 0 <= idx < len(self.bot_chain):
+            return self.bot_chain[idx]
+        return self.bot_chain[0]
+
+    @property
+    def token(self) -> str:
+        return self.current_bot.get("token", "")
+
+    @property
+    def group_id(self) -> str:
+        return self.current_bot.get("group_id", "")
+
+    @property
+    def configuration(self) -> Configuration:
+        return Configuration(access_token=self.token)
+
+    def _get_active_index(self) -> int:
+        """Get the currently active bot index. Resets on new month."""
+        current_month = datetime.now().strftime("%Y-%m")
+        if self.active_index_file.exists():
+            try:
+                with open(self.active_index_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                if data.get("month") == current_month:
+                    idx = data.get("active_index", 0)
+                    return min(max(0, idx), len(self.bot_chain) - 1)
+                else:
+                    logger.info("New month detected (%s). Resetting bot failover chain to index 0.", current_month)
+                    self._save_active_index(0)
+                    return 0
+            except Exception as err:
+                logger.warning("Could not read active_bot_index.json: %s. Defaulting to 0.", err)
+        return 0
+
+    def _save_active_index(self, index: int) -> None:
+        """Save the active bot index and current month."""
+        current_month = datetime.now().strftime("%Y-%m")
+        try:
+            self.active_index_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.active_index_file, "w", encoding="utf-8") as f:
+                json.dump({"month": current_month, "active_index": index}, f, indent=2)
+        except Exception as err:
+            logger.error("Failed to save active bot index: %s", err)
+
+    def _save_bot_chain(self) -> None:
+        """Persist current bot_chain list (with refreshed tokens) to file."""
+        try:
+            self.bot_chain_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.bot_chain_file, "w", encoding="utf-8") as f:
+                json.dump(self.bot_chain, f, ensure_ascii=False, indent=2)
+        except Exception as err:
+            logger.error("Failed to save bot chain: %s", err)
+
+    def _refresh_token(self, bot: dict[str, Any]) -> str:
+        """Fetch fresh Channel Access Token via OAuth client credentials."""
+        cid = bot.get("channel_id")
+        sec = bot.get("channel_secret")
+        if not cid or not sec:
+            return bot.get("token", "")
+
+        try:
+            res = requests.post(
+                "https://api.line.me/v2/oauth/accessToken",
+                data={
+                    "grant_type": "client_credentials",
+                    "client_id": cid,
+                    "client_secret": sec,
+                },
+                timeout=15,
+            ).json()
+            new_token = res.get("access_token")
+            if new_token:
+                bot["token"] = new_token
+                self._save_bot_chain()
+                logger.info("Successfully refreshed access token for [%s]", bot.get("name"))
+                return new_token
+            else:
+                logger.error("Failed to refresh token for [%s]: %s", bot.get("name"), res)
+        except Exception as err:
+            logger.error("Error refreshing token for [%s]: %s", bot.get("name"), err)
+        return bot.get("token", "")
+
+    def _get_valid_token(self, bot: dict[str, Any]) -> str:
+        """Return cached token or fetch new one if missing."""
+        token = bot.get("token")
+        if token:
+            return token
+        return self._refresh_token(bot)
+
+    def _push_messages(self, messages: list[Any]) -> bool:
+        """Push messages with automatic sequential failover across the bot chain."""
+        start_idx = self._get_active_index()
+        total_bots = len(self.bot_chain)
+
+        for idx in range(start_idx, total_bots):
+            bot = self.bot_chain[idx]
+            bot_name = bot.get("name", f"Bot-{idx}")
+            group_id = bot.get("group_id", "")
+            token = self._get_valid_token(bot)
+
+            if not group_id or not token:
+                logger.warning("Bot [%s] is missing group_id or token – skipping", bot_name)
+                continue
+
+            try:
+                config = Configuration(access_token=token)
+                with ApiClient(config) as api_client:
+                    api = MessagingApi(api_client)
+                    api.push_message(PushMessageRequest(to=group_id, messages=messages))
+
+                logger.info(
+                    "LINE message delivered successfully via [%s] (index: %d, group: %s...)",
+                    bot_name,
+                    idx,
+                    group_id[:8],
+                )
+                if idx != start_idx:
+                    self._save_active_index(idx)
+                return True
+
+            except ApiException as exc:
+                body_str = str(exc.body) if exc.body else ""
+                # Quota exceeded HTTP 429
+                if exc.status == 429 or "monthly limit" in body_str.lower():
+                    logger.warning(
+                        "Quota limit reached for [%s] (HTTP 429: %s). Auto-failing over to next bot in chain...",
+                        bot_name,
+                        body_str,
+                    )
+                    next_idx = min(idx + 1, total_bots - 1)
+                    self._save_active_index(next_idx)
+                    continue
+
+                # Token unauthorized HTTP 401
+                elif exc.status == 401 and bot.get("channel_id") and bot.get("channel_secret"):
+                    logger.warning("Token unauthorized/expired for [%s] (HTTP 401). Refreshing token...", bot_name)
+                    new_token = self._refresh_token(bot)
+                    if new_token:
+                        try:
+                            config = Configuration(access_token=new_token)
+                            with ApiClient(config) as api_client:
+                                api = MessagingApi(api_client)
+                                api.push_message(PushMessageRequest(to=group_id, messages=messages))
+                            logger.info("LINE message delivered successfully via [%s] after token refresh", bot_name)
+                            if idx != start_idx:
+                                self._save_active_index(idx)
+                            return True
+                        except Exception as retry_err:
+                            logger.error("Retry failed for [%s] after token refresh: %s", bot_name, retry_err)
+                            continue
+                else:
+                    logger.error("ApiException while sending via [%s]: status=%s body=%s", bot_name, exc.status, body_str)
+                    return False
+
+            except Exception as exc:
+                logger.error("Unexpected error sending via [%s]: %s", bot_name, exc, exc_info=True)
+                return False
+
+        logger.error("All %d bots in the failover chain have exceeded quota or failed to send!", total_bots)
+        return False
 
     def send_result_image(
         self, name: str, top3: str, bottom2: str, flag: str = "🎯"
@@ -58,22 +264,19 @@ class LineSender:
         try:
             image_path = generate_card_image(name, top3, bottom2, flag=flag)
             image_url = upload_card_image(image_path)
-
-            with ApiClient(self.configuration) as api_client:
-                api = MessagingApi(api_client)
-                api.push_message(
-                    PushMessageRequest(
-                        to=self.group_id,
-                        messages=[
-                            ImageMessage(
-                                original_content_url=image_url,
-                                preview_image_url=image_url,
-                            )
-                        ],
-                    )
+            messages = [
+                ImageMessage(
+                    original_content_url=image_url,
+                    preview_image_url=image_url,
                 )
-            logger.info("LINE Card ImageMessage sent successfully for %s", name)
-            return True
+            ]
+            ok = self._push_messages(messages)
+            if ok:
+                logger.info("LINE Card ImageMessage sent successfully for %s", name)
+                return True
+            else:
+                logger.warning("Failed to send LINE ImageMessage for %s, falling back to emoji text", name)
+                return self.send_result_emoji_text(name, top3, bottom2, flag=flag)
         except Exception as exc:
             logger.error("Failed to send LINE ImageMessage for %s: %s", name, exc, exc_info=True)
             return self.send_result_emoji_text(name, top3, bottom2, flag=flag)
@@ -355,16 +558,11 @@ class LineSender:
             container = FlexContainer.from_dict(flex_dict)
             alt_text = f"🎯 ผลสลากรวม: {names_title}"
 
-            with ApiClient(self.configuration) as api_client:
-                api = MessagingApi(api_client)
-                api.push_message(
-                    PushMessageRequest(
-                        to=self.group_id,
-                        messages=[FlexMessage(alt_text=alt_text, contents=container)],
-                    )
-                )
-            logger.info("LINE Combined Flex Message sent successfully for: %s", names_title)
-            return True
+            ok = self._push_messages([FlexMessage(alt_text=alt_text, contents=container)])
+            if ok:
+                logger.info("LINE Combined Flex Message sent successfully for: %s", names_title)
+                return True
+            return False
         except Exception as err:
             logger.error("Failed to send LINE Combined Flex Message: %s", err)
             return False
@@ -380,16 +578,13 @@ class LineSender:
             container = FlexContainer.from_dict(flex_dict)
             alt_text = f"{flag} {name} | 3บน: {top3} | 2ล่าง: {bottom2}"
 
-            with ApiClient(self.configuration) as api_client:
-                api = MessagingApi(api_client)
-                api.push_message(
-                    PushMessageRequest(
-                        to=self.group_id,
-                        messages=[FlexMessage(alt_text=alt_text, contents=container)],
-                    )
-                )
-            logger.info("LINE Flex Message sent successfully for %s", name)
-            return True
+            ok = self._push_messages([FlexMessage(alt_text=alt_text, contents=container)])
+            if ok:
+                logger.info("LINE Flex Message sent successfully for %s", name)
+                return True
+            else:
+                fallback_text = f"{flag} {name}\n🔺 3บน: {top3}\n🔻 2ล่าง: {bottom2}"
+                return self.send_text(fallback_text)
         except Exception as exc:
             logger.error("Failed to send LINE Flex Message for %s: %s", name, exc, exc_info=True)
             # Fallback to Text Message if Flex fails
@@ -413,16 +608,11 @@ class LineSender:
     def send_text(self, message: str) -> bool:
         """Push a text message to the configured group."""
         try:
-            with ApiClient(self.configuration) as api_client:
-                api = MessagingApi(api_client)
-                api.push_message(
-                    PushMessageRequest(
-                        to=self.group_id,
-                        messages=[TextMessage(text=message)],
-                    )
-                )
-            logger.info("LINE text message sent successfully (%d chars)", len(message))
-            return True
+            ok = self._push_messages([TextMessage(text=message)])
+            if ok:
+                logger.info("LINE text message sent successfully (%d chars)", len(message))
+                return True
+            return False
         except Exception as exc:
             logger.error("Failed to send LINE text message: %s", exc, exc_info=True)
             return False

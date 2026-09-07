@@ -1,5 +1,8 @@
 __pycache__/
 *.pyc
 *.db
+*.db-*
+*.log
+*.png
 .env
 cloudflared.exe
