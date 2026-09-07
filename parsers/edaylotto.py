@@ -93,23 +93,13 @@ class EdaylottoClient:
             context = browser.new_context(viewport={"width": 1280, "height": 800})
             page = context.new_page()
 
-            auth_result = {}
-
-            def on_response(res):
-                if "api.edaylotto.com" in res.url and "auth/login" in res.url:
-                    try:
-                        auth_result["auth"] = res.json()
-                    except Exception:
-                        pass
-
-            page.on("response", on_response)
-
             try:
                 page.goto(EDAYLOTTO_LOGIN_URL, wait_until="domcontentloaded", timeout=45000)
+                time.sleep(2)
 
                 # Wait for Cloudflare Turnstile to solve
                 token_found = False
-                for _ in range(25):
+                for _ in range(30):
                     val = page.evaluate(
                         """() => {
                         const input = document.querySelector('input[name="cf-turnstile-response"]');
@@ -119,7 +109,7 @@ class EdaylottoClient:
                     if val:
                         token_found = True
                         break
-                    time.sleep(0.5)
+                    time.sleep(1)
 
                 if not token_found:
                     logger.warning("Turnstile token took longer, proceeding with form fill...")
@@ -128,20 +118,21 @@ class EdaylottoClient:
                 page.fill('input[name="password"]', self.password)
                 time.sleep(1)
 
-                page.click("#kt_sign_in_submit")
-                time.sleep(5)
+                with page.expect_response(lambda r: "auth/login" in r.url, timeout=20000) as resp_info:
+                    page.click("#kt_sign_in_submit")
 
-                if "auth" in auth_result:
-                    sid = auth_result["auth"].get("sessionId")
-                    if sid:
-                        self.session_id = sid
-                        self.session_file.parent.mkdir(parents=True, exist_ok=True)
-                        with open(self.session_file, "w", encoding="utf-8") as f:
-                            json.dump(auth_result, f, indent=2, ensure_ascii=False)
-                        logger.info("Successfully authenticated to edaylotto! Session ID: %s", sid)
-                        return sid
+                resp = resp_info.value
+                auth_data = resp.json()
+                sid = auth_data.get("sessionId")
+                if sid:
+                    self.session_id = sid
+                    self.session_file.parent.mkdir(parents=True, exist_ok=True)
+                    with open(self.session_file, "w", encoding="utf-8") as f:
+                        json.dump({"auth": auth_data}, f, indent=2, ensure_ascii=False)
+                    logger.info("Successfully authenticated to edaylotto! Session ID: %s", sid)
+                    return sid
 
-                raise ParseError("Failed to obtain session ID from edaylotto login")
+                raise ParseError("No sessionId in login response from edaylotto")
             finally:
                 browser.close()
 
