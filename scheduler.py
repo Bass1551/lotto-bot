@@ -51,6 +51,52 @@ STOCK_HOLIDAYS_MAP = {
     "หวยดาวโจนส์": (holidays.UnitedStates(), "สหรัฐอเมริกา (New York Stock Exchange)"),
 }
 
+STOCK_TO_VIP_MAP = {
+    "นิเคอิเช้า": "นิเคอิเช้า VIP",
+    "นิเคอิบ่าย": "นิเคอิบ่าย VIP",
+    "จีนเช้า": "จีนเช้า VIP",
+    "จีนบ่าย": "จีนบ่าย VIP",
+    "ฮั่งเส็งเช้า": "ฮั่งเส็งเช้า VIP",
+    "ฮั่งเส็งบ่าย": "ฮั่งเส็งบ่าย VIP",
+    "ไต้หวัน": "ไต้หวัน VIP",
+    "หุ้นเกาหลี": "เกาหลี VIP",
+    "หุ้นสิงคโปร์": "สิงคโปร์ VIP",
+    "หุ้นอังกฤษ": "อังกฤษVIP",
+    "หุ้นเยอรมัน": "เยอรมันVIP",
+    "หุ้นรัสเซีย": "รัสเซียVIP",
+    "หุ้นดาวโจนส์": "หวยดาวโจนส์ VIP",
+    "หวยดาวโจนส์": "หวยดาวโจนส์ VIP",
+}
+
+VIP_TO_STOCK_MAP = {
+    "นิเคอิเช้า VIP": "นิเคอิเช้า",
+    "นิเคอิบ่าย VIP": "นิเคอิบ่าย",
+    "จีนเช้า VIP": "จีนเช้า",
+    "จีนบ่าย VIP": "จีนบ่าย",
+    "ฮั่งเส็งเช้า VIP": "ฮั่งเส็งเช้า",
+    "ฮั่งเส็งบ่าย VIP": "ฮั่งเส็งบ่าย",
+    "ไต้หวัน VIP": "ไต้หวัน",
+    "เกาหลี VIP": "หุ้นเกาหลี",
+    "สิงคโปร์ VIP": "หุ้นสิงคโปร์",
+    "อังกฤษVIP": "หุ้นอังกฤษ",
+    "เยอรมันVIP": "หุ้นเยอรมัน",
+    "รัสเซียVIP": "หุ้นรัสเซีย",
+    "หวยดาวโจนส์ VIP": "หุ้นดาวโจนส์",
+}
+
+
+def is_stock_holiday(stock_name: str, target_date: date) -> tuple[bool, str, str]:
+    """Check if a stock lottery is closed on target_date due to market holiday.
+    Returns (is_holiday, market_name, holiday_name).
+    """
+    if stock_name in STOCK_HOLIDAYS_MAP:
+        cal, market_name = STOCK_HOLIDAYS_MAP[stock_name]
+        if target_date in cal:
+            h_name = cal.get(target_date)
+            return True, market_name, str(h_name)
+    return False, "", ""
+
+
 WEEKDAY_STOCKS = {
     "หุ้นดาวโจนส์", "หวยหุ้นดาวโจนส์",
     "นิเคอิเช้า", "นิเคอิบ่าย",
@@ -181,13 +227,33 @@ class LotteryScheduler:
         logger.info("Scheduler started")
 
     def send_history_by_names(self, lotto_names: list[str]) -> None:
-        """Send 15-day historical statistics report for the specified list of next-round lotteries."""
+        """Send 15-day historical statistics report for the specified list of next-round lotteries.
+        If a regular stock is closed on a weekday holiday, automatically swap to its VIP substitute.
+        """
         if not self.sender:
             return
 
+        today = datetime.now(TZ).date()
+        is_weekend = (today.weekday() in (5, 6))
+
+        # Check stock holiday substitutions for weekday chains
+        actual_names = []
+        for name in lotto_names:
+            if not is_weekend and name in STOCK_TO_VIP_MAP:
+                is_hol, market_name, h_name = is_stock_holiday(name, today)
+                if is_hol:
+                    vip_name = STOCK_TO_VIP_MAP[name]
+                    logger.info(
+                        "Stock '%s' is closed today (%s - %s). Swapping history to VIP: '%s'",
+                        name, market_name, h_name, vip_name
+                    )
+                    actual_names.append(vip_name)
+                    continue
+            actual_names.append(name)
+
         name_to_flag = {l["name"]: l.get("flag", "🎯") for l in self.lotteries}
         reports = []
-        for name in lotto_names:
+        for name in actual_names:
             flag = name_to_flag.get(name, "🎯")
             history = self.db.get_history_results(name, limit=15)
             if history:
@@ -196,7 +262,7 @@ class LotteryScheduler:
 
         if reports:
             combined_message = "\n----------------------------\n".join(reports)
-            names_summary = " + ".join(lotto_names)
+            names_summary = " + ".join(actual_names)
             logger.info("Sending next-round 15-day history report for: %s", names_summary)
             self.sender.send_text(combined_message)
 
@@ -268,8 +334,18 @@ class LotteryScheduler:
 
         grouped_by_time = defaultdict(list)
         for lotto in self.lotteries:
-            if is_weekend and not lotto.get("weekend", False):
-                continue
+            name = lotto["name"]
+            if is_weekend:
+                if not lotto.get("weekend", False):
+                    continue
+            else:
+                # On weekdays, if this is a stock VIP, only check it if its regular stock is on holiday
+                if name in VIP_TO_STOCK_MAP:
+                    reg_stock = VIP_TO_STOCK_MAP[name]
+                    is_hol, _, _ = is_stock_holiday(reg_stock, today)
+                    if not is_hol:
+                        continue
+
             if lotto["time"] <= current_time_str and not self.db.already_sent(lotto["name"], today):
                 grouped_by_time[lotto["time"]].append(lotto)
 
@@ -288,10 +364,22 @@ class LotteryScheduler:
         today = datetime.now(TZ).date()
         is_weekend = (today.weekday() in (5, 6))
 
-        if is_weekend:
-            pending_lottos = [l for l in lotto_list if l.get("weekend", False) and not self.db.already_sent(l["name"], today)]
-        else:
-            pending_lottos = [l for l in lotto_list if not self.db.already_sent(l["name"], today)]
+        pending_lottos = []
+        for l in lotto_list:
+            name = l["name"]
+            if is_weekend:
+                if l.get("weekend", False) and not self.db.already_sent(name, today):
+                    pending_lottos.append(l)
+            else:
+                # On weekdays, stock VIPs are only active if their regular stock is closed on holiday
+                if name in VIP_TO_STOCK_MAP:
+                    reg_stock = VIP_TO_STOCK_MAP[name]
+                    is_hol, _, _ = is_stock_holiday(reg_stock, today)
+                    if is_hol and not self.db.already_sent(name, today):
+                        pending_lottos.append(l)
+                else:
+                    if not self.db.already_sent(name, today):
+                        pending_lottos.append(l)
 
         if not pending_lottos:
             return
@@ -300,25 +388,25 @@ class LotteryScheduler:
         active_lottos = []
         for lotto in pending_lottos:
             name = lotto["name"]
-            if name in STOCK_HOLIDAYS_MAP:
-                cal, market_name = STOCK_HOLIDAYS_MAP[name]
-                if today in cal:
-                    h_name = cal.get(today)
-                    flag = lotto.get("flag", "📈")
-                    holiday_msg = (
-                        f"🛑 {flag} แจ้งเตือนตลาดปิด : {name}\n"
-                        f"🪐 แอดBaras 🛸\n"
-                        f"➖➖➖➖➖➖➖➖\n"
-                        f"📅 วันนี้ {today.strftime('%d/%m/%Y')} ตลาดหลักทรัพย์{market_name} ปิดทำการ\n"
-                        f"เนื่องในวันหยุด: {h_name}\n"
-                        f"⚠️ รอบนี้ไม่มีการออกผลรางวัลครับ"
-                    )
-                    logger.info("Stock market closed for %s on %s (%s). Sending notification...", name, today, h_name)
-                    if self.sender:
-                        self.sender.send_text(holiday_msg)
-                    # Mark as recorded for today so we don't notify repeatedly
-                    self.db.save_result(name, "000", "00", full_result="HOLIDAY")
-                    continue
+            is_hol, market_name, h_name = is_stock_holiday(name, today)
+            if is_hol:
+                flag = lotto.get("flag", "📈")
+                vip_sub = STOCK_TO_VIP_MAP.get(name)
+                sub_text = f"\n🔄 สลับส่งผลและสถิติ: {vip_sub} แทนครับ" if vip_sub else "\n⚠️ รอบนี้ไม่มีการออกผลรางวัลครับ"
+                holiday_msg = (
+                    f"🛑 {flag} แจ้งเตือนตลาดปิด : {name}\n"
+                    f"🪐 แอดBaras 🛸\n"
+                    f"➖➖➖➖➖➖➖➖\n"
+                    f"📅 วันนี้ {today.strftime('%d/%m/%Y')} ตลาดหลักทรัพย์{market_name} ปิดทำการ\n"
+                    f"เนื่องในวันหยุด: {h_name}"
+                    f"{sub_text}"
+                )
+                logger.info("Stock market closed for %s on %s (%s). Sending notification...", name, today, h_name)
+                if self.sender:
+                    self.sender.send_text(holiday_msg)
+                # Mark as recorded for today so we don't notify repeatedly
+                self.db.save_result(name, "000", "00", full_result="HOLIDAY")
+                continue
             active_lottos.append(lotto)
 
         pending_lottos = active_lottos

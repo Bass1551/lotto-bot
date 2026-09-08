@@ -105,6 +105,26 @@ def start_http_server(db: Database, sender: LineSender):
                                         pass
                                     target_name = matched_lotto["name"] if matched_lotto else lotto_query
                                     flag = matched_lotto.get("flag", "🎯") if matched_lotto else "🎯"
+
+                                    # If regular stock is closed on holiday, swap to VIP substitute
+                                    try:
+                                        from scheduler import STOCK_TO_VIP_MAP, is_stock_holiday, TZ
+                                        from datetime import datetime
+                                        today = datetime.now(TZ).date()
+                                        if target_name in STOCK_TO_VIP_MAP:
+                                            is_hol, _, _ = is_stock_holiday(target_name, today)
+                                            if is_hol:
+                                                target_name = STOCK_TO_VIP_MAP[target_name]
+                                                if matched_lotto:
+                                                    with open("config.json", encoding="utf-8") as f:
+                                                        cfg = json.load(f)
+                                                        for c in cfg:
+                                                            if c["name"] == target_name:
+                                                                flag = c.get("flag", "🎯")
+                                                                break
+                                    except Exception:
+                                        pass
+
                                     history = db.get_history_results(target_name, limit=15)
                                     if history:
                                         from utils import generate_history_report
