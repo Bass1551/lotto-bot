@@ -60,9 +60,9 @@ OFFICIAL_URL_MAP: dict[str, str] = {
     "ฮั่งเส็งเช้า VIP": "https://www.hsi-vip.com/",
     "ฮั่งเส็งบ่าย VIP": "https://www.hsi-vip.com/",
     "ไต้หวัน VIP": "https://twvipstock.com/",
-    "เกาหลี VIP": "https://member.smlot.net/reports/reward",
-    "สิงคโปร์ VIP": "https://member.smlot.net/reports/reward",
-    "สิงค์โปร์ VIP": "https://member.smlot.net/reports/reward",
+    "เกาหลี VIP": "https://ktopvipindex.com/",
+    "สิงคโปร์ VIP": "https://sgxvip.com/",
+    "สิงค์โปร์ VIP": "https://sgxvip.com/",
     "ฮานอยสามัคคี": "https://member.smlot.net/reports/reward",
     "หวยดาวโจนส์ VIP": "https://dowjonespowerball.com/",
     # 3 Rath VIP
