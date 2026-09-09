@@ -368,6 +368,17 @@ def scrape_vip_stock(lottery_name: str, target_date: Optional[date] = None) -> O
                     "full": m_korea.group(1) + m_korea.group(2),
                 }
 
+        # Explicit morning/evening text (e.g. morning top 025 bottom 85)
+        m_kw = "evening" if session_type == "afternoon" else "morning"
+        m_exp = re.search(rf"{m_kw}\s+top\s+(\d{{3}})\s+bottom\s+(\d{{2}})", text, re.IGNORECASE)
+        if m_exp:
+            return {
+                "name": lottery_name,
+                "top3": m_exp.group(1),
+                "bottom2": m_exp.group(2),
+                "full": m_exp.group(1) + m_exp.group(2),
+            }
+
         num_pairs = re.findall(r"([\d,]+)\.(\d{2})", text)
         if len(num_pairs) >= 2:
             idx_int, idx_dec = num_pairs[0]

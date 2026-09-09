@@ -161,6 +161,31 @@ def start_http_server(db: Database, sender: LineSender):
                     self.wfile.write(err_bytes)
                 return
 
+            elif self.path == "/api/save_only":
+                length = int(self.headers.get("Content-Length", 0))
+                body = self.rfile.read(length).decode("utf-8")
+                try:
+                    data = json.loads(body)
+                    name = data.get("name", "")
+                    top3 = str(data.get("top3", "")).zfill(3)[-3:]
+                    bot2 = str(data.get("bottom2", "")).zfill(2)[-2:]
+
+                    db.save_result(name, top3, bot2)
+
+                    res_bytes = json.dumps({"ok": True}).encode("utf-8")
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Content-Length", str(len(res_bytes)))
+                    self.end_headers()
+                    self.wfile.write(res_bytes)
+                except Exception as exc:
+                    err_bytes = json.dumps({"ok": False, "error": str(exc)}).encode("utf-8")
+                    self.send_response(500)
+                    self.send_header("Content-Type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(err_bytes)
+                return
+
             elif self.path == "/webhook":
                 length = int(self.headers.get("Content-Length", 0))
                 body = self.rfile.read(length).decode("utf-8")
@@ -324,6 +349,72 @@ def keep_alive_loop():
         time.sleep(240)  # Ping every 4 minutes (240s)
 
 
+def passive_results_harvester_loop(db: Database):
+    """
+    Background harvester for the dashboard.
+    Silently scrapes results for all lotteries whose time has passed and stores them in DB.
+    NEVER sends any message to LINE (Dashboard-only viewing).
+    """
+    logger.info("🔭 Passive Results Harvester thread active (Dashboard-only, no LINE messages)")
+    import time
+    from zoneinfo import ZoneInfo
+    from parsers.direct_scraper import scrape_direct_official
+    from parsers.edaylotto import EdaylottoClient, get_product_code
+
+    tz = ZoneInfo("Asia/Bangkok")
+    time.sleep(10)
+
+    while True:
+        try:
+            now_dt = datetime.now(tz)
+            today_date = now_dt.date()
+            current_time_str = now_dt.strftime("%H:%M")
+
+            daily_results = db.get_daily_results(today_date)
+            existing = {r["lottery_name"] for r in daily_results}
+
+            cfg_lottos = []
+            try:
+                with open("config.json", "r", encoding="utf-8") as f:
+                    cfg_lottos = json.load(f)
+            except Exception:
+                pass
+
+            for c in cfg_lottos:
+                name = c["name"]
+                t_str = c.get("time", "00:00")
+                if current_time_str < t_str or name in existing:
+                    continue
+
+                # 1. Fast Direct Official Scraper
+                try:
+                    res = scrape_direct_official(name, target_date=today_date)
+                    if res and len(res.get("top3", "")) == 3 and len(res.get("bottom2", "")) == 2:
+                        db.save_result(name, res["top3"], res["bottom2"], res.get("full", ""), result_date=today_date)
+                        existing.add(name)
+                        logger.info("🔭 Harvester saved result for '%s': %s-%s", name, res["top3"], res["bottom2"])
+                        continue
+                except Exception:
+                    pass
+
+                # 2. Edaylotto API
+                if get_product_code(name):
+                    try:
+                        eday = EdaylottoClient()
+                        res = eday.get_result(name, today_date)
+                        if res and len(res.get("top3", "")) == 3 and len(res.get("bottom2", "")) == 2:
+                            db.save_result(name, res["top3"], res["bottom2"], res.get("full", ""), result_date=today_date)
+                            existing.add(name)
+                            logger.info("🔭 Harvester saved result for '%s': %s-%s", name, res["top3"], res["bottom2"])
+                    except Exception:
+                        pass
+
+        except Exception as exc:
+            logger.debug("Passive harvester iteration notice: %s", exc)
+
+        time.sleep(180)
+
+
 def main() -> None:
     logger.info("=" * 50)
     logger.info("Lottery Bot starting...")
@@ -345,6 +436,10 @@ def main() -> None:
     # Start Keep-Alive Ping Thread to prevent Render Free Tier Sleep
     ping_thread = threading.Thread(target=keep_alive_loop, daemon=True)
     ping_thread.start()
+
+    # Start Passive Harvester Thread to automatically populate dashboard without sending LINE messages
+    harvester_thread = threading.Thread(target=passive_results_harvester_loop, args=(db,), daemon=True)
+    harvester_thread.start()
 
     is_cloud_server = bool(os.environ.get("RENDER") or os.environ.get("RENDER_EXTERNAL_URL"))
     default_scheduler = "false" if is_cloud_server else "true"
