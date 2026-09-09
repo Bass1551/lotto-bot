@@ -522,14 +522,27 @@ class LotteryScheduler:
         logger.error("Group (%s): timeout after %d attempts", names_title, max_attempts)
 
     def _scrape(self, lotto: dict[str, Any]) -> dict[str, str] | None:
-        """Run the appropriate parser. Returns result dict or None."""
+        """Run the appropriate parser with Fast Direct priority and SMLOT fallback."""
+        name = lotto["name"]
+
+        # 1. Fast Direct Scraper Priority (sub-second official APIs)
+        try:
+            from parsers.direct_scraper import scrape_direct_official
+            direct_res = scrape_direct_official(name)
+            if direct_res and len(direct_res.get("top3", "")) == 3 and len(direct_res.get("bottom2", "")) == 2:
+                logger.info("Fast Direct result accepted for '%s': %s-%s", name, direct_res["top3"], direct_res["bottom2"])
+                return direct_res
+        except Exception as e:
+            logger.debug("Fast Direct scraper skipped for %s: %s", name, e)
+
+        # 2. SMLOT / Edaylotto Fallback Engine
         parser_key = lotto["parser"]
         url = lotto.get("url")
-        parser = get_parser(parser_key, url=url, lotto_name=lotto["name"])
+        parser = get_parser(parser_key, url=url, lotto_name=name)
         try:
             return parser.run()
         except ParseError as e:
-            logger.warning("ParseError for %s: %s", lotto["name"], e)
+            logger.warning("ParseError for %s: %s", name, e)
             return None
 
     def _send_and_save(
