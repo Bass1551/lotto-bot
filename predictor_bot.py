@@ -213,17 +213,16 @@ class PredictorEngine:
 
         weekday = target_date.weekday()
         power_digits = DAY_POWER_NUMBERS.get(weekday, [])
-        for pd in power_digits:
-            digit_weights[pd] += 3.0
 
         ranked_digits = [d for d, _ in digit_weights.most_common()]
-        if len(ranked_digits) < 4:
+        if len(ranked_digits) < 5:
             ranked_digits.extend([str(x) for x in range(10) if str(x) not in ranked_digits])
 
         primary_den = ranked_digits[0]
         secondary_den = ranked_digits[1]
         supp_1 = ranked_digits[2]
         supp_2 = ranked_digits[3]
+        supp_3 = ranked_digits[4]
 
         run_rood = [primary_den, secondary_den]
         run_rood.sort()
@@ -231,17 +230,18 @@ class PredictorEngine:
         fun = primary_den
 
         pairs = []
+        # Pair top 2 run/rood digits with supporters 1, 2, 3 based purely on stats
         for d in run_rood:
-            for s in [supp_1, supp_2, power_digits[0] if power_digits else "0"]:
+            for s in [supp_1, supp_2, supp_3]:
                 pair = f"{d}{s}" if d <= s else f"{s}{d}"
                 if pair not in pairs and pair[0] != pair[1]:
                     pairs.append(pair)
-            if digit_weights[d] >= 8.0:
+            if digit_weights[d] >= 14.0:
                 pair_dbl = f"{d}{d}"
                 if pair_dbl not in pairs:
                     pairs.append(pair_dbl)
 
-        for candidate in [f"{run_rood[0]}{run_rood[1]}", f"{run_rood[0]}0", f"{run_rood[1]}5", f"{run_rood[0]}9"]:
+        for candidate in [f"{run_rood[0]}{run_rood[1]}", f"{run_rood[0]}{supp_1}", f"{run_rood[1]}{supp_2}"]:
             if len(pairs) < 6 and candidate not in pairs:
                 pairs.append(candidate)
         pairs = pairs[:6]
@@ -249,8 +249,8 @@ class PredictorEngine:
         triplets = [
             f"{primary_den}{secondary_den}{supp_1}",
             f"{primary_den}{secondary_den}{supp_2}",
-            f"{primary_den}{supp_1}{power_digits[0] if power_digits else '9'}",
-            f"{secondary_den}{supp_1}{supp_2}",
+            f"{primary_den}{supp_1}{supp_2}",
+            f"{secondary_den}{supp_1}{supp_3}",
         ]
         unique_triplets = []
         seen_combos = set()
