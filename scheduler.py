@@ -372,6 +372,8 @@ class LotteryScheduler:
                     is_hol, _, _ = is_stock_holiday(reg_stock, today)
                     if not is_hol:
                         continue
+                if name == "หวยไทย" and today.day not in (1, 16):
+                    continue
 
             if lotto["time"] <= current_time_str and not self.db.already_sent(lotto["name"], today):
                 grouped_by_time[lotto["time"]].append(lotto)
@@ -405,6 +407,9 @@ class LotteryScheduler:
                     if is_hol and not self.db.already_sent(name, today):
                         pending_lottos.append(l)
                 else:
+                    # Thai government lottery only draws on the 1st and 16th of the month
+                    if name == "หวยไทย" and today.day not in (1, 16):
+                        continue
                     if not self.db.already_sent(name, today):
                         pending_lottos.append(l)
 

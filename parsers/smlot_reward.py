@@ -230,7 +230,7 @@ class SmlotRewardParser(BaseParser):
                 browser.close()
 
             soup = BeautifulSoup(html, "lxml")
-            results = cls._parse_smlot_html(soup)
+            results = cls._parse_smlot_html(soup, date_type=date_type)
 
             if not results:
                 raise ParseError("No lottery results table found on member.smlot.net/reports/reward")
@@ -241,8 +241,11 @@ class SmlotRewardParser(BaseParser):
             return results
 
     @classmethod
-    def _parse_smlot_html(cls, soup: BeautifulSoup) -> dict[str, dict[str, str]]:
+    def _parse_smlot_html(cls, soup: BeautifulSoup, date_type: str = "today") -> dict[str, dict[str, str]]:
+        from datetime import datetime, timedelta
         results: dict[str, dict[str, str]] = {}
+        now = datetime.now(TZ)
+        expected_date = (now - timedelta(days=1)).date() if date_type == "yesterday" else now.date()
 
         for tr in soup.find_all("tr"):
             tds = [td.get_text(strip=True) for td in tr.find_all(["td", "th"])]
@@ -250,6 +253,30 @@ class SmlotRewardParser(BaseParser):
                 continue
 
             raw_name = tds[0]
+
+            # Check date column (e.g. tds[1] or tds[2] usually contains 'DD/MM/YYYY' or 'DD-MM-YYYY')
+            # If the row has an explicit date, ensure it belongs to the target date (prevent old draws like Thai Government lotto)
+            date_match = None
+            for cell in tds[1:4]:
+                m = re.search(r"(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})", cell)
+                if m:
+                    date_match = m
+                    break
+
+            if date_match:
+                d_day, d_month, d_year = int(date_match.group(1)), int(date_match.group(2)), int(date_match.group(3))
+                # Adjust Buddhist calendar if needed
+                if d_year > 2500:
+                    d_year -= 543
+                try:
+                    from datetime import date as dt_date
+                    row_date = dt_date(d_year, d_month, d_day)
+                    if row_date != expected_date:
+                        # Old result from previous draw date (e.g. 01/09 for Thai lottery), skip it!
+                        continue
+                except Exception:
+                    pass
+
             top3 = extract_digits(tds[3], length=3)
             bottom2 = extract_digits(tds[5], length=2)
 
