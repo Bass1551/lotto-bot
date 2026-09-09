@@ -563,6 +563,13 @@ class LotteryScheduler:
         ok = self.sender.send_result_flex(name, top3, bottom2, flag=flag)
         if ok:
             self.db.save_result(name, top3, bottom2, full, result_date=result_date)
+            # Check and broadcast winning celebration to dedicated predictor group
+            try:
+                from predictor_bot import PredictorBot
+                pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
+                pbot.check_and_send_win(name, top3, bottom2, result_date=result_date, flag=flag)
+            except Exception as pe:
+                logger.debug("Predictor win check note: %s", pe)
         else:
             logger.error("LINE send failed for %s – will retry next attempt", name)
 

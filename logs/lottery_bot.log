@@ -27416,3 +27416,1077 @@ Call log:
 Call log:
   - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
 
+2026-09-09 11:09:02 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-09 11:09:29 | INFO     | lottery_bot | ==================================================
+2026-09-09 11:09:29 | INFO     | lottery_bot | Lottery Bot starting...
+2026-09-09 11:09:29 | INFO     | lottery_bot | ==================================================
+2026-09-09 11:09:29 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-09-09 11:09:29 | INFO     | lottery_bot | Loaded 4 bots in failover chain from F:\Users\999\Desktop\บอทหวย\lotto_line_bot\data\bot_chain.json
+2026-09-09 11:09:29 | INFO     | lottery_bot | LineSender initialized with 4 bots. Active bot: [ผลหวย1] (index 1, group: C9c0af2e...)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Serving LIFF, Quick API & LINE Webhook on 0.0.0.0:8000
+2026-09-09 11:09:29 | INFO     | lottery_bot | Loaded 63 lotteries from config.json
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 09:30 (ฮานอยอาเซียน + นิเคอิเช้า) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 09:05 (นิเคอิเช้า VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 10:30 (จีนเช้า + ลาว TV) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 10:05 (จีนเช้า VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 11:05 (ฮั่งเส็งเช้า) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 10:35 (ฮั่งเส็งเช้า VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 11:30 (ฮานอย HD) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 11:35 (ไต้หวัน VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 12:30 (ฮานอย Star + ไต้หวัน) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 12:35 (เกาหลี VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 13:30 (นิเคอิบ่าย + หุ้นเกาหลี) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 13:25 (นิเคอิบ่าย VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 14:00 (จีนบ่าย) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 14:25 (จีนบ่าย VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 14:30 (ฮานอย TV) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 15:10 (ฮั่งเส็งบ่าย) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 15:25 (ฮั่งเส็งบ่าย VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 16:25 (หุ้นสิงคโปร์) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 16:30 (ฮานอย กาชาด) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 16:45 (หุ้นไทยเย็น) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 17:30 (ฮานอยสามัคคี + หวยฮานอย พิเศษ) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 17:05 (สิงคโปร์ VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 16:50 (หุ้นอินเดีย) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 18:00 (หุ้นอียิปต์) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 19:30 (ฮานอยพัฒนา + หวยฮานอย VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 22:45 (หุ้นเยอรมัน + หุ้นอังกฤษ + หุ้นรัสเซีย) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 21:50 (เยอรมันVIP + อังกฤษVIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 23:50 (รัสเซียVIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 00:30 (หวยดาวโจนส์ VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 04:30 (หวยดาวโจนส์ mid night) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 04:00 (หวยดาวโจนส์ STAR) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 05:00 (หวยดาวโจนส์ extra) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 06:00 (หวยดาวโจนส์ TV) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 09:00 (เวียดนาม VIP เช้า) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 13:00 (เวียดนาม VIP บ่าย) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 17:00 (เวียดนาม VIP เย็น) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 03:55 (หุ้นดาวโจนส์) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 15:30 (หวยไทย) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 18:30 (มาเลเซีย + หวยฮานอย) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 22:30 (ฮานอยEXTRA) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 08:30 (ลาว Extra) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 03:30 (หวยดาวโจนส์) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 10:00 (ลาวประตูชัย) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 11:00 (ลาวสันติภาพ) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 12:00 (ประชาชนลาว) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 13:45 (ลาว HD) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 15:45 (ลาว Star) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 20:30 (ลาวสามัคคี + หวยลาวพัฒนา (จ-ศ)) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 21:00 (ลาวอาเซียน) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 22:00 (หวยลาวSTAR VIP) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled time slot 23:30 (หวยลาว กาชาด + ลาวดาว) (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduled daily summary report at 23:59 (Asia/Bangkok)
+2026-09-09 11:09:29 | INFO     | lottery_bot | Scheduler started
+2026-09-09 11:09:29 | INFO     | lottery_bot | Generating Yesterday's Full Summary Report for 2026-09-08...
+2026-09-09 11:09:29 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=yesterday): https://member.smlot.net/reports/reward
+2026-09-09 11:09:35 | WARNING  | lottery_bot | Error backfilling yesterday results from SMLOT: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:09:35 | WARNING  | lottery_bot | Error backfilling yesterday results from edaylotto: 'EdaylottoClient' object has no attribute 'get_result'
+2026-09-09 11:09:35 | INFO     | lottery_bot | Sending Yesterday's Full Summary Report (30 lotteries):
+สรุปผลวันอังคาร 08-09-26
+
+┅┅┅┅┅┅┅┅┅┅┅┅┅┅
+100-16 หวยดาวโจนส์ VIP
+451-28 หวยดาวโจนส์
+451-28 หวยดาวโจนส์ STAR
+014-19 หวยดาวโจนส์ mid night
+300-21 หวยดาวโจนส์ extra
+037-49 หวยดาวโจนส์ TV
+947-38 ลาว Extra
+864-40 นิเคอิเช้า VIP
+205-64 ฮานอยอาเซียน
+513-29 นิเคอิเช้า
+824-70 ลาวประตูชัย
+891-81 จีนเช้า VIP
+205-14 จีนเช้า
+866-94 ลาว TV
+018-87 ฮั่งเส็งเช้า VIP
+649-82 ลาวสันติภาพ
+557-55 ฮั่งเส็งเช้า
+116-22 ฮานอย HD
+203-77 ประชาชนลาว
+445-94 ฮานอย Star
+578-49 ไต้หวัน
+933-51 นิเคอิบ่าย
+166-34 หุ้นเกาหลี
+625-38 ลาว HD
+321-70 จีนบ่าย
+401-97 ฮานอย TV
+718-94 ฮั่งเส็งบ่าย
+212-04 หวยไทย
+510-96 ลาว Star
+745-83 หุ้นสิงคโปร์
+┅┅┅┅┅┅┅┅┅┅┅┅┅┅
+2026-09-09 11:09:39 | ERROR    | lottery_bot | Unexpected error sending via [ผลหวย1]: HTTPSConnectionPool(host='api.line.me', port=443): Max retries exceeded with url: /v2/bot/message/push (Caused by NameResolutionError("HTTPSConnection(host='api.line.me', port=443): Failed to resolve 'api.line.me' ([Errno 11002] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 981, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11002] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 1106, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='api.line.me', port=443): Failed to resolve 'api.line.me' ([Errno 11002] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\Users\999\Desktop\บอทหวย\lotto_line_bot\line_sender.py", line 207, in _push_messages
+    api.push_message(PushMessageRequest(to=group_id, messages=messages))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 40, in wrapper_function
+    return vd.call(*args, **kwargs)
+           ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 134, in call
+    return self.execute(m)
+           ~~~~~~~~~~~~^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 206, in execute
+    return self.raw_function(**d, **var_kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\api\messaging_api.py", line 7249, in push_message
+    return self.push_message_with_http_info(push_message_request, x_line_retry_key, **kwargs)  # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 40, in wrapper_function
+    return vd.call(*args, **kwargs)
+           ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 134, in call
+    return self.execute(m)
+           ~~~~~~~~~~~~^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 206, in execute
+    return self.raw_function(**d, **var_kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\api\messaging_api.py", line 7362, in push_message_with_http_info
+    return self.api_client.call_api(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        '/v2/bot/message/push', 'POST',
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+        collection_formats=_collection_formats,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        _request_auth=_params.get('_request_auth'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\api_client.py", line 407, in call_api
+    return self.__call_api(resource_path, method,
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+                           path_params, query_params, header_params,
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+                           _preload_content, _request_timeout, _host,
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                           _request_auth)
+                           ^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\api_client.py", line 212, in __call_api
+    response_data = self.request(
+        method, url,
+    ...<3 lines>...
+        _preload_content=_preload_content,
+        _request_timeout=_request_timeout)
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\api_client.py", line 451, in request
+    return self.rest_client.post_request(url,
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+                                 query_params=query_params,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+                                 _request_timeout=_request_timeout,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                 body=body)
+                                 ^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\rest.py", line 270, in post_request
+    return self.request("POST", url,
+           ~~~~~~~~~~~~^^^^^^^^^^^^^
+                        headers=headers,
+                        ^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+                        _request_timeout=_request_timeout,
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        body=body)
+                        ^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\rest.py", line 156, in request
+    r = self.pool_manager.request(
+        method, url,
+    ...<2 lines>...
+        timeout=timeout,
+        headers=headers)
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.line.me', port=443): Max retries exceeded with url: /v2/bot/message/push (Caused by NameResolutionError("HTTPSConnection(host='api.line.me', port=443): Failed to resolve 'api.line.me' ([Errno 11002] getaddrinfo failed)"))
+2026-09-09 11:09:39 | INFO     | lottery_bot | Time slot 11:05 (ฮั่งเส็งเช้า) has pending lotteries. Checking now...
+2026-09-09 11:09:39 | INFO     | lottery_bot | Bot is running 24/7 on Cloud Server.
+2026-09-09 11:09:39 | INFO     | lottery_bot | === Start checking time slot (ฮั่งเส็งเช้า) (polling up to 30 min) ===
+2026-09-09 11:09:39 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 1/30...
+2026-09-09 11:09:39 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:09:44 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:09:44 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 1: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:09:54 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-09 11:10:44 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 2/30...
+2026-09-09 11:10:44 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:10:49 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:10:49 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 2: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:11:49 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 3/30...
+2026-09-09 11:11:49 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:11:56 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:11:56 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 3: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:12:56 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 4/30...
+2026-09-09 11:12:56 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:13:01 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:13:01 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 4: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:14:01 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 5/30...
+2026-09-09 11:14:01 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:14:06 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:14:06 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 5: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:15:06 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 6/30...
+2026-09-09 11:15:06 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:15:11 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:15:11 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 6: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:16:11 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 7/30...
+2026-09-09 11:16:11 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:16:16 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:16:16 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 7: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:17:16 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 8/30...
+2026-09-09 11:17:16 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:17:20 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:17:20 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 8: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:18:20 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 9/30...
+2026-09-09 11:18:20 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:18:25 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:18:25 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 9: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:19:25 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 10/30...
+2026-09-09 11:19:25 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:19:30 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:19:30 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 10: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:19:45 | INFO     | lottery_bot | ==================================================
+2026-09-09 11:19:45 | INFO     | lottery_bot | Lottery Bot starting...
+2026-09-09 11:19:45 | INFO     | lottery_bot | ==================================================
+2026-09-09 11:19:45 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-09-09 11:19:45 | INFO     | lottery_bot | Loaded 4 bots in failover chain from F:\Users\999\Desktop\บอทหวย\lotto_line_bot\data\bot_chain.json
+2026-09-09 11:19:45 | INFO     | lottery_bot | LineSender initialized with 4 bots. Active bot: [ผลหวย1] (index 1, group: C9c0af2e...)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Serving LIFF, Quick API & LINE Webhook on 0.0.0.0:8000
+2026-09-09 11:19:45 | INFO     | lottery_bot | Loaded 63 lotteries from config.json
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 09:30 (ฮานอยอาเซียน + นิเคอิเช้า) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 09:05 (นิเคอิเช้า VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 10:30 (จีนเช้า + ลาว TV) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 10:05 (จีนเช้า VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 11:05 (ฮั่งเส็งเช้า) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 10:35 (ฮั่งเส็งเช้า VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 11:30 (ฮานอย HD) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 11:35 (ไต้หวัน VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 12:30 (ฮานอย Star + ไต้หวัน) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 12:35 (เกาหลี VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 13:30 (นิเคอิบ่าย + หุ้นเกาหลี) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 13:25 (นิเคอิบ่าย VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 14:00 (จีนบ่าย) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 14:25 (จีนบ่าย VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 14:30 (ฮานอย TV) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 15:10 (ฮั่งเส็งบ่าย) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 15:25 (ฮั่งเส็งบ่าย VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 16:25 (หุ้นสิงคโปร์) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 16:30 (ฮานอย กาชาด) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 16:45 (หุ้นไทยเย็น) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 17:30 (ฮานอยสามัคคี + หวยฮานอย พิเศษ) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 17:05 (สิงคโปร์ VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 16:50 (หุ้นอินเดีย) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 18:00 (หุ้นอียิปต์) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 19:30 (ฮานอยพัฒนา + หวยฮานอย VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 22:45 (หุ้นเยอรมัน + หุ้นอังกฤษ + หุ้นรัสเซีย) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 21:50 (เยอรมันVIP + อังกฤษVIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 23:50 (รัสเซียVIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 00:30 (หวยดาวโจนส์ VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 04:30 (หวยดาวโจนส์ mid night) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 04:00 (หวยดาวโจนส์ STAR) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 05:00 (หวยดาวโจนส์ extra) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 06:00 (หวยดาวโจนส์ TV) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 09:00 (เวียดนาม VIP เช้า) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 13:00 (เวียดนาม VIP บ่าย) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 17:00 (เวียดนาม VIP เย็น) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 03:55 (หุ้นดาวโจนส์) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 15:30 (หวยไทย) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 18:30 (มาเลเซีย + หวยฮานอย) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 22:30 (ฮานอยEXTRA) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 08:30 (ลาว Extra) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 03:30 (หวยดาวโจนส์) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 10:00 (ลาวประตูชัย) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 11:00 (ลาวสันติภาพ) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 12:00 (ประชาชนลาว) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 13:45 (ลาว HD) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 15:45 (ลาว Star) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 20:30 (ลาวสามัคคี + หวยลาวพัฒนา (จ-ศ)) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 21:00 (ลาวอาเซียน) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 22:00 (หวยลาวSTAR VIP) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled time slot 23:30 (หวยลาว กาชาด + ลาวดาว) (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduled daily summary report at 23:59 (Asia/Bangkok)
+2026-09-09 11:19:45 | INFO     | lottery_bot | Scheduler started
+2026-09-09 11:19:45 | INFO     | lottery_bot | Generating Yesterday's Full Summary Report for 2026-09-08...
+2026-09-09 11:19:45 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=yesterday): https://member.smlot.net/reports/reward
+2026-09-09 11:19:50 | WARNING  | lottery_bot | Error backfilling yesterday results from SMLOT: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:19:50 | WARNING  | lottery_bot | Error backfilling yesterday results from edaylotto: 'EdaylottoClient' object has no attribute 'get_result'
+2026-09-09 11:19:50 | INFO     | lottery_bot | Sending Yesterday's Full Summary Report (30 lotteries):
+สรุปผลวันอังคาร 08-09-26
+
+┅┅┅┅┅┅┅┅┅┅┅┅┅┅
+100-16 หวยดาวโจนส์ VIP
+451-28 หวยดาวโจนส์
+451-28 หวยดาวโจนส์ STAR
+014-19 หวยดาวโจนส์ mid night
+300-21 หวยดาวโจนส์ extra
+037-49 หวยดาวโจนส์ TV
+947-38 ลาว Extra
+864-40 นิเคอิเช้า VIP
+205-64 ฮานอยอาเซียน
+513-29 นิเคอิเช้า
+824-70 ลาวประตูชัย
+891-81 จีนเช้า VIP
+205-14 จีนเช้า
+866-94 ลาว TV
+018-87 ฮั่งเส็งเช้า VIP
+649-82 ลาวสันติภาพ
+557-55 ฮั่งเส็งเช้า
+116-22 ฮานอย HD
+203-77 ประชาชนลาว
+445-94 ฮานอย Star
+578-49 ไต้หวัน
+933-51 นิเคอิบ่าย
+166-34 หุ้นเกาหลี
+625-38 ลาว HD
+321-70 จีนบ่าย
+401-97 ฮานอย TV
+718-94 ฮั่งเส็งบ่าย
+212-04 หวยไทย
+510-96 ลาว Star
+745-83 หุ้นสิงคโปร์
+┅┅┅┅┅┅┅┅┅┅┅┅┅┅
+2026-09-09 11:19:54 | ERROR    | lottery_bot | Unexpected error sending via [ผลหวย1]: HTTPSConnectionPool(host='api.line.me', port=443): Max retries exceeded with url: /v2/bot/message/push (Caused by NameResolutionError("HTTPSConnection(host='api.line.me', port=443): Failed to resolve 'api.line.me' ([Errno 11002] getaddrinfo failed)"))
+Traceback (most recent call last):
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+        (self._dns_host, self.port),
+    ...<2 lines>...
+        socket_options=self.socket_options,
+    )
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+               ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 981, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11002] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 1106, in _validate_conn
+    conn.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ~~~~~~~~~~~~~~^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connection.py", line 211, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: HTTPSConnection(host='api.line.me', port=443): Failed to resolve 'api.line.me' ([Errno 11002] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "F:\Users\999\Desktop\บอทหวย\lotto_line_bot\line_sender.py", line 207, in _push_messages
+    api.push_message(PushMessageRequest(to=group_id, messages=messages))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 40, in wrapper_function
+    return vd.call(*args, **kwargs)
+           ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 134, in call
+    return self.execute(m)
+           ~~~~~~~~~~~~^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 206, in execute
+    return self.raw_function(**d, **var_kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\api\messaging_api.py", line 7249, in push_message
+    return self.push_message_with_http_info(push_message_request, x_line_retry_key, **kwargs)  # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 40, in wrapper_function
+    return vd.call(*args, **kwargs)
+           ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 134, in call
+    return self.execute(m)
+           ~~~~~~~~~~~~^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\pydantic\v1\decorator.py", line 206, in execute
+    return self.raw_function(**d, **var_kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\api\messaging_api.py", line 7362, in push_message_with_http_info
+    return self.api_client.call_api(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        '/v2/bot/message/push', 'POST',
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+        collection_formats=_collection_formats,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        _request_auth=_params.get('_request_auth'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\api_client.py", line 407, in call_api
+    return self.__call_api(resource_path, method,
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+                           path_params, query_params, header_params,
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+                           _preload_content, _request_timeout, _host,
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                           _request_auth)
+                           ^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\api_client.py", line 212, in __call_api
+    response_data = self.request(
+        method, url,
+    ...<3 lines>...
+        _preload_content=_preload_content,
+        _request_timeout=_request_timeout)
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\api_client.py", line 451, in request
+    return self.rest_client.post_request(url,
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+                                 query_params=query_params,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+                                 _request_timeout=_request_timeout,
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                 body=body)
+                                 ^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\rest.py", line 270, in post_request
+    return self.request("POST", url,
+           ~~~~~~~~~~~~^^^^^^^^^^^^^
+                        headers=headers,
+                        ^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+                        _request_timeout=_request_timeout,
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        body=body)
+                        ^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\linebot\v3\messaging\rest.py", line 156, in request
+    r = self.pool_manager.request(
+        method, url,
+    ...<2 lines>...
+        timeout=timeout,
+        headers=headers)
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\_request_methods.py", line 143, in request
+    return self.request_encode_body(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        method, url, fields=fields, headers=headers, **urlopen_kw
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\_request_methods.py", line 278, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\poolmanager.py", line 457, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 872, in urlopen
+    return self.urlopen(
+           ~~~~~~~~~~~~^
+        method,
+        ^^^^^^^
+    ...<13 lines>...
+        **response_kw,
+        ^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\999\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\urllib3\util\retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.line.me', port=443): Max retries exceeded with url: /v2/bot/message/push (Caused by NameResolutionError("HTTPSConnection(host='api.line.me', port=443): Failed to resolve 'api.line.me' ([Errno 11002] getaddrinfo failed)"))
+2026-09-09 11:19:54 | INFO     | lottery_bot | Time slot 11:05 (ฮั่งเส็งเช้า) has pending lotteries. Checking now...
+2026-09-09 11:19:54 | INFO     | lottery_bot | Bot is running 24/7 on Cloud Server.
+2026-09-09 11:19:54 | INFO     | lottery_bot | === Start checking time slot (ฮั่งเส็งเช้า) (polling up to 30 min) ===
+2026-09-09 11:19:54 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 1/30...
+2026-09-09 11:19:54 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:19:59 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:19:59 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 1: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:20:07 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-09-09 11:20:11 | WARNING  | lottery_bot | Could not fetch edaylotto history for ฮานอย HD: HTTPSConnectionPool(host='api.edaylotto.com', port=443): Max retries exceeded with url: /api/rewardcalc/award/get_by_product/VN (Caused by NameResolutionError("HTTPSConnection(host='api.edaylotto.com', port=443): Failed to resolve 'api.edaylotto.com' ([Errno 11002] getaddrinfo failed)")) (using local DB)
+2026-09-09 11:20:59 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 2/30...
+2026-09-09 11:20:59 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:21:04 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:21:04 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 2: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:22:04 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 3/30...
+2026-09-09 11:22:04 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:22:09 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:22:09 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 3: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:23:09 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 4/30...
+2026-09-09 11:23:09 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:23:12 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:23:12 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 4: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:24:13 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 5/30...
+2026-09-09 11:24:13 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:24:17 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:24:17 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 5: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:25:17 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 6/30...
+2026-09-09 11:25:17 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:25:23 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:25:23 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 6: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:26:23 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 7/30...
+2026-09-09 11:26:23 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:26:24 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:26:24 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 7: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:27:24 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 8/30...
+2026-09-09 11:27:24 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:27:29 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:27:29 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 8: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:28:29 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 9/30...
+2026-09-09 11:28:29 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:28:34 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:28:34 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 9: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:29:34 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 10/30...
+2026-09-09 11:29:34 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:29:52 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:29:52 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 10: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:30:00 | INFO     | lottery_bot | === Start checking time slot (ฮานอย HD) (polling up to 30 min) ===
+2026-09-09 11:30:00 | INFO     | lottery_bot | (ฮานอย HD) attempt 1/30...
+2026-09-09 11:30:00 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:30:01 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:30:01 | WARNING  | lottery_bot | Error scraping ฮานอย HD on attempt 1: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://member.smlot.net/reports/reward
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:30:52 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 11/30...
+2026-09-09 11:30:52 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:31:01 | INFO     | lottery_bot | (ฮานอย HD) attempt 2/30...
+2026-09-09 11:31:23 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:31:23 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:31:23 | WARNING  | lottery_bot | Error scraping ฮั่งเส็งเช้า on attempt 11: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://member.smlot.net/reports/reward", waiting until "networkidle"
+
+2026-09-09 11:31:30 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-09 11:31:35 | INFO     | lottery_bot | Successfully fetched 28 lottery results from SMLOT
+2026-09-09 11:31:35 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย HD' is not yet available on member.smlot.net/reports/reward
+2026-09-09 11:31:35 | WARNING  | lottery_bot | ParseError for ฮานอย HD: SMLOT parser: Result for 'ฮานอย HD' is not yet available on member.smlot.net/reports/reward
+2026-09-09 11:32:17 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-09 11:32:23 | INFO     | lottery_bot | (ฮั่งเส็งเช้า) attempt 12/30...
+2026-09-09 11:32:23 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 11:32:26 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-09 11:32:29 | INFO     | lottery_bot | ==================================================
+2026-09-09 11:32:29 | INFO     | lottery_bot | Lottery Bot starting...
+2026-09-09 11:32:29 | INFO     | lottery_bot | ==================================================
+2026-09-09 11:32:29 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-09-09 11:32:29 | INFO     | lottery_bot | Loaded 4 bots in failover chain from F:\Users\999\Desktop\บอทหวย\lotto_line_bot\data\bot_chain.json
+2026-09-09 11:32:29 | INFO     | lottery_bot | LineSender initialized with 4 bots. Active bot: [ผลหวย1] (index 1, group: C9c0af2e...)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Serving LIFF, Quick API & LINE Webhook on 0.0.0.0:8000
+2026-09-09 11:32:30 | INFO     | lottery_bot | Loaded 63 lotteries from config.json
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 09:30 (ฮานอยอาเซียน + นิเคอิเช้า) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 09:05 (นิเคอิเช้า VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 10:30 (จีนเช้า + ลาว TV) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 10:05 (จีนเช้า VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 11:05 (ฮั่งเส็งเช้า) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 10:35 (ฮั่งเส็งเช้า VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 11:30 (ฮานอย HD) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 11:35 (ไต้หวัน VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 12:30 (ฮานอย Star + ไต้หวัน) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 12:35 (เกาหลี VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 13:30 (นิเคอิบ่าย + หุ้นเกาหลี) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 13:25 (นิเคอิบ่าย VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 14:00 (จีนบ่าย) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 14:25 (จีนบ่าย VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 14:30 (ฮานอย TV) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 15:10 (ฮั่งเส็งบ่าย) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 15:25 (ฮั่งเส็งบ่าย VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 16:25 (หุ้นสิงคโปร์) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 16:30 (ฮานอย กาชาด) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 16:45 (หุ้นไทยเย็น) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 17:30 (ฮานอยสามัคคี + หวยฮานอย พิเศษ) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 17:05 (สิงคโปร์ VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 16:50 (หุ้นอินเดีย) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 18:00 (หุ้นอียิปต์) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 19:30 (ฮานอยพัฒนา + หวยฮานอย VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 22:45 (หุ้นเยอรมัน + หุ้นอังกฤษ + หุ้นรัสเซีย) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 21:50 (เยอรมันVIP + อังกฤษVIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 23:50 (รัสเซียVIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 00:30 (หวยดาวโจนส์ VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 04:30 (หวยดาวโจนส์ mid night) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 04:00 (หวยดาวโจนส์ STAR) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 05:00 (หวยดาวโจนส์ extra) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 06:00 (หวยดาวโจนส์ TV) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 09:00 (เวียดนาม VIP เช้า) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 13:00 (เวียดนาม VIP บ่าย) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 17:00 (เวียดนาม VIP เย็น) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 03:55 (หุ้นดาวโจนส์) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 15:30 (หวยไทย) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 18:30 (มาเลเซีย + หวยฮานอย) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 22:30 (ฮานอยEXTRA) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 08:30 (ลาว Extra) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 03:30 (หวยดาวโจนส์) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 10:00 (ลาวประตูชัย) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 11:00 (ลาวสันติภาพ) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 12:00 (ประชาชนลาว) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 13:45 (ลาว HD) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 15:45 (ลาว Star) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 20:30 (ลาวสามัคคี + หวยลาวพัฒนา (จ-ศ)) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 21:00 (ลาวอาเซียน) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 22:00 (หวยลาวSTAR VIP) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled time slot 23:30 (หวยลาว กาชาด + ลาวดาว) (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduled daily summary report at 23:59 (Asia/Bangkok)
+2026-09-09 11:32:30 | INFO     | lottery_bot | Scheduler started
+2026-09-09 11:32:30 | INFO     | lottery_bot | Generating Yesterday's Full Summary Report for 2026-09-08...
+2026-09-09 11:32:30 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=yesterday): https://member.smlot.net/reports/reward
+2026-09-09 11:32:32 | INFO     | lottery_bot | Successfully fetched 28 lottery results from SMLOT
+2026-09-09 11:32:32 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=687 bottom2=31
+2026-09-09 11:32:32 | INFO     | lottery_bot | Prepared message:
+🇭🇰 ฮั่งเส็งเช้า
+🔺 6️⃣ 8️⃣ 7️⃣
+🔻 3️⃣ 1️⃣
+2026-09-09 11:32:32 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-09 11:32:32 | INFO     | lottery_bot | LINE message delivered successfully via [ผลหวย1] (index: 1, group: C9c0af2e...)
+2026-09-09 11:32:32 | INFO     | lottery_bot | LINE Flex Message sent successfully for ฮั่งเส็งเช้า
+2026-09-09 11:32:33 | INFO     | lottery_bot | Saved result: ฮั่งเส็งเช้า | 2026-09-09 | top3=687 bottom2=31
+2026-09-09 11:32:33 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-09-09 11:32:33 | INFO     | lottery_bot | No win for prediction 'ฮั่งเส็งเช้า' on 2026-09-09 (top3=687, bot2=31)
+2026-09-09 11:32:33 | INFO     | lottery_bot | All lotteries in group (ฮั่งเส็งเช้า) sent – stop polling
+2026-09-09 11:32:35 | INFO     | lottery_bot | (ฮานอย HD) attempt 3/30...
+2026-09-09 11:32:35 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ฮานอย HD' is not yet available on member.smlot.net/reports/reward
+2026-09-09 11:32:35 | WARNING  | lottery_bot | ParseError for ฮานอย HD: SMLOT parser: Result for 'ฮานอย HD' is not yet available on member.smlot.net/reports/reward
+2026-09-09 11:32:40 | INFO     | lottery_bot | Successfully fetched 84 lottery results from SMLOT
+2026-09-09 11:32:41 | INFO     | lottery_bot | Saved result: หวยลาวExtra | 2026-09-08 | top3=947 bottom2=38
+2026-09-09 11:32:41 | INFO     | lottery_bot | Saved result: หวยลาว TV | 2026-09-08 | top3=866 bottom2=94
+2026-09-09 11:32:42 | INFO     | lottery_bot | Saved result: ฮานอย สตาร์ | 2026-09-08 | top3=445 bottom2=94
+2026-09-09 11:32:42 | INFO     | lottery_bot | Saved result: หวยฮานอย TV | 2026-09-08 | top3=401 bottom2=97
+2026-09-09 11:32:42 | INFO     | lottery_bot | Saved result: หวยลาวสตาร์ | 2026-09-08 | top3=510 bottom2=96
+2026-09-09 11:32:43 | INFO     | lottery_bot | Saved result: หวยฮานอย กาชาด | 2026-09-08 | top3=962 bottom2=15
+2026-09-09 11:32:43 | INFO     | lottery_bot | Saved result: ฮานอย กาชาด | 2026-09-08 | top3=962 bottom2=15
+2026-09-09 11:32:43 | INFO     | lottery_bot | Saved result: ฮานอยสามัคคี | 2026-09-08 | top3=257 bottom2=34
+2026-09-09 11:32:44 | INFO     | lottery_bot | Saved result: ฮานอยพัฒนา | 2026-09-08 | top3=652 bottom2=69
+2026-09-09 11:32:44 | INFO     | lottery_bot | Saved result: หวยลาวสามัคคี | 2026-09-08 | top3=834 bottom2=78
+2026-09-09 11:32:45 | INFO     | lottery_bot | Saved result: ลาวสามัคคี | 2026-09-08 | top3=834 bottom2=78
+2026-09-09 11:32:45 | INFO     | lottery_bot | Saved result: ลาวอาเซียน | 2026-09-08 | top3=276 bottom2=32
+2026-09-09 11:32:45 | INFO     | lottery_bot | Saved result: หวยลาวสามัคคี VIP | 2026-09-08 | top3=826 bottom2=18
+2026-09-09 11:32:46 | INFO     | lottery_bot | Saved result: ลาวสามัคคี VIP | 2026-09-08 | top3=826 bottom2=18
+2026-09-09 11:32:46 | INFO     | lottery_bot | Saved result: อังกฤษVIP | 2026-09-08 | top3=716 bottom2=03
+2026-09-09 11:32:46 | INFO     | lottery_bot | Saved result: หวยลาวSTAR VIP | 2026-09-08 | top3=319 bottom2=67
+2026-09-09 11:32:47 | INFO     | lottery_bot | Saved result: เยอรมันVIP | 2026-09-08 | top3=288 bottom2=07
+2026-09-09 11:32:47 | INFO     | lottery_bot | Saved result: หวยลาว กาชาด | 2026-09-08 | top3=625 bottom2=96
+2026-09-09 11:32:47 | INFO     | lottery_bot | Saved result: รัสเซียVIP | 2026-09-08 | top3=494 bottom2=61
+2026-09-09 11:32:48 | INFO     | lottery_bot | Saved result: นิเคอิ รอบเช้า | 2026-09-08 | top3=513 bottom2=29
+2026-09-09 11:32:48 | INFO     | lottery_bot | Saved result: จีนรอบเช้า | 2026-09-08 | top3=205 bottom2=14
+2026-09-09 11:32:49 | INFO     | lottery_bot | Saved result: ฮั่งเส็งรอบเช้า | 2026-09-08 | top3=557 bottom2=55
+2026-09-09 11:32:49 | INFO     | lottery_bot | Saved result: หุ้นไต้หวัน | 2026-09-08 | top3=578 bottom2=49
+2026-09-09 11:32:49 | INFO     | lottery_bot | Saved result: นิเคอิ รอบบ่าย | 2026-09-08 | top3=933 bottom2=51
+2026-09-09 11:32:50 | INFO     | lottery_bot | Saved result: จีนรอบบ่าย | 2026-09-08 | top3=321 bottom2=70
+2026-09-09 11:32:50 | INFO     | lottery_bot | Saved result: ฮั่งเส็งรอบบ่าย | 2026-09-08 | top3=718 bottom2=94
+2026-09-09 11:32:50 | INFO     | lottery_bot | Saved result: หุ้นไทยปิดเย็น | 2026-09-08 | top3=889 bottom2=07
+2026-09-09 11:32:51 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-09 11:32:51 | INFO     | lottery_bot | Saved result: หุ้นไทยเย็น | 2026-09-08 | top3=889 bottom2=07
+2026-09-09 11:32:51 | INFO     | lottery_bot | Saved result: หุ้นอินเดีย | 2026-09-08 | top3=758 bottom2=23
+2026-09-09 11:32:52 | INFO     | lottery_bot | Saved result: หุ้นอียิปต์ | 2026-09-08 | top3=430 bottom2=53
+2026-09-09 11:32:52 | INFO     | lottery_bot | Saved result: หุ้นเยอรมัน | 2026-09-08 | top3=763 bottom2=10
+2026-09-09 11:32:53 | INFO     | lottery_bot | Saved result: หุ้นอังกฤษ | 2026-09-08 | top3=166 bottom2=47
+2026-09-09 11:32:53 | INFO     | lottery_bot | Saved result: หุ้นรัสเซีย | 2026-09-08 | top3=291 bottom2=70
+2026-09-09 11:32:54 | INFO     | lottery_bot | Saved result: นิเคอิ(เช้า) VIP | 2026-09-08 | top3=864 bottom2=40
+2026-09-09 11:32:54 | INFO     | lottery_bot | Saved result: จีน(เช้า) VIP | 2026-09-08 | top3=891 bottom2=81
+2026-09-09 11:32:55 | INFO     | lottery_bot | Saved result: ฮั่งเส็ง(เช้า) VIP | 2026-09-08 | top3=018 bottom2=87
+2026-09-09 11:32:55 | INFO     | lottery_bot | Saved result: ไต้หวัน VIP | 2026-09-08 | top3=066 bottom2=82
+2026-09-09 11:32:56 | INFO     | lottery_bot | Saved result: เกาหลี VIP | 2026-09-08 | top3=918 bottom2=48
+2026-09-09 11:32:56 | INFO     | lottery_bot | Saved result: นิเคอิ(บ่าย) VIP | 2026-09-08 | top3=622 bottom2=76
+2026-09-09 11:32:56 | INFO     | lottery_bot | Saved result: นิเคอิบ่าย VIP | 2026-09-08 | top3=622 bottom2=76
+2026-09-09 11:32:57 | INFO     | lottery_bot | Saved result: เวียดนาม VIP บ่าย | 2026-09-08 | top3=496 bottom2=28
+2026-09-09 11:32:57 | INFO     | lottery_bot | Saved result: จีน(บ่าย) VIP | 2026-09-08 | top3=509 bottom2=48
+2026-09-09 11:32:57 | INFO     | lottery_bot | Saved result: จีนบ่าย VIP | 2026-09-08 | top3=509 bottom2=48
+2026-09-09 11:32:58 | INFO     | lottery_bot | Saved result: ฮั่งเส็ง(บ่าย) VIP | 2026-09-08 | top3=770 bottom2=54
+2026-09-09 11:32:58 | INFO     | lottery_bot | Saved result: ฮั่งเส็งบ่าย VIP | 2026-09-08 | top3=770 bottom2=54
+2026-09-09 11:32:58 | INFO     | lottery_bot | Saved result: หุ้นลาว VIP | 2026-09-08 | top3=565 bottom2=37
+2026-09-09 11:32:59 | INFO     | lottery_bot | Saved result: เวียดนาม VIP เย็น | 2026-09-08 | top3=864 bottom2=03
+2026-09-09 11:32:59 | INFO     | lottery_bot | Saved result: สิงค์โปร์ VIP | 2026-09-08 | top3=068 bottom2=36
+2026-09-09 11:33:00 | INFO     | lottery_bot | Saved result: สิงคโปร์ VIP | 2026-09-08 | top3=068 bottom2=36
+2026-09-09 11:33:00 | INFO     | lottery_bot | Saved result: หวยอินเดีย VIP | 2026-09-08 | top3=175 bottom2=43
+2026-09-09 11:33:00 | INFO     | lottery_bot | Saved result: หวยฮานอย | 2026-09-08 | top3=687 bottom2=87
+2026-09-09 11:33:01 | INFO     | lottery_bot | Saved result: ฮานอยปกติ | 2026-09-08 | top3=687 bottom2=87
+2026-09-09 11:33:01 | INFO     | lottery_bot | Saved result: หวยลาว | 2026-09-08 | top3=743 bottom2=37
+2026-09-09 11:33:02 | INFO     | lottery_bot | Saved result: หวยฮานอย EXTRA | 2026-09-08 | top3=674 bottom2=10
+2026-09-09 11:33:02 | INFO     | lottery_bot | Saved result: ฮานอยEXTRA | 2026-09-08 | top3=674 bottom2=10
+2026-09-09 11:33:02 | WARNING  | lottery_bot | Error backfilling yesterday results from edaylotto: 'EdaylottoClient' object has no attribute 'get_result'
+2026-09-09 11:33:02 | INFO     | lottery_bot | Sending Yesterday's Full Summary Report (85 lotteries):
+สรุปผลวันอังคาร 08-09-26
+
+┅┅┅┅┅┅┅┅┅┅┅┅┅┅
+100-16 หวยดาวโจนส์ VIP
+451-28 หวยดาวโจนส์
+451-28 หวยดาวโจนส์ STAR
+014-19 หวยดาวโจนส์ mid night
+300-21 หวยดาวโจนส์ extra
+037-49 หวยดาวโจนส์ TV
+947-38 ลาว Extra
+864-40 นิเคอิเช้า VIP
+205-64 ฮานอยอาเซียน
+513-29 นิเคอิเช้า
+824-70 ลาวประตูชัย
+891-81 จีนเช้า VIP
+205-14 จีนเช้า
+866-94 ลาว TV
+018-87 ฮั่งเส็งเช้า VIP
+649-82 ลาวสันติภาพ
+557-55 ฮั่งเส็งเช้า
+116-22 ฮานอย HD
+066-82 ไต้หวัน VIP
+203-77 ประชาชนลาว
+445-94 ฮานอย Star
+578-49 ไต้หวัน
+918-48 เกาหลี VIP
+496-28 เวียดนาม VIP บ่าย
+622-76 นิเคอิบ่าย VIP
+933-51 นิเคอิบ่าย
+166-34 หุ้นเกาหลี
+625-38 ลาว HD
+321-70 จีนบ่าย
+509-48 จีนบ่าย VIP
+401-97 ฮานอย TV
+718-94 ฮั่งเส็งบ่าย
+770-54 ฮั่งเส็งบ่าย VIP
+212-04 หวยไทย
+510-96 ลาว Star
+745-83 หุ้นสิงคโปร์
+962-15 ฮานอย กาชาด
+889-07 หุ้นไทยเย็น
+758-23 หุ้นอินเดีย
+864-03 เวียดนาม VIP เย็น
+068-36 สิงคโปร์ VIP
+257-34 ฮานอยสามัคคี
+430-53 หุ้นอียิปต์
+687-87 หวยฮานอย
+652-69 ฮานอยพัฒนา
+834-78 ลาวสามัคคี
+276-32 ลาวอาเซียน
+716-03 อังกฤษVIP
+288-07 เยอรมันVIP
+319-67 หวยลาวSTAR VIP
+674-10 ฮานอยEXTRA
+763-10 หุ้นเยอรมัน
+166-47 หุ้นอังกฤษ
+291-70 หุ้นรัสเซีย
+625-96 หวยลาว กาชาด
+494-61 รัสเซียVIP
+947-38 หวยลาวExtra
+866-94 หวยลาว TV
+445-94 ฮานอย สตาร์
+401-97 หวยฮานอย TV
+510-96 หวยลาวสตาร์
+962-15 หวยฮานอย กาชาด
+834-78 หวยลาวสามัคคี
+826-18 หวยลาวสามัคคี VIP
+826-18 ลาวสามัคคี VIP
+513-29 นิเคอิ รอบเช้า
+205-14 จีนรอบเช้า
+557-55 ฮั่งเส็งรอบเช้า
+578-49 หุ้นไต้หวัน
+933-51 นิเคอิ รอบบ่าย
+321-70 จีนรอบบ่าย
+718-94 ฮั่งเส็งรอบบ่าย
+889-07 หุ้นไทยปิดเย็น
+864-40 นิเคอิ(เช้า) VIP
+891-81 จีน(เช้า) VIP
+018-87 ฮั่งเส็ง(เช้า) VIP
+622-76 นิเคอิ(บ่าย) VIP
+509-48 จีน(บ่าย) VIP
+770-54 ฮั่งเส็ง(บ่าย) VIP
+565-37 หุ้นลาว VIP
+068-36 สิงค์โปร์ VIP
+175-43 หวยอินเดีย VIP
+687-87 ฮานอยปกติ
+743-37 หวยลาว
+674-10 หวยฮานอย EXTRA
+┅┅┅┅┅┅┅┅┅┅┅┅┅┅
+2026-09-09 11:33:03 | INFO     | lottery_bot | LINE message delivered successfully via [ผลหวย1] (index: 1, group: C9c0af2e...)
+2026-09-09 11:33:03 | INFO     | lottery_bot | LINE text message sent successfully (1736 chars)
+2026-09-09 11:33:03 | INFO     | lottery_bot | Time slot 11:30 (ฮานอย HD) has pending lotteries. Checking now...
+2026-09-09 11:33:03 | INFO     | lottery_bot | Bot is running 24/7 on Cloud Server.
+2026-09-09 11:33:03 | INFO     | lottery_bot | === Start checking time slot (ฮานอย HD) (polling up to 30 min) ===
+2026-09-09 11:33:03 | INFO     | lottery_bot | (ฮานอย HD) attempt 1/30...
+2026-09-09 11:33:03 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=116 bottom2=22
+2026-09-09 11:33:03 | INFO     | lottery_bot | Prepared message:
+🇻🇳 ฮานอย HD
+🔺 1️⃣ 1️⃣ 6️⃣
+🔻 2️⃣ 2️⃣
+2026-09-09 11:33:03 | INFO     | lottery_bot | LINE message delivered successfully via [ผลหวย1] (index: 1, group: C9c0af2e...)
+2026-09-09 11:33:03 | INFO     | lottery_bot | LINE Flex Message sent successfully for ฮานอย HD
+2026-09-09 11:33:04 | INFO     | lottery_bot | Saved result: ฮานอย HD | 2026-09-09 | top3=116 bottom2=22
+2026-09-09 11:33:04 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-09-09 11:33:04 | WARNING  | lottery_bot.parsers.edaylotto | Edaylotto session expired (401). Refreshing login...
+2026-09-09 11:33:04 | INFO     | lottery_bot.parsers.edaylotto | Performing fresh login to edaylotto.com for user: zpy0kadbdd111
+2026-09-09 11:33:12 | INFO     | lottery_bot.parsers.edaylotto | Successfully authenticated to edaylotto! Session ID: 85348dd8-7d2e-41e3-a1aa-584152054ffe
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-08-22
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-08-23
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-08-24
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-08-25
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-08-26
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-08-27
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-08-28
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-08-29
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-08-30
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-08-31
+2026-09-09 11:33:19 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-09-01
+2026-09-09 11:33:20 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-09-02
+2026-09-09 11:33:20 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-09-03
+2026-09-09 11:33:20 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-09-04
+2026-09-09 11:33:20 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-09-05
+2026-09-09 11:33:20 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-09-06
+2026-09-09 11:33:20 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-09-07
+2026-09-09 11:33:20 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย HD already sent for 2026-09-08
+2026-09-09 11:33:21 | INFO     | lottery_bot | Successfully pushed WIN celebration for 'ฮานอย HD' to group C5f35d7b13972a7782754dee701e88e35
+2026-09-09 11:33:21 | INFO     | lottery_bot | All lotteries in group (ฮานอย HD) sent – stop polling
+2026-09-09 11:33:35 | INFO     | lottery_bot | (ฮานอย HD) attempt 4/30...
+2026-09-09 11:33:35 | INFO     | lottery_bot | All lotteries in group (ฮานอย HD) sent – stop polling
+2026-09-09 11:36:18 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-09 11:36:51 | INFO     | lottery_bot | Keep-Alive Ping to https://lotto-bot-uy9t.onrender.com -> Status 503 (Prevents Render Sleep)
+2026-09-09 11:37:27 | INFO     | lottery_bot | Database initialized at lottery_results.db
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-08-22
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-08-23
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-08-24
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-08-25
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-08-26
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-08-27
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-08-28
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-08-29
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-08-30
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-08-31
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-09-01
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-09-02
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-09-03
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-09-04
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-09-05
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-09-06
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-09-07
+2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-09-08
+2026-09-09 11:37:36 | INFO     | lottery_bot | Successfully pushed prediction for 'ฮานอย Star' to group C5f35d7b13972a7782754dee701e88e35
