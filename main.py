@@ -271,19 +271,26 @@ def start_http_server(db: Database, sender: LineSender):
 
             super().do_POST()
 
-    server = None
-    for attempt in range(5):
+    ports_to_try = [PORT]
+    for p in (10000, 8000, 8080):
+        if p not in ports_to_try:
+            ports_to_try.append(p)
+
+    def run_server_instance(port: int):
         try:
             socketserver.TCPServer.allow_reuse_address = True
-            server = socketserver.TCPServer(("0.0.0.0", PORT), Handler)
-            logger.info("Serving LIFF, Quick API & LINE Webhook on 0.0.0.0:%d", PORT)
-            break
-        except Exception as e:
-            logger.warning("HTTP server bind attempt %d failed: %s. Retrying in 2s...", attempt + 1, e)
-            time.sleep(2)
-    if server:
-        with server:
-            server.serve_forever()
+            with socketserver.TCPServer(("0.0.0.0", port), Handler) as s:
+                logger.info("Serving LIFF, Quick API & LINE Webhook on 0.0.0.0:%d", port)
+                s.serve_forever()
+        except Exception as err:
+            logger.debug("Port %d bind notice: %s", port, err)
+
+    # Launch auxiliary ports in daemon threads
+    for extra_port in ports_to_try[1:]:
+        threading.Thread(target=run_server_instance, args=(extra_port,), daemon=True).start()
+
+    # Run primary port in main server thread
+    run_server_instance(ports_to_try[0])
 
 
 def keep_alive_loop():

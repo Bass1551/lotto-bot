@@ -9,5 +9,6 @@ RUN playwright install chromium
 COPY . .
 
 EXPOSE 8000
+EXPOSE 10000
 
 CMD ["python", "main.py"]
