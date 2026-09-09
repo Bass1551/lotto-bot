@@ -205,7 +205,8 @@ class SmlotRewardParser(BaseParser):
                     page.evaluate("""() => {
                         const closeBtns = Array.from(document.querySelectorAll("button, .btn, .close, [data-dismiss='modal']"));
                         closeBtns.forEach(b => {
-                            if (b.innerText.includes("ปิด") || b.innerText.includes("Close") || b.classList.contains("close")) {
+                            const t = (b.innerText || "").trim().toLowerCase();
+                            if (t.includes("ปิด") || t.includes("close") || t === "ok" || b.classList.contains("close")) {
                                 b.click();
                             }
                         });
@@ -254,30 +255,27 @@ class SmlotRewardParser(BaseParser):
             if len(tds) < 6:
                 continue
 
-            raw_name = tds[0]
+            raw_name = tds[0].strip()
 
-            # Check date column (e.g. tds[1] or tds[2] usually contains 'DD/MM/YYYY' or 'DD-MM-YYYY')
-            # If the row has an explicit date, ensure it belongs to the target date (prevent old draws like Thai Government lotto)
-            date_match = None
+            # Check if any date cell matches expected date
+            matched_date = False
             for cell in tds[1:4]:
                 m = re.search(r"(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})", cell)
                 if m:
-                    date_match = m
-                    break
+                    d_day, d_month, d_year = int(m.group(1)), int(m.group(2)), int(m.group(3))
+                    # Adjust Buddhist calendar if needed
+                    if d_year > 2500:
+                        d_year -= 543
+                    try:
+                        from datetime import date as dt_date
+                        if dt_date(d_year, d_month, d_day) == expected_date:
+                            matched_date = True
+                            break
+                    except Exception:
+                        pass
 
-            if date_match:
-                d_day, d_month, d_year = int(date_match.group(1)), int(date_match.group(2)), int(date_match.group(3))
-                # Adjust Buddhist calendar if needed
-                if d_year > 2500:
-                    d_year -= 543
-                try:
-                    from datetime import date as dt_date
-                    row_date = dt_date(d_year, d_month, d_day)
-                    if row_date != expected_date:
-                        # Old result from previous draw date (e.g. 01/09 for Thai lottery), skip it!
-                        continue
-                except Exception:
-                    pass
+            if not matched_date:
+                continue
 
             top3 = extract_digits(tds[3], length=3)
             bottom2 = extract_digits(tds[5], length=2)
