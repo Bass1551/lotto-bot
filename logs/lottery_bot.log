@@ -26967,3 +26967,10 @@ Call log:
 2026-09-09 10:36:50 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=433 bottom2=88
 2026-09-09 10:36:50 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ลาว TV' is not yet available on member.smlot.net/reports/reward
 2026-09-09 10:36:50 | WARNING  | lottery_bot | ParseError for ลาว TV: SMLOT parser: Result for 'ลาว TV' is not yet available on member.smlot.net/reports/reward
+2026-09-09 10:37:50 | INFO     | lottery_bot | (จีนเช้า + ลาว TV) attempt 8/30...
+2026-09-09 10:37:50 | INFO     | lottery_bot | Opening SMLOT report page via Playwright (date_type=today): https://member.smlot.net/reports/reward
+2026-09-09 10:37:52 | INFO     | lottery_bot | SMLOT requires login. Logging in with user 'bdd***'...
+2026-09-09 10:37:57 | INFO     | lottery_bot | Successfully fetched 22 lottery results from SMLOT
+2026-09-09 10:37:57 | INFO     | lottery_bot.parsers | Parsed SMLOT Reward Report → top3=433 bottom2=88
+2026-09-09 10:37:57 | ERROR    | lottery_bot.parsers | Parser SMLOT Reward Report failed: SMLOT parser: Result for 'ลาว TV' is not yet available on member.smlot.net/reports/reward
+2026-09-09 10:37:57 | WARNING  | lottery_bot | ParseError for ลาว TV: SMLOT parser: Result for 'ลาว TV' is not yet available on member.smlot.net/reports/reward

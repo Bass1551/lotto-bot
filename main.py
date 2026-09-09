@@ -39,6 +39,16 @@ def start_http_server(db: Database, sender: LineSender):
                 self.end_headers()
                 self.wfile.write(b"OK")
                 return
+            if self.path == "/api/last_group":
+                self.send_response(200)
+                self.send_header("Content-Type", "text/plain; charset=utf-8")
+                self.end_headers()
+                try:
+                    with open("data/last_captured_group.txt", "r", encoding="utf-8") as f:
+                        self.wfile.write(f.read().encode("utf-8"))
+                except Exception:
+                    self.wfile.write(b"")
+                return
             super().do_GET()
 
         def do_POST(self):
