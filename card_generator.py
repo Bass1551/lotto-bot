@@ -12,10 +12,31 @@ from utils import setup_logging
 
 logger = setup_logging()
 
-# Load fonts once
-FONT_TITLE = ImageFont.truetype("C:/Windows/Fonts/LeelaUIb.ttf", 44)
-FONT_LABEL = ImageFont.truetype("C:/Windows/Fonts/LeelaUIb.ttf", 28)
-FONT_NUM = ImageFont.truetype("C:/Windows/Fonts/LeelaUIb.ttf", 76)
+def _load_safe_font(size: int):
+    font_candidates = [
+        "C:/Windows/Fonts/LeelaUIb.ttf",
+        "C:/Windows/Fonts/tahoma.ttf",
+        "C:/Windows/Fonts/arial.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
+        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+    ]
+    for candidate in font_candidates:
+        if os.path.exists(candidate):
+            try:
+                return ImageFont.truetype(candidate, size)
+            except Exception:
+                pass
+    try:
+        return ImageFont.load_default(size=size)
+    except Exception:
+        return ImageFont.load_default()
+
+
+# Load fonts once with cross-platform safety
+FONT_TITLE = _load_safe_font(44)
+FONT_LABEL = _load_safe_font(28)
+FONT_NUM = _load_safe_font(76)
 
 
 def generate_card_image(
