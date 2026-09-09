@@ -222,14 +222,21 @@ def start_http_server(db: Database, sender: LineSender):
                             txt = ev["message"]["text"].strip()
                             reply_token = ev.get("replyToken")
                             
-                            # 0) Handle 'ขอ [ชื่อหวย]', 'ขอแนวทาง [ชื่อหวย]', 'แนวทาง [ชื่อหวย]'
-                            pred_match = re.match(r"^(?:ขอ(?:แนวทาง)?|แนวทาง)\s*(?P<query>.+)$", txt, re.IGNORECASE)
+                            # 0) Handle 'ขอ...', 'ขอแนวทาง...', 'แนวทาง...', 'ขอดู...', 'ขอเลข...' or colloquial shorthand
+                            from predictor_bot import PredictorBot, resolve_lottery
+                            target_name = None
+                            flag = "🎯"
+
+                            pred_match = re.match(r"^(?:ขอ(?:แนวทาง|ดู|เลข)?|แนวทาง|เลข)\s*(?P<query>.+)$", txt, re.IGNORECASE)
                             if pred_match:
                                 q = pred_match.group("query").strip()
-                                from predictor_bot import PredictorBot, resolve_lottery
                                 target_name, flag = resolve_lottery(q)
-                                if target_name:
-                                    pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
+                            else:
+                                if len(txt) <= 25 and txt not in ["สวัสดี", "ดีครับ", "ดีค่ะ", "ทดสอบ", "เทส", "test", "hi", "hello", "ok"]:
+                                    target_name, flag = resolve_lottery(txt)
+
+                            if target_name:
+                                pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
                                     candidate_tokens = []
                                     try:
                                         candidate_tokens.append(pbot.get_token())

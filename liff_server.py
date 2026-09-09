@@ -57,16 +57,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                         txt = ev["message"]["text"].strip()
                         reply_token = ev.get("replyToken")
 
-                        # Handle 'ขอ [ชื่อหวย]', 'ขอแนวทาง [ชื่อหวย]', 'แนวทาง [ชื่อหวย]'
-                        pred_match = re.match(r"^(?:ขอ(?:แนวทาง)?|แนวทาง)\s*(?P<query>.+)$", txt, re.IGNORECASE)
+                        # Handle 'ขอ...', 'ขอแนวทาง...', 'แนวทาง...', 'ขอดู...', 'ขอเลข...' or colloquial shorthand
+                        from predictor_bot import PredictorBot, resolve_lottery
+                        target_name = None
+                        flag = "🎯"
+
+                        pred_match = re.match(r"^(?:ขอ(?:แนวทาง|ดู|เลข)?|แนวทาง|เลข)\s*(?P<query>.+)$", txt, re.IGNORECASE)
                         if pred_match:
                             q = pred_match.group("query").strip()
+                            target_name, flag = resolve_lottery(q)
+                        else:
+                            if len(txt) <= 25 and txt not in ["สวัสดี", "ดีครับ", "ดีค่ะ", "ทดสอบ", "เทส", "test", "hi", "hello", "ok"]:
+                                target_name, flag = resolve_lottery(txt)
+
+                        if target_name:
                             try:
-                                from predictor_bot import PredictorBot, resolve_lottery
-                                target_name, flag = resolve_lottery(q)
-                                if target_name:
-                                    pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
-                                    pbot.reply_or_push_prediction(target_name, flag=flag, reply_token=reply_token, group_id=gid)
+                                pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
+                                pbot.reply_or_push_prediction(target_name, flag=flag, reply_token=reply_token, group_id=gid)
                             except Exception as pe:
                                 print(f"[Webhook] Predictor error: {pe}")
             except Exception as e:
