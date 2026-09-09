@@ -514,33 +514,22 @@ class LotteryScheduler:
                     collected_results.remove(item)
 
                 if collected_results:
-                    is_group_full = (len(collected_results) == len(pending_lottos)) or (attempt == max_attempts)
-                    is_single = (len(lotto_list) == 1)
-
-                    if is_group_full or is_single:
-                        if len(collected_results) > 1:
-                            # Combined card for multiple ready lotteries
-                            items_to_send = []
-                            for item in collected_results:
-                                l = item["lotto"]
-                                r = item["result"]
-                                items_to_send.append({
-                                    "name": l["name"],
-                                    "top3": r["top3"],
-                                    "bottom2": r["bottom2"],
-                                    "flag": l.get("flag", "🎯")
-                                })
-                            
-                            if self.sender:
-                                ok = self.sender.send_combined_result_flex(items_to_send)
-                                if ok:
-                                    for item in collected_results:
-                                        l = item["lotto"]
-                                        r = item["result"]
-                                        self.db.save_result(l["name"], r["top3"], r["bottom2"], r.get("full", ""), result_date=today)
-                                        if l in pending_lottos:
-                                            pending_lottos.remove(l)
-                            else:
+                    if len(collected_results) > 1:
+                        # Combined card for multiple ready lotteries in same attempt
+                        items_to_send = []
+                        for item in collected_results:
+                            l = item["lotto"]
+                            r = item["result"]
+                            items_to_send.append({
+                                "name": l["name"],
+                                "top3": r["top3"],
+                                "bottom2": r["bottom2"],
+                                "flag": l.get("flag", "🎯")
+                            })
+                        
+                        if self.sender:
+                            ok = self.sender.send_combined_result_flex(items_to_send)
+                            if ok:
                                 for item in collected_results:
                                     l = item["lotto"]
                                     r = item["result"]
@@ -548,13 +537,20 @@ class LotteryScheduler:
                                     if l in pending_lottos:
                                         pending_lottos.remove(l)
                         else:
-                            # Send single ready lottery
-                            item = collected_results[0]
-                            l = item["lotto"]
-                            r = item["result"]
-                            self._send_and_save(l, r, today=today)
-                            if l in pending_lottos:
-                                pending_lottos.remove(l)
+                            for item in collected_results:
+                                l = item["lotto"]
+                                r = item["result"]
+                                self.db.save_result(l["name"], r["top3"], r["bottom2"], r.get("full", ""), result_date=today)
+                                if l in pending_lottos:
+                                    pending_lottos.remove(l)
+                    else:
+                        # Send single ready lottery immediately! Do NOT hold hostage for group partner!
+                        item = collected_results[0]
+                        l = item["lotto"]
+                        r = item["result"]
+                        self._send_and_save(l, r, today=today)
+                        if l in pending_lottos:
+                            pending_lottos.remove(l)
 
             if not pending_lottos:
                 logger.info("All lotteries in group (%s) sent – stop polling", names_title)

@@ -433,7 +433,7 @@ def passive_results_harvester_loop(db: Database):
         except Exception as exc:
             logger.debug("Passive harvester iteration notice: %s", exc)
 
-        time.sleep(180)
+        time.sleep(30)
 
 
 def main() -> None:
