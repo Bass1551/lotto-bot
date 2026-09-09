@@ -169,12 +169,13 @@ def start_http_server(db: Database, sender: LineSender):
                     events = data.get("events", [])
                     for ev in events:
                         source = ev.get("source", {})
-                        if source.get("type") == "group":
-                            gid = source.get("groupId")
-                            logger.info("LINE Webhook group source captured: %s", gid)
+                        source_type = source.get("type")
+                        target_id = source.get("groupId") or source.get("roomId") or source.get("userId")
+                        if source_type == "group" and target_id:
+                            logger.info("LINE Webhook group source captured: %s", target_id)
                             try:
                                 with open("data/last_captured_group.txt", "w", encoding="utf-8") as f:
-                                    f.write(gid)
+                                    f.write(target_id)
                             except Exception:
                                 pass
 
@@ -190,7 +191,23 @@ def start_http_server(db: Database, sender: LineSender):
                                 target_name, flag = resolve_lottery(q)
                                 if target_name:
                                     pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
-                                    pbot.reply_or_push_prediction(target_name, flag=flag, reply_token=reply_token, group_id=gid)
+                                    candidate_tokens = []
+                                    try:
+                                        candidate_tokens.append(pbot.get_token())
+                                    except Exception:
+                                        pass
+                                    if hasattr(sender, "bot_chain"):
+                                        for b in sender.bot_chain:
+                                            tok = b.get("token")
+                                            if tok and tok not in candidate_tokens:
+                                                candidate_tokens.append(tok)
+                                    pbot.reply_or_push_prediction(
+                                        target_name,
+                                        flag=flag,
+                                        reply_token=reply_token,
+                                        group_id=target_id,
+                                        candidate_tokens=candidate_tokens
+                                    )
                                 continue
 
                             # 1) Handle 'สถิติ [ชื่อหวย]' command

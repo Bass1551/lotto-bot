@@ -446,34 +446,56 @@ class PredictorBot:
             "contents": flex_dict
         }
 
-    def reply_or_push_prediction(self, lottery_name: str, flag: str = "🎯", reply_token: Optional[str] = None, group_id: Optional[str] = None) -> bool:
-        """Reply via LINE reply token if available, or push to group."""
+    def reply_or_push_prediction(
+        self,
+        lottery_name: str,
+        flag: str = "🎯",
+        reply_token: Optional[str] = None,
+        group_id: Optional[str] = None,
+        candidate_tokens: Optional[List[str]] = None,
+    ) -> bool:
+        """Reply via LINE reply token if available, or push to group/user."""
         pred = self.engine.calculate_prediction(lottery_name)
         if not pred:
             logger.error("Could not calculate prediction for '%s'", lottery_name)
             return False
 
         flex_msg = self.build_flex_message(flag, pred)
-        token = self.get_token()
+        tokens = list(candidate_tokens or [])
+        try:
+            p_token = self.get_token()
+            if p_token not in tokens:
+                tokens.insert(0, p_token)
+        except Exception:
+            pass
 
         if reply_token:
-            try:
-                res = requests.post(
-                    "https://api.line.me/v2/bot/message/reply",
-                    headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-                    json={"replyToken": reply_token, "messages": [flex_msg]},
-                    timeout=5
-                )
-                if res.status_code == 200:
-                    logger.info("Successfully replied prediction for '%s'", lottery_name)
-                    self.record_requested_lottery(lottery_name)
-                    return True
-            except Exception as exc:
-                logger.warning("Reply token failed, falling back to push: %s", exc)
+            for tok in tokens:
+                try:
+                    res = requests.post(
+                        "https://api.line.me/v2/bot/message/reply",
+                        headers={"Authorization": f"Bearer {tok}", "Content-Type": "application/json"},
+                        json={"replyToken": reply_token, "messages": [flex_msg]},
+                        timeout=5
+                    )
+                    if res.status_code == 200:
+                        logger.info("Successfully replied prediction for '%s'", lottery_name)
+                        self.record_requested_lottery(lottery_name)
+                        return True
+                    else:
+                        logger.debug("Reply failed with token (...%s): status %s - %s", tok[-8:] if len(tok) >= 8 else "", res.status_code, res.text)
+                except Exception as exc:
+                    logger.warning("Reply token attempt error: %s", exc)
 
-        return self.send_prediction(lottery_name, flag=flag, group_id=group_id)
+        return self.send_prediction(lottery_name, flag=flag, group_id=group_id, candidate_tokens=tokens)
 
-    def send_prediction(self, lottery_name: str, flag: str = "🎯", group_id: Optional[str] = None) -> bool:
+    def send_prediction(
+        self,
+        lottery_name: str,
+        flag: str = "🎯",
+        group_id: Optional[str] = None,
+        candidate_tokens: Optional[List[str]] = None,
+    ) -> bool:
         target_group = group_id or self.get_group_id()
         if not target_group:
             logger.error("Cannot send prediction: No dedicated group_id found.")
@@ -485,31 +507,38 @@ class PredictorBot:
             return False
 
         flex_msg = self.build_flex_message(flag, pred)
-        token = self.get_token()
-
+        tokens = list(candidate_tokens or [])
         try:
-            res = requests.post(
-                "https://api.line.me/v2/bot/message/push",
-                headers={
-                    "Authorization": f"Bearer {token}",
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "to": target_group,
-                    "messages": [flex_msg]
-                },
-                timeout=10,
-            )
-            if res.status_code == 200:
-                logger.info("Successfully pushed prediction for '%s' to group %s", lottery_name, target_group)
-                self.record_requested_lottery(lottery_name)
-                return True
-            else:
-                logger.error("Failed to push prediction: %d %s", res.status_code, res.text)
-                return False
-        except Exception as e:
-            logger.error("Exception pushing prediction: %s", e)
-            return False
+            p_token = self.get_token()
+            if p_token not in tokens:
+                tokens.insert(0, p_token)
+        except Exception:
+            pass
+
+        for tok in tokens:
+            try:
+                res = requests.post(
+                    "https://api.line.me/v2/bot/message/push",
+                    headers={
+                        "Authorization": f"Bearer {tok}",
+                        "Content-Type": "application/json",
+                    },
+                    json={
+                        "to": target_group,
+                        "messages": [flex_msg]
+                    },
+                    timeout=10,
+                )
+                if res.status_code == 200:
+                    logger.info("Prediction for '%s' successfully pushed to %s", lottery_name, target_group)
+                    self.record_requested_lottery(lottery_name)
+                    return True
+                else:
+                    logger.warning("Push failed with token (...%s): status %s - %s", tok[-8:] if len(tok) >= 8 else "", res.status_code, res.text)
+            except Exception as e:
+                logger.error("Error pushing prediction to LINE: %s", e)
+
+        return False
 
 
     def build_win_flex_message(self, flag: str, lottery_name: str, top3: str, bottom2: str, hits: List[Dict[str, str]]) -> Dict[str, Any]:
