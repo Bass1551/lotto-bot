@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 *.db
+!lottery_results.db
 *.db-*
 *.log
 *.png
