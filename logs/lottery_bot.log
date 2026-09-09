@@ -28490,3 +28490,4 @@ Call log:
 2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-09-07
 2026-09-09 11:37:34 | WARNING  | lottery_bot | Duplicate prevented: ฮานอย Star already sent for 2026-09-08
 2026-09-09 11:37:36 | INFO     | lottery_bot | Successfully pushed prediction for 'ฮานอย Star' to group C5f35d7b13972a7782754dee701e88e35
+2026-09-09 11:42:23 | INFO     | lottery_bot | Database initialized at lottery_results.db

@@ -31,7 +31,7 @@ EDAYLOTTO_CODE_MAP = {
     # Hanoi Regular (18:30)
     "หวยฮานอย": "VN",
     "ฮานอยปกติ": "VN",
-    "ฮานอย": "VN",
+    "หวยฮานอย ปกติ": "VN",
     # Hanoi VIP (19:30)
     "หวยฮานอย VIP": "HC2",
     "ฮานอย VIP": "HC2",
@@ -45,14 +45,9 @@ EDAYLOTTO_CODE_MAP = {
 
 
 def get_product_code(lottery_name: str) -> Optional[str]:
-    """Map lottery name to edaylotto product code."""
+    """Map lottery name to edaylotto product code strictly by exact match."""
     cleaned = lottery_name.strip()
-    if cleaned in EDAYLOTTO_CODE_MAP:
-        return EDAYLOTTO_CODE_MAP[cleaned]
-    for k, v in EDAYLOTTO_CODE_MAP.items():
-        if k in cleaned or cleaned in k:
-            return v
-    return None
+    return EDAYLOTTO_CODE_MAP.get(cleaned)
 
 
 class EdaylottoClient:
