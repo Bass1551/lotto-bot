@@ -327,12 +327,28 @@ class LotteryScheduler:
         self.sender.send_text(report_text)
 
     def send_yesterday_summary(self) -> None:
-        """Send yesterday's summary report for ALL lotteries from website into the LINE group upon startup."""
+        """Send yesterday's summary report for ALL lotteries from website into the LINE group upon startup.
+        Protected against duplicate sending if bot restarts within the same day.
+        """
         if not self.sender:
             logger.warning("No sender configured – cannot send yesterday summary report")
             return
 
-        yesterday = datetime.now(TZ).date() - timedelta(days=1)
+        today = datetime.now(TZ).date()
+        sent_log_path = "data/sent_yesterday_summaries.json"
+        sent_dates = set()
+        if os.path.exists(sent_log_path):
+            try:
+                with open(sent_log_path, "r", encoding="utf-8") as f:
+                    sent_dates = set(json.load(f))
+            except Exception:
+                pass
+
+        if today.isoformat() in sent_dates:
+            logger.info("Yesterday summary for %s already sent today (%s). Skipping to avoid duplicate on restart.", today - timedelta(days=1), today)
+            return
+
+        yesterday = today - timedelta(days=1)
         logger.info("Generating Yesterday's Full Summary Report for %s...", yesterday)
         is_weekend = (yesterday.weekday() in (5, 6))
 
@@ -350,10 +366,19 @@ class LotteryScheduler:
 
             report_text = generate_summary_report(sorted_results, target_date=yesterday)
             logger.info("Sending Yesterday's Full Summary Report (%d lotteries):\n%s", len(sorted_results), report_text)
-            self.sender.send_text(report_text)
+            ok = self.sender.send_text(report_text)
+            if ok:
+                sent_dates.add(today.isoformat())
+                try:
+                    with open(sent_log_path, "w", encoding="utf-8") as f:
+                        json.dump(list(sent_dates), f)
+                except Exception:
+                    pass
 
     def check_pending_due_today(self) -> None:
-        """Check and send any lotteries whose draw time has passed today and not sent yet."""
+        """Check and send any lotteries whose draw time has passed today and not sent yet.
+        Early morning (<08:00) only backfills regular Dow Jones, skipping variants.
+        """
         now_dt = datetime.now(TZ)
         today = now_dt.date()
         is_weekend = (today.weekday() in (5, 6))
@@ -362,6 +387,12 @@ class LotteryScheduler:
         grouped_by_time = defaultdict(list)
         for lotto in self.lotteries:
             name = lotto["name"]
+
+            # Filter early morning (< 08:00): Only allow regular Dow Jones
+            if current_time_str < "08:00":
+                if "ดาวโจนส์" in name and name != "หวยดาวโจนส์":
+                    continue
+
             if is_weekend:
                 if not lotto.get("weekend", False):
                     continue

@@ -256,6 +256,7 @@ def main() -> None:
     bot.start()
     bot.send_yesterday_summary()
     bot.check_pending_due_today()
+    bot.send_history_by_names(["ลาว Extra"])
 
     def handle_signal(signum, frame):
         logger.info("Received signal %s – shutting down...", signum)
