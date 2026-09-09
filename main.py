@@ -72,8 +72,19 @@ def start_http_server(db: Database, sender: LineSender):
                     t_str = l.get("time", "00:00")
                     flag = l.get("flag", "🎯")
                     off_url = get_official_url(name)
-                    is_sent = name in sent_map
-                    res_obj = sent_map.get(name, {})
+
+                    res_obj = sent_map.get(name)
+                    if not res_obj:
+                        clean_target = name.replace("หวย", "").replace("หุ้น", "").replace(" ", "").replace("์", "").lower()
+                        for k, v in sent_map.items():
+                            clean_k = k.replace("หวย", "").replace("หุ้น", "").replace(" ", "").replace("์", "").lower()
+                            if clean_target == clean_k or (clean_target in clean_k and len(clean_target) >= 3):
+                                res_obj = v
+                                break
+
+                    is_sent = res_obj is not None
+                    if not res_obj:
+                        res_obj = {}
 
                     if is_sent:
                         status = "sent"
@@ -95,6 +106,9 @@ def start_http_server(db: Database, sender: LineSender):
                         "official_url": off_url,
                         "smlot_url": "https://member.smlot.net/",
                     })
+
+                # Sort chronologically by draw time (e.g. 00:30 -> 09:00 -> 23:50)
+                items.sort(key=lambda x: x.get("time", "00:00"))
 
                 resp_data = {
                     "today": today_str,
