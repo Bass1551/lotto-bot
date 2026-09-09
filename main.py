@@ -109,7 +109,19 @@ def start_http_server(db: Database, sender: LineSender):
 
                         if ev.get("type") == "message" and ev.get("message", {}).get("type") == "text":
                             txt = ev["message"]["text"].strip()
+                            reply_token = ev.get("replyToken")
                             
+                            # 0) Handle 'ขอ [ชื่อหวย]', 'ขอแนวทาง [ชื่อหวย]', 'แนวทาง [ชื่อหวย]'
+                            pred_match = re.match(r"^(?:ขอ(?:แนวทาง)?|แนวทาง)\s*(?P<query>.+)$", txt, re.IGNORECASE)
+                            if pred_match:
+                                q = pred_match.group("query").strip()
+                                from predictor_bot import PredictorBot, resolve_lottery
+                                target_name, flag = resolve_lottery(q)
+                                if target_name:
+                                    pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
+                                    pbot.reply_or_push_prediction(target_name, flag=flag, reply_token=reply_token, group_id=gid)
+                                continue
+
                             # 1) Handle 'สถิติ [ชื่อหวย]' command
                             if txt.startswith("สถิติ"):
                                 lotto_query = txt.replace("สถิติ", "").strip()
@@ -188,12 +200,19 @@ def start_http_server(db: Database, sender: LineSender):
 
             super().do_POST()
 
-    try:
-        with socketserver.TCPServer(("0.0.0.0", PORT), Handler) as httpd:
+    server = None
+    for attempt in range(5):
+        try:
+            socketserver.TCPServer.allow_reuse_address = True
+            server = socketserver.TCPServer(("0.0.0.0", PORT), Handler)
             logger.info("Serving LIFF, Quick API & LINE Webhook on 0.0.0.0:%d", PORT)
-            httpd.serve_forever()
-    except Exception as e:
-        logger.error("HTTP server error: %s", e)
+            break
+        except Exception as e:
+            logger.warning("HTTP server bind attempt %d failed: %s. Retrying in 2s...", attempt + 1, e)
+            time.sleep(2)
+    if server:
+        with server:
+            server.serve_forever()
 
 
 def keep_alive_loop():
