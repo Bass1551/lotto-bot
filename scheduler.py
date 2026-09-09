@@ -11,6 +11,7 @@ Rules:
 
 from __future__ import annotations
 
+import os
 import json
 import time
 from collections import defaultdict
@@ -388,10 +389,10 @@ class LotteryScheduler:
         for lotto in self.lotteries:
             name = lotto["name"]
 
-            # Filter early morning (< 08:00): Only allow regular Dow Jones
-            if current_time_str < "08:00":
-                if "ดาวโจนส์" in name and name != "หวยดาวโจนส์":
-                    continue
+            # Filter Dow Jones variants on pending check: Only allow regular Dow Jones ("หวยดาวโจนส์")
+            # Other variants (VIP, extra, STAR, TV, mid night, etc.) are only reported in daily summary
+            if "ดาวโจนส์" in name and name != "หวยดาวโจนส์":
+                continue
 
             if is_weekend:
                 if not lotto.get("weekend", False):
@@ -491,7 +492,7 @@ class LotteryScheduler:
                     continue
 
                 try:
-                    res = self._scrape(lotto)
+                    res = self._scrape(lotto, target_date=today)
                     if res:
                         collected_results.append({
                             "lotto": lotto,
@@ -501,26 +502,45 @@ class LotteryScheduler:
                     logger.warning("Error scraping %s on attempt %d: %s", lotto["name"], attempt, exc)
 
             if collected_results:
-                is_group_full = (len(collected_results) == len(pending_lottos)) or (attempt == max_attempts)
-                is_single = (len(lotto_list) == 1)
+                # Lotteries that must ALWAYS be sent individually (never combined into a joint card, never wait for each other)
+                ALWAYS_SINGLE = {"นิเคอิบ่าย", "หุ้นเกาหลี"}
+                single_items = [item for item in collected_results if item["lotto"]["name"] in ALWAYS_SINGLE]
+                for item in single_items:
+                    l = item["lotto"]
+                    r = item["result"]
+                    self._send_and_save(l, r, today=today)
+                    if l in pending_lottos:
+                        pending_lottos.remove(l)
+                    collected_results.remove(item)
 
-                if is_group_full or is_single:
-                    if len(collected_results) > 1:
-                        # Combined card for multiple ready lotteries
-                        items_to_send = []
-                        for item in collected_results:
-                            l = item["lotto"]
-                            r = item["result"]
-                            items_to_send.append({
-                                "name": l["name"],
-                                "top3": r["top3"],
-                                "bottom2": r["bottom2"],
-                                "flag": l.get("flag", "🎯")
-                            })
-                        
-                        if self.sender:
-                            ok = self.sender.send_combined_result_flex(items_to_send)
-                            if ok:
+                if collected_results:
+                    is_group_full = (len(collected_results) == len(pending_lottos)) or (attempt == max_attempts)
+                    is_single = (len(lotto_list) == 1)
+
+                    if is_group_full or is_single:
+                        if len(collected_results) > 1:
+                            # Combined card for multiple ready lotteries
+                            items_to_send = []
+                            for item in collected_results:
+                                l = item["lotto"]
+                                r = item["result"]
+                                items_to_send.append({
+                                    "name": l["name"],
+                                    "top3": r["top3"],
+                                    "bottom2": r["bottom2"],
+                                    "flag": l.get("flag", "🎯")
+                                })
+                            
+                            if self.sender:
+                                ok = self.sender.send_combined_result_flex(items_to_send)
+                                if ok:
+                                    for item in collected_results:
+                                        l = item["lotto"]
+                                        r = item["result"]
+                                        self.db.save_result(l["name"], r["top3"], r["bottom2"], r.get("full", ""), result_date=today)
+                                        if l in pending_lottos:
+                                            pending_lottos.remove(l)
+                            else:
                                 for item in collected_results:
                                     l = item["lotto"]
                                     r = item["result"]
@@ -528,20 +548,13 @@ class LotteryScheduler:
                                     if l in pending_lottos:
                                         pending_lottos.remove(l)
                         else:
-                            for item in collected_results:
-                                l = item["lotto"]
-                                r = item["result"]
-                                self.db.save_result(l["name"], r["top3"], r["bottom2"], r.get("full", ""), result_date=today)
-                                if l in pending_lottos:
-                                    pending_lottos.remove(l)
-                    else:
-                        # Send single ready lottery
-                        item = collected_results[0]
-                        l = item["lotto"]
-                        r = item["result"]
-                        self._send_and_save(l, r, today=today)
-                        if l in pending_lottos:
-                            pending_lottos.remove(l)
+                            # Send single ready lottery
+                            item = collected_results[0]
+                            l = item["lotto"]
+                            r = item["result"]
+                            self._send_and_save(l, r, today=today)
+                            if l in pending_lottos:
+                                pending_lottos.remove(l)
 
             if not pending_lottos:
                 logger.info("All lotteries in group (%s) sent – stop polling", names_title)
@@ -552,14 +565,14 @@ class LotteryScheduler:
 
         logger.error("Group (%s): timeout after %d attempts", names_title, max_attempts)
 
-    def _scrape(self, lotto: dict[str, Any]) -> dict[str, str] | None:
+    def _scrape(self, lotto: dict[str, Any], target_date: date | None = None) -> dict[str, str] | None:
         """Run the appropriate parser with Fast Direct priority and SMLOT fallback."""
         name = lotto["name"]
 
-        # 1. Fast Direct Scraper Priority (sub-second official APIs)
+        # 1. Fast Direct Scraper Priority (sub-second official APIs & direct sources)
         try:
             from parsers.direct_scraper import scrape_direct_official
-            direct_res = scrape_direct_official(name)
+            direct_res = scrape_direct_official(name, target_date=target_date)
             if direct_res and len(direct_res.get("top3", "")) == 3 and len(direct_res.get("bottom2", "")) == 2:
                 logger.info("Fast Direct result accepted for '%s': %s-%s", name, direct_res["top3"], direct_res["bottom2"])
                 return direct_res

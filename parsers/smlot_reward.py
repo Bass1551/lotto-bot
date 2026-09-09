@@ -138,8 +138,8 @@ class SmlotRewardParser(BaseParser):
     url = "https://member.smlot.net/reports/reward"
     use_playwright = True
 
-    _cache_data: dict[str, dict[str, str]] = {}
-    _cache_time: float = 0.0
+    _cache_data: dict[str, dict[str, dict[str, str]]] = {"today": {}, "yesterday": {}}
+    _cache_time: dict[str, float] = {"today": 0.0, "yesterday": 0.0}
     _CACHE_TTL_SECONDS: float = 60.0
     _lock = threading.Lock()
 
@@ -151,8 +151,10 @@ class SmlotRewardParser(BaseParser):
     def fetch_all_smlot_results(cls, force_refresh: bool = False, date_type: str = "today") -> dict[str, dict[str, str]]:
         with cls._lock:
             now = time.time()
-            if not force_refresh and date_type == "today" and cls._cache_data and (now - cls._cache_time < cls._CACHE_TTL_SECONDS):
-                return cls._cache_data
+            cached_res = cls._cache_data.get(date_type, {})
+            cached_time = cls._cache_time.get(date_type, 0.0)
+            if not force_refresh and cached_res and (now - cached_time < cls._CACHE_TTL_SECONDS):
+                return cached_res
 
             username = os.getenv("SMLOT_USERNAME", "").strip() or "bdd999bas"
             password = os.getenv("SMLOT_PASSWORD", "").strip() or "Dd123456."
@@ -235,9 +237,9 @@ class SmlotRewardParser(BaseParser):
             if not results:
                 raise ParseError("No lottery results table found on member.smlot.net/reports/reward")
 
-            cls._cache_data = results
-            cls._cache_time = now
-            logger.info("Successfully fetched %d lottery results from SMLOT", len(results))
+            cls._cache_data[date_type] = results
+            cls._cache_time[date_type] = now
+            logger.info("Successfully fetched %d lottery results from SMLOT (date_type=%s)", len(results), date_type)
             return results
 
     @classmethod

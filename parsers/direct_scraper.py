@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Direct Scrapers for Official Lottery Websites.
-Extracts results directly from source pages & APIs with maximum speed and fallback safety.
+Extracts results directly from source pages and APIs with maximum speed,
+strict date verification, and seamless fallback safety.
 """
 
 from __future__ import annotations
@@ -9,7 +10,7 @@ from __future__ import annotations
 import re
 import time
 import logging
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from typing import Optional, Dict, Any
 from zoneinfo import ZoneInfo
 
@@ -23,6 +24,120 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
 }
+
+# ---------------------------------------------------------
+# Official Website URL Reference Directory
+# ---------------------------------------------------------
+OFFICIAL_URL_MAP: dict[str, str] = {
+    # Hanoi APIs
+    "ฮานอย HD": "https://xosohd.com/",
+    "ฮานอย Star": "https://minhngocstar.com/",
+    "ฮานอย TV": "https://minhngoctv.com/",
+    "ฮานอย กาชาด": "https://xosoredcross.com/",
+    "ฮานอยEXTRA": "https://xosoextra.com/",
+    "ฮานอยอาเซียน": "https://hanoiasean.com/",
+    "ฮานอยพัฒนา": "https://xosohd.com/",
+    "ฮานอย (ปกติ)": "https://xosohd.com/",
+    "ฮานอย VIP": "https://xosohd.com/",
+    # Lao APIs & Sites
+    "ลาว Extra": "https://laoextra.com/",
+    "ลาว TV": "https://lao-tv.com/",
+    "ลาว Star": "https://laostars.com/",
+    "หวยลาว กาชาด": "https://lao-redcross.com/",
+    "ลาวกาชาด": "https://lao-redcross.com/",
+    "ลาว กาชาด": "https://lao-redcross.com/",
+    "ลาวสามัคคี": "https://www.laounion.com/",
+    "ลาวอาเซียน": "https://lotterylaosasean.com/",
+    "ลาวสตาร์ VIP": "https://laostars.com/",
+    "ลาวSTAR VIP": "https://laostars.com/",
+    "ลาวพัฒนา (จ-พ-ศ)": "https://lao-tv.com/",
+    "ลาวสตาร์": "https://laostars.com/",
+    # VIP Stocks
+    "นิเคอิเช้า VIP": "https://nikkeivipstock.com/",
+    "นิเคอิบ่าย VIP": "https://nikkeivipstock.com/",
+    "จีนเช้า VIP": "https://shenzhenindex.com/",
+    "จีนบ่าย VIP": "https://shenzhenindex.com/",
+    "ฮั่งเส็งเช้า VIP": "https://www.hsi-vip.com/",
+    "ฮั่งเส็งบ่าย VIP": "https://www.hsi-vip.com/",
+    "ไต้หวัน VIP": "https://tsecvipindex.com/",
+    "เกาหลี VIP": "https://ktopvipindex.com/",
+    "หวยดาวโจนส์ VIP": "https://dowjonespowerball.com/",
+    # 3 Rath VIP
+    "อังกฤษVIP": "https://lottosuperrich.com/",
+    "เยอรมันVIP": "https://lottosuperrich.com/",
+    "รัสเซียVIP": "https://lottosuperrich.com/",
+    # Major Stocks
+    "นิเคอิเช้า": "https://indexes.nikkei.co.jp/en/nkave",
+    "นิเคอิบ่าย": "https://indexes.nikkei.co.jp/en/nkave",
+    "จีนเช้า": "http://www.szse.cn/English/index.html",
+    "จีนบ่าย": "http://www.szse.cn/English/index.html",
+    "ฮั่งเส็งเช้า": "https://www.google.com/finance/quote/HSI:INDEXHANGSENG",
+    "ฮั่งเส็งบ่าย": "https://www.google.com/finance/quote/HSI:INDEXHANGSENG",
+    "หุ้นเกาหลี": "https://m.investing.com/indices/kospi",
+    "หุ้นไต้หวัน": "https://www.twse.com.tw/en/",
+    "หุ้นสิงคโปร์": "https://www.sgx.com/wps/portal/sgxweb/home/marketinfo/indices/indice",
+    "หุ้นไทยเย็น": "https://marketdata.set.or.th/mkt/marketsummary.do",
+    "หวยดาวโจนส์": "https://th.investing.com/indices/us-30",
+    "อังกฤษ": "http://www.bloomberg.com/quote/UKX:IND",
+    "เยอรมัน": "http://www.marketwatch.com/investing/index/dax?countrycode=dx",
+    "รัสเซีย": "https://m.investing.com/indices/rts-standard",
+}
+
+
+def get_official_url(lottery_name: str) -> str:
+    """Return the official reference URL or SMLOT default."""
+    return OFFICIAL_URL_MAP.get(lottery_name, "https://member.smlot.net/")
+
+
+# ---------------------------------------------------------
+# Strict Date Guardrail Utilities
+# ---------------------------------------------------------
+def verify_date_guardrail(text: str, target_date: date) -> bool:
+    """
+    Ensures the text or response strictly matches `target_date`.
+    Rejects pages displaying yesterday's results or pending placeholders.
+    """
+    if not text:
+        return False
+
+    # 1. Pending placeholders check
+    if "---" in text or "กำลังออกผล" in text or "正在开奖" in text:
+        return False
+
+    # 2. Target date formatted strings
+    d_patterns = [
+        target_date.strftime("%Y-%m-%d"),  # 2026-09-09
+        target_date.strftime("%d/%m/%Y"),  # 09/09/2026
+        target_date.strftime("%d-%m-%Y"),  # 09-09-2026
+        target_date.strftime("%d.%m.%Y"),  # 09.09.2026
+        target_date.strftime("%y/%m/%d"),  # 26/09/09
+        target_date.strftime("%d/%m/%y"),  # 09/09/26
+        target_date.strftime("%d-%m-%y"),  # 09-09-26
+        f"{target_date.day:02d}/{target_date.month:02d}",  # 09/09
+        f"{target_date.day}/{target_date.month}",          # 9/9
+        target_date.strftime("%b %d, %Y"), # Sep 09, 2026
+        target_date.strftime("%B %d, %Y"), # September 09, 2026
+        f"{target_date.strftime('%b')} {target_date.day}, {target_date.year}", # Sep 9, 2026
+    ]
+
+    target_matched = any(p.lower() in text.lower() for p in d_patterns)
+    if target_matched:
+        return True
+
+    # Check if yesterday's date is prominently present while target is missing
+    yesterday = target_date - timedelta(days=1)
+    y_patterns = [
+        yesterday.strftime("%Y-%m-%d"),
+        yesterday.strftime("%d/%m/%Y"),
+        yesterday.strftime("%d-%m-%Y"),
+        yesterday.strftime("%b %d, %Y"),
+        f"{yesterday.strftime('%b')} {yesterday.day}, {yesterday.year}",
+    ]
+    if any(p.lower() in text.lower() for p in y_patterns):
+        return False
+
+    return False
+
 
 # ---------------------------------------------------------
 # 1. Hanoi & Lao Direct Fast APIs (Sub-second response)
@@ -40,15 +155,12 @@ LAO_API_MAP = {
     "ลาว TV": "https://api.lao-tv.com/result",
     "ลาว Star": "https://api.laostars.com/result",
     "หวยลาว กาชาด": "https://api.lao-redcross.com/result",
+    "ลาวกาชาด": "https://api.lao-redcross.com/result",
+    "ลาว กาชาด": "https://api.lao-redcross.com/result",
 }
 
 
 def scrape_hanoi_api(lotto_name: str, target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
-    """
-    Hanoi JSON API:
-    - 3 Top = prize_1st[-3:] (e.g. 93225 -> 225)
-    - 2 Bottom = prize_2nd[-2:] (e.g. 85719 -> 19)
-    """
     api_url = HANOI_API_MAP.get(lotto_name)
     if not api_url:
         return None
@@ -60,6 +172,7 @@ def scrape_hanoi_api(lotto_name: str, target_date: Optional[date] = None) -> Opt
             data = res.json().get("data", {})
             lotto_date_str = data.get("lotto_date")
             if lotto_date_str and lotto_date_str != target_date.strftime("%Y-%m-%d"):
+                logger.debug("Hanoi API date mismatch: %s != %s", lotto_date_str, target_date)
                 return None
 
             results = data.get("results", {})
@@ -81,11 +194,6 @@ def scrape_hanoi_api(lotto_name: str, target_date: Optional[date] = None) -> Opt
 
 
 def scrape_lao_api(lotto_name: str, target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
-    """
-    Lao JSON API (5 digits):
-    - 3 Top = digit3 or digit5[-3:] (e.g. 39862 -> 862)
-    - 2 Bottom = digit2_bottom or digit5[:2] (e.g. 39862 -> 39)
-    """
     api_url = LAO_API_MAP.get(lotto_name)
     if not api_url:
         return None
@@ -97,6 +205,7 @@ def scrape_lao_api(lotto_name: str, target_date: Optional[date] = None) -> Optio
             data = res.json().get("data", {})
             lotto_date_str = data.get("lotto_date")
             if lotto_date_str and lotto_date_str != target_date.strftime("%Y-%m-%d"):
+                logger.debug("Lao API date mismatch: %s != %s", lotto_date_str, target_date)
                 return None
 
             results = data.get("results", {})
@@ -120,17 +229,19 @@ def scrape_lao_api(lotto_name: str, target_date: Optional[date] = None) -> Optio
 # 2. Lao Union (ลาวสามัคคี www.laounion.com)
 # ---------------------------------------------------------
 def scrape_lao_union(target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
-    """
-    ลาวสามัคคี (www.laounion.com):
-    ตัวเลข 27834 -> บน 834, ล่าง 78 (หลักพันกับหลักร้อย)
-    """
     url = "https://www.laounion.com"
+    target_date = target_date or datetime.now(TZ).date()
     try:
         res = requests.get(url, headers=HEADERS, timeout=6)
         if res.status_code == 200:
-            soup = BeautifulSoup(res.text, "lxml")
-            matches = re.findall(r"\b\d{4,5}\b", soup.get_text(" ", strip=True))
-            if matches:
+            text = res.text
+            if "---" in text:
+                return None
+            soup = BeautifulSoup(text, "lxml")
+            clean_text = soup.get_text(" ", strip=True)
+            has_today = verify_date_guardrail(clean_text, target_date)
+            matches = re.findall(r"\b\d{4,5}\b", clean_text)
+            if matches and (has_today or len(matches) > 0):
                 full = matches[0]
                 top3 = full[-3:]
                 bot2 = full[1:3] if len(full) == 5 else full[:2]
@@ -146,15 +257,9 @@ def scrape_lao_union(target_date: Optional[date] = None) -> Optional[Dict[str, s
 
 
 # ---------------------------------------------------------
-# 3. 3 Rath VIP (lottosuperrich.com) - อังกฤษ VIP (21:50), เยอรมัน VIP (22:50), รัสเซีย VIP (23:50)
+# 3. 3 Rath VIP (lottosuperrich.com)
 # ---------------------------------------------------------
 def scrape_superrich_vip(lotto_name: str, target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
-    """
-    3 Rath VIP from lottosuperrich.com:
-    - 21:50:00 -> อังกฤษ VIP (Top=last 3 of 1st, Bot=last 2 of 2nd)
-    - 22:50:00 -> เยอรมัน VIP
-    - 23:50:00 -> รัสเซีย VIP
-    """
     time_key_map = {
         "อังกฤษVIP": "21:50:00",
         "เยอรมันVIP": "22:50:00",
@@ -172,11 +277,7 @@ def scrape_superrich_vip(lotto_name: str, target_date: Optional[date] = None) ->
         if res.status_code != 200:
             return None
 
-        # Parse text chunks separated by DATE
-        text = res.text
-        # Fallback to simple regex on raw html
-        # Pattern: DATE \n DD/MM/YY \n 1st \n (\d{5}) \n 2nd \n (\d{5}) \n (HH:MM:SS)
-        soup = BeautifulSoup(text, "lxml")
+        soup = BeautifulSoup(res.text, "lxml")
         body_text = soup.get_text(" ", strip=True)
 
         pattern = re.compile(
@@ -192,8 +293,104 @@ def scrape_superrich_vip(lotto_name: str, target_date: Optional[date] = None) ->
                     "bottom2": bot5[-2:],
                     "full": top5,
                 }
+            else:
+                logger.debug("Superrich VIP date mismatch: %s != %s", d_str, target_date_str)
     except Exception as exc:
         logger.debug("Superrich scrape error for %s: %s", lotto_name, exc)
+    return None
+
+
+# ---------------------------------------------------------
+# 4. VIP Stocks (nikkeivipstock, shenzhenindex, hsi-vip, tsecvipindex, ktopvipindex, dowjonespowerball)
+# ---------------------------------------------------------
+VIP_STOCK_URLS = {
+    "นิเคอิเช้า VIP": ("https://nikkeivipstock.com", "morning"),
+    "นิเคอิบ่าย VIP": ("https://nikkeivipstock.com", "afternoon"),
+    "จีนเช้า VIP": ("https://shenzhenindex.com", "morning"),
+    "จีนบ่าย VIP": ("https://shenzhenindex.com", "afternoon"),
+    "ฮั่งเส็งเช้า VIP": ("https://www.hsi-vip.com/", "morning"),
+    "ฮั่งเส็งบ่าย VIP": ("https://www.hsi-vip.com/", "afternoon"),
+    "ไต้หวัน VIP": ("https://tsecvipindex.com", "all"),
+    "เกาหลี VIP": ("https://ktopvipindex.com", "all"),
+    "หวยดาวโจนส์ VIP": ("https://dowjonespowerball.com/", "all"),
+}
+
+
+def scrape_vip_stock(lottery_name: str, target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
+    vip_info = VIP_STOCK_URLS.get(lottery_name)
+    if not vip_info:
+        return None
+    url, session_type = vip_info
+    target_date = target_date or datetime.now(TZ).date()
+
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return None
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+            )
+            page.goto(url, wait_until="networkidle", timeout=12000)
+            html = page.content()
+            browser.close()
+
+        soup = BeautifulSoup(html, "lxml")
+        text = soup.get_text(" ", strip=True)
+
+        if not verify_date_guardrail(text, target_date):
+            logger.debug("VIP stock %s (%s): target date %s not published yet on site", lottery_name, url, target_date)
+            return None
+
+        if lottery_name == "หวยดาวโจนส์ VIP":
+            m5 = re.findall(r"(\d{5})", text)
+            if m5:
+                top5 = m5[0]
+                bot2 = m5[1][-2:] if len(m5) > 1 else top5[:2]
+                return {
+                    "name": lottery_name,
+                    "top3": top5[-3:],
+                    "bottom2": bot2,
+                    "full": top5,
+                }
+            return None
+
+        if lottery_name == "เกาหลี VIP":
+            m_korea = re.search(r"(\d{3})\s*\|\s*(\d{2})", text)
+            if m_korea:
+                return {
+                    "name": lottery_name,
+                    "top3": m_korea.group(1),
+                    "bottom2": m_korea.group(2),
+                    "full": m_korea.group(1) + m_korea.group(2),
+                }
+
+        num_pairs = re.findall(r"([\d,]+)\.(\d{2})", text)
+        if len(num_pairs) >= 2:
+            idx_int, idx_dec = num_pairs[0]
+            _, chg_dec = num_pairs[1]
+
+            if session_type == "afternoon" and len(num_pairs) >= 4:
+                idx_int, idx_dec = num_pairs[2]
+                _, chg_dec = num_pairs[3]
+
+            int_clean = idx_int.replace(",", "")
+            if int_clean:
+                top3 = int_clean[-1] + idx_dec
+                bot2 = chg_dec
+                if len(top3) == 3 and len(bot2) == 2:
+                    return {
+                        "name": lottery_name,
+                        "top3": top3,
+                        "bottom2": bot2,
+                        "full": f"{int_clean}.{idx_dec}",
+                    }
+    except Exception as exc:
+        logger.debug("VIP Stock scrape error for %s: %s", lottery_name, exc)
+
     return None
 
 
@@ -201,38 +398,41 @@ def scrape_superrich_vip(lotto_name: str, target_date: Optional[date] = None) ->
 # Master Direct Scraper Dispatcher
 # ---------------------------------------------------------
 def scrape_direct_official(lottery_name: str, target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
-    """
-    Tries fast official direct scrape. Returns dict(name, top3, bottom2, full) or None.
-    If None is returned, scheduler will seamlessly fallback to SMLOT.
-    """
     target_date = target_date or datetime.now(TZ).date()
 
-    # 1. Hanoi APIs
+    # 1. Hanoi Fast JSON APIs
     if lottery_name in HANOI_API_MAP:
         res = scrape_hanoi_api(lottery_name, target_date=target_date)
         if res:
-            logger.info("Fast Direct scrape SUCCESS for '%s' (Hanoi API): %s-%s", lottery_name, res["top3"], res["bottom2"])
+            logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (Hanoi API): %s-%s", lottery_name, res["top3"], res["bottom2"])
             return res
 
-    # 2. Lao APIs
+    # 2. Lao Fast JSON APIs
     if lottery_name in LAO_API_MAP:
         res = scrape_lao_api(lottery_name, target_date=target_date)
         if res:
-            logger.info("Fast Direct scrape SUCCESS for '%s' (Lao API): %s-%s", lottery_name, res["top3"], res["bottom2"])
+            logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (Lao API): %s-%s", lottery_name, res["top3"], res["bottom2"])
             return res
 
-    # 3. Lao Union
+    # 3. Lao Union (ลาวสามัคคี)
     if lottery_name == "ลาวสามัคคี":
         res = scrape_lao_union(target_date=target_date)
         if res:
-            logger.info("Fast Direct scrape SUCCESS for '%s' (Lao Union): %s-%s", lottery_name, res["top3"], res["bottom2"])
+            logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (Lao Union): %s-%s", lottery_name, res["top3"], res["bottom2"])
             return res
 
     # 4. Superrich 3 Rath VIP
     if lottery_name in ("อังกฤษVIP", "เยอรมันVIP", "รัสเซียVIP"):
         res = scrape_superrich_vip(lottery_name, target_date=target_date)
         if res:
-            logger.info("Fast Direct scrape SUCCESS for '%s' (Superrich VIP): %s-%s", lottery_name, res["top3"], res["bottom2"])
+            logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (Superrich VIP): %s-%s", lottery_name, res["top3"], res["bottom2"])
+            return res
+
+    # 5. VIP Stocks
+    if lottery_name in VIP_STOCK_URLS:
+        res = scrape_vip_stock(lottery_name, target_date=target_date)
+        if res:
+            logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (VIP Stock): %s-%s", lottery_name, res["top3"], res["bottom2"])
             return res
 
     return None

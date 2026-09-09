@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪐 แดชบอร์ดตรวจสอบผลหวย & มินิจอ 🛸</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        accentGreen: '#10b981',
+                        accentAmber: '#f59e0b',
+                        accentBlue: '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Kanit", "Segoe UI", Roboto, sans-serif;
+            background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        .glow-green {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+        }
+        .glow-amber {
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="text-slate-100 p-3 sm:p-6 pb-20">
+
+    <!-- Top Navigation / Header -->
+    <div class="max-w-7xl mx-auto mb-6">
+        <div class="flex flex-col md:flex-row items-center justify-between bg-cardBg/90 backdrop-blur border border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-2xl gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-2xl shadow-lg shadow-emerald-500/20">
+                    🪐
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black bg-gradient-to-r from-emerald-400 via-teal-200 to-cyan-400 bg-clip-text text-transparent">
+                        Antigravity Lottery Control Center
+                    </h1>
+                    <p class="text-xs sm:text-sm text-slate-400 flex items-center gap-2 mt-0.5">
+                        <span>🛸 มินิจอถ่ายทอดสด & ตรวจสอบผลหวย 63 รายการ</span>
+                        <span id="server-status-dot" class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span id="server-status-text" class="text-[11px] text-emerald-400 font-bold">เชื่อมต่อระบบแล้ว</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Date & Live Clock -->
+            <div class="flex items-center gap-4 text-right">
+                <div class="bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2">
+                    <div id="live-date" class="text-xs text-slate-400 font-medium">--/--/----</div>
+                    <div id="live-clock" class="text-lg sm:text-xl font-mono font-bold text-emerald-400">--:--:--</div>
+                </div>
+                <button onclick="fetchLotteryStatus()" class="p-3 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl transition active:scale-95 text-slate-300 hover:text-white" title="รีเฟรชข้อมูล">
+                    <i data-lucide="refresh-cw" id="refresh-icon" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- How to connect tip banner if opened via file:// -->
+        <div id="file-protocol-banner" class="hidden mt-3 bg-amber-950/40 border border-amber-500/40 rounded-xl p-3 text-xs text-amber-200 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <span class="text-base">💡</span>
+                <span>คุณกำลังเปิดดูผ่านไฟล์โดยตรง หากต้องการส่งผลเข้า LINE และดูสถานะสด กรุณารันบอท (python main.py) แล้วเข้าผ่าน: <a href="http://localhost:8000/dashboard" target="_blank" class="underline font-bold text-emerald-400">http://localhost:8000/dashboard</a></span>
+            </div>
+            <a href="http://localhost:8000/dashboard" target="_blank" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg text-[11px] whitespace-nowrap">
+                เปิดผ่าน Localhost ↗
+            </a>
+        </div>
+
+        <!-- Status Summary Counters -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+            <div class="bg-cardBg/70 border border-emerald-500/30 rounded-xl p-3.5 flex items-center justify-between">
+                <div>
+                    <div class="text-xs text-emerald-400 font-semibold uppercase tracking-wider">ออกผลแล้ว</div>
+                    <div id="cnt-sent" class="text-2xl font-black text-white mt-1">0</div>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+                    ✓
+                </div>
+            </div>
+
+            <div class="bg-cardBg/70 border border-amber-500/30 rounded-xl p-3.5 flex items-center justify-between">
+                <div>
+                    <div class="text-xs text-amber-400 font-semibold uppercase tracking-wider">กำลังตรวจผล</div>
+                    <div id="cnt-checking" class="text-2xl font-black text-white mt-1">0</div>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center animate-pulse">
+                    ⏳
+                </div>
+            </div>
+
+            <div class="bg-cardBg/70 border border-slate-600/40 rounded-xl p-3.5 flex items-center justify-between">
+                <div>
+                    <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">รอตามรอบ</div>
+                    <div id="cnt-pending" class="text-2xl font-black text-white mt-1">0</div>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-slate-700/30 text-slate-400 flex items-center justify-center">
+                    ⏰
+                </div>
+            </div>
+
+            <div class="bg-cardBg/70 border border-cyan-500/30 rounded-xl p-3.5 flex items-center justify-between">
+                <div>
+                    <div class="text-xs text-cyan-400 font-semibold uppercase tracking-wider">ทั้งหมดในระบบ</div>
+                    <div id="cnt-total" class="text-2xl font-black text-white mt-1">63</div>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
+                    📊
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="flex flex-col sm:flex-row gap-3 mt-5 items-stretch sm:items-center justify-between">
+            <div class="flex gap-2 bg-cardBg/80 border border-slate-700 p-1 rounded-xl">
+                <button onclick="setFilter('all')" id="btn-tab-all" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-white">
+                    ทั้งหมด (<span id="tab-all-cnt">63</span>)
+                </button>
+                <button onclick="setFilter('sent')" id="btn-tab-sent" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
+                    🟢 ออกผลแล้ว (<span id="tab-sent-cnt">0</span>)
+                </button>
+                <button onclick="setFilter('waiting')" id="btn-tab-waiting" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
+                    🟡 กำลังตรวจ/รอผล (<span id="tab-waiting-cnt">0</span>)
+                </button>
+            </div>
+
+            <div class="relative w-full sm:w-72">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" id="search-input" oninput="renderCards()" placeholder="ค้นหาชื่อหวย (เช่น ฮานอย, เกาหลี)..."
+                    class="w-full bg-slate-800/90 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400">
+            </div>
+        </div>
+    </div>
+
+    <!-- Lottery Cards Grid -->
+    <div class="max-w-7xl mx-auto">
+        <div id="lottery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Dynamic Cards Injected Here -->
+        </div>
+        <div id="empty-state" class="hidden text-center py-16 text-slate-500">
+            <i data-lucide="inbox" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
+            <p>ไม่พบรายการหวยที่ตรงกับคำค้นหา</p>
+        </div>
+    </div>
+
+    <!-- Mini-Screen Modal Preview -->
+    <div id="mini-screen-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-4xl h-[90vh] rounded-2xl flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-5 py-3.5 bg-slate-800/80 border-b border-slate-700">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                    <span id="modal-title" class="ml-2 font-bold text-sm text-slate-200">🖥️ มินิจอถ่ายทอดสดเว็บทางการ</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a id="modal-external-link" href="#" target="_blank" class="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-xs text-emerald-400 font-semibold rounded-lg flex items-center gap-1.5 transition">
+                        <span>เปิดแท็บใหม่</span>
+                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    </a>
+                    <button onclick="closeModal()" class="p-1.5 hover:bg-slate-700 text-slate-400 hover:text-white rounded-lg transition">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Body (Iframe) -->
+            <div class="flex-1 bg-slate-950 relative overflow-hidden flex flex-col">
+                <div id="iframe-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/90 text-slate-400 gap-2 z-10">
+                    <i data-lucide="loader" class="w-8 h-8 animate-spin text-emerald-400"></i>
+                    <span class="text-xs">กำลังเชื่อมต่อสัญญาณสดหน้าเว็บทางการ...</span>
+                </div>
+                <iframe id="modal-iframe" class="w-full h-full border-0" onload="hideIframeLoading()" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
+                <!-- Security Fallback Notice -->
+                <div class="px-4 py-2 bg-slate-800/90 border-t border-slate-700 text-[11px] text-slate-400 flex items-center justify-between">
+                    <span>💡 หากเว็บทางการติดนโยบายความปลอดภัย X-Frame-Options ให้กดปุ่ม "เปิดแท็บใหม่" ด้านบนเพื่อดูผลสด</span>
+                    <span id="modal-url-display" class="font-mono text-slate-500 truncate max-w-xs"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl font-bold text-sm flex items-center gap-2 transition-all">
+        <i data-lucide="check-circle" class="w-5 h-5"></i>
+        <span id="toast-msg">ส่งผลเข้ากลุ่ม LINE เรียบร้อยแล้ว!</span>
+    </div>
+
+    <script>
+        const DEFAULT_LOTTERIES = [{"name": "ฮานอยอาเซียน", "time": "09:30", "flag": "🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://hanoiasean.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "นิเคอิเช้า", "time": "09:30", "flag": "🇯🇵", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://indexes.nikkei.co.jp/en/nkave", "smlot_url": "https://member.smlot.net/"}, {"name": "นิเคอิเช้า VIP", "time": "09:05", "flag": "⭐🇯🇵", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://nikkeivipstock.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "จีนเช้า", "time": "10:30", "flag": "🇨🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "http://www.szse.cn/English/index.html", "smlot_url": "https://member.smlot.net/"}, {"name": "จีนเช้า VIP", "time": "10:05", "flag": "⭐🇨🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://shenzhenindex.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮั่งเส็งเช้า", "time": "11:05", "flag": "🇭🇰", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://www.google.com/finance/quote/HSI:INDEXHANGSENG", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮั่งเส็งเช้า VIP", "time": "10:35", "flag": "⭐🇭🇰", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://www.hsi-vip.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮานอย HD", "time": "11:30", "flag": "🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://xosohd.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ไต้หวัน VIP", "time": "11:35", "flag": "⭐🇹🇼", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://tsecvipindex.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮานอย Star", "time": "12:30", "flag": "🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://minhngocstar.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ไต้หวัน", "time": "12:30", "flag": "🇹🇼", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "เกาหลี VIP", "time": "12:35", "flag": "⭐🇰🇷", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://ktopvipindex.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "นิเคอิบ่าย", "time": "13:30", "flag": "🇯🇵", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://indexes.nikkei.co.jp/en/nkave", "smlot_url": "https://member.smlot.net/"}, {"name": "นิเคอิบ่าย VIP", "time": "13:25", "flag": "⭐🇯🇵", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://nikkeivipstock.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "หุ้นเกาหลี", "time": "13:30", "flag": "🇰🇷", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://m.investing.com/indices/kospi", "smlot_url": "https://member.smlot.net/"}, {"name": "จีนบ่าย", "time": "14:00", "flag": "🇨🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "http://www.szse.cn/English/index.html", "smlot_url": "https://member.smlot.net/"}, {"name": "จีนบ่าย VIP", "time": "14:25", "flag": "⭐🇨🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://shenzhenindex.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮานอย TV", "time": "14:30", "flag": "🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://minhngoctv.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮั่งเส็งบ่าย", "time": "15:10", "flag": "🇭🇰", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://www.google.com/finance/quote/HSI:INDEXHANGSENG", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮั่งเส็งบ่าย VIP", "time": "15:25", "flag": "⭐🇭🇰", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://www.hsi-vip.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "หุ้นสิงคโปร์", "time": "16:25", "flag": "🇸🇬", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://www.sgx.com/wps/portal/sgxweb/home/marketinfo/indices/indice", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮานอย กาชาด", "time": "16:30", "flag": "🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://xosoredcross.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "หุ้นไทยเย็น", "time": "16:45", "flag": "🇹🇭", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://marketdata.set.or.th/mkt/marketsummary.do", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮานอยสามัคคี", "time": "17:30", "flag": "🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "สิงคโปร์ VIP", "time": "17:05", "flag": "⭐🇸🇬", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หุ้นอินเดีย", "time": "16:50", "flag": "🇮🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หุ้นอียิปต์", "time": "18:00", "flag": "🇪🇬", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮานอยพัฒนา", "time": "19:30", "flag": "🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://xosohd.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "หุ้นเยอรมัน", "time": "22:45", "flag": "🇩🇪", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หุ้นอังกฤษ", "time": "22:45", "flag": "🇬🇧", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หุ้นรัสเซีย", "time": "22:45", "flag": "🇷🇺", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "เยอรมันVIP", "time": "21:50", "flag": "⭐🇩🇪", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://lottosuperrich.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "อังกฤษVIP", "time": "21:50", "flag": "⭐🇬🇧", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://lottosuperrich.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "รัสเซียVIP", "time": "23:50", "flag": "⭐🇷🇺", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://lottosuperrich.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยดาวโจนส์ VIP", "time": "00:30", "flag": "⭐🇺🇸", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://dowjonespowerball.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยดาวโจนส์ mid night", "time": "04:30", "flag": "🇺🇸", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยดาวโจนส์ STAR", "time": "04:00", "flag": "⭐🇺🇸", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยดาวโจนส์ extra", "time": "05:00", "flag": "🇺🇸", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยดาวโจนส์ TV", "time": "06:00", "flag": "🇺🇸", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "เวียดนาม VIP เช้า", "time": "09:00", "flag": "⭐🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "เวียดนาม VIP บ่าย", "time": "13:00", "flag": "⭐🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "เวียดนาม VIP เย็น", "time": "17:00", "flag": "⭐🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หุ้นดาวโจนส์", "time": "03:55", "flag": "🇺🇸", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยไทย", "time": "15:30", "flag": "🇹🇭", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "มาเลเซีย", "time": "18:30", "flag": "🇲🇾", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "ฮานอยEXTRA", "time": "22:30", "flag": "🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://xosoextra.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ลาว Extra", "time": "08:30", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://laoextra.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยดาวโจนส์", "time": "03:30", "flag": "🇺🇸", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://th.investing.com/indices/us-30", "smlot_url": "https://member.smlot.net/"}, {"name": "ลาวประตูชัย", "time": "10:00", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "ลาวสันติภาพ", "time": "11:00", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "ประชาชนลาว", "time": "12:00", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "ลาว HD", "time": "13:45", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "ลาว Star", "time": "15:45", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://laostars.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ลาวสามัคคี", "time": "20:30", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://www.laounion.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ลาวอาเซียน", "time": "21:00", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://lotterylaosasean.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยลาวSTAR VIP", "time": "22:00", "flag": "⭐🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยลาว กาชาด", "time": "23:30", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://lao-redcross.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "ลาวดาว", "time": "23:30", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "ลาว TV", "time": "10:30", "flag": "🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://lao-tv.com/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยฮานอย พิเศษ", "time": "17:30", "flag": "⭐🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยฮานอย", "time": "18:30", "flag": "⭐🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยฮานอย VIP", "time": "19:30", "flag": "⭐🇻🇳", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}, {"name": "หวยลาวพัฒนา (จ-ศ)", "time": "20:30", "flag": "⭐🇱🇦", "status": "pending", "is_sent": false, "top3": "", "bottom2": "", "full": "", "sent_at": "", "official_url": "https://member.smlot.net/", "smlot_url": "https://member.smlot.net/"}];
+        let allLotteries = [...DEFAULT_LOTTERIES];
+        let currentFilter = 'all';
+
+        // Check if opened via file://
+        if (window.location.protocol === 'file:') {
+            const banner = document.getElementById('file-protocol-banner');
+            if (banner) banner.classList.remove('hidden');
+        }
+
+        // Digital Clock
+        function updateClock() {
+            const now = new Date();
+            const bkkTime = new Intl.DateTimeFormat('th-TH', {
+                timeZone: 'Asia/Bangkok',
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+            }).format(now);
+            const bkkDate = new Intl.DateTimeFormat('th-TH', {
+                timeZone: 'Asia/Bangkok',
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            }).format(now);
+
+            document.getElementById('live-clock').innerText = bkkTime;
+            document.getElementById('live-date').innerText = bkkDate;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function getBaseUrl() {
+            if (window.location.protocol === 'file:') {
+                return 'http://localhost:8000';
+            }
+            return window.location.origin;
+        }
+
+        // Fetch Live Lottery Status
+        async function fetchLotteryStatus() {
+            const refreshIcon = document.getElementById('refresh-icon');
+            const statusDot = document.getElementById('server-status-dot');
+            const statusText = document.getElementById('server-status-text');
+            if (refreshIcon) refreshIcon.classList.add('animate-spin');
+
+            const apiUrl = getBaseUrl() + '/api/lottery_status';
+
+            try {
+                const res = await fetch(apiUrl);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.lotteries && data.lotteries.length > 0) {
+                        allLotteries = data.lotteries;
+                        if (statusDot) statusDot.className = 'inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+                        if (statusText) {
+                            statusText.innerText = 'เชื่อมต่อบอทสด (Live Server)';
+                            statusText.className = 'text-[11px] text-emerald-400 font-bold';
+                        }
+                    }
+                }
+            } catch (err) {
+                console.log('API offline or file mode. Using embedded default list:', err);
+                if (statusDot) statusDot.className = 'inline-block w-2 h-2 rounded-full bg-amber-400';
+                if (statusText) {
+                    statusText.innerText = 'โหมดสแตนด์บาย (รอเชื่อมต่อบอท http://localhost:8000)';
+                    statusText.className = 'text-[11px] text-amber-400 font-semibold';
+                }
+            } finally {
+                updateCounters();
+                renderCards();
+                setTimeout(() => {
+                    if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+                }, 400);
+            }
+        }
+
+        setInterval(fetchLotteryStatus, 15000);
+
+        function updateCounters() {
+            const sent = allLotteries.filter(l => l.status === 'sent').length;
+            const checking = allLotteries.filter(l => l.status === 'checking').length;
+            const pending = allLotteries.filter(l => l.status === 'pending').length;
+            const total = allLotteries.length;
+
+            document.getElementById('cnt-sent').innerText = sent;
+            document.getElementById('cnt-checking').innerText = checking;
+            document.getElementById('cnt-pending').innerText = pending;
+            document.getElementById('cnt-total').innerText = total;
+
+            document.getElementById('tab-all-cnt').innerText = total;
+            document.getElementById('tab-sent-cnt').innerText = sent;
+            document.getElementById('tab-waiting-cnt').innerText = checking + pending;
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            const tabs = ['all', 'sent', 'waiting'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`btn-tab-${t}`);
+                if (t === filter) {
+                    btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-white';
+                } else {
+                    btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white';
+                }
+            });
+            renderCards();
+        }
+
+        function renderCards() {
+            const query = (document.getElementById('search-input').value || '').trim().toLowerCase();
+            const grid = document.getElementById('lottery-grid');
+            const emptyState = document.getElementById('empty-state');
+
+            let filtered = allLotteries.filter(l => {
+                if (currentFilter === 'sent' && l.status !== 'sent') return false;
+                if (currentFilter === 'waiting' && l.status === 'sent') return false;
+                if (query && !l.name.toLowerCase().includes(query)) return false;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(l => {
+                const isSent = l.status === 'sent';
+                const isChecking = l.status === 'checking';
+
+                let statusBadge = '';
+                let cardBorder = 'border-slate-700/70';
+                let numbersHtml = '';
+
+                if (isSent) {
+                    cardBorder = 'border-emerald-500/40 glow-green';
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ออกผลแล้ว
+                    </span>`;
+                    numbersHtml = `
+                        <div class="bg-slate-900/90 border border-emerald-500/30 rounded-xl p-3 my-3 flex items-center justify-around">
+                            <div class="text-center">
+                                <div class="text-[11px] text-slate-400 uppercase font-semibold">3 ตัวบน</div>
+                                <div class="text-2xl font-black text-emerald-400 font-mono tracking-wider">${l.top3 || '---'}</div>
+                            </div>
+                            <div class="w-px h-8 bg-slate-700"></div>
+                            <div class="text-center">
+                                <div class="text-[11px] text-slate-400 uppercase font-semibold">2 ตัวล่าง</div>
+                                <div class="text-2xl font-black text-cyan-400 font-mono tracking-wider">${l.bottom2 || '--'}</div>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-slate-400 text-center flex items-center justify-center gap-1">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                            <span>ส่งผลเมื่อ: ${l.sent_at ? l.sent_at.split('T')[1] || l.sent_at : 'วันนี้'}</span>
+                        </div>
+                    `;
+                } else if (isChecking) {
+                    cardBorder = 'border-amber-500/40 glow-amber';
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span> กำลังตรวจผล
+                    </span>`;
+                    numbersHtml = renderManualSendForm(l.name);
+                } else {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-700/50 text-slate-400 border border-slate-600/40 flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> รอตรวจ (${l.time} น.)
+                    </span>`;
+                    numbersHtml = renderManualSendForm(l.name);
+                }
+
+                return `
+                    <div class="bg-cardBg/90 backdrop-blur border ${cardBorder} rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-xl hover:border-slate-500 transition">
+                        <div>
+                            <!-- Card Header -->
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">${l.flag || '🎯'}</span>
+                                    <div>
+                                        <h3 class="font-bold text-base text-white leading-tight">${l.name}</h3>
+                                        <span class="text-xs font-mono text-slate-400">รอบเวลา ${l.time} น.</span>
+                                    </div>
+                                </div>
+                                ${statusBadge}
+                            </div>
+
+                            <!-- Numbers / Action Area -->
+                            ${numbersHtml}
+                        </div>
+
+                        <!-- Card Footer Action Buttons -->
+                        <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-700/60">
+                            <button onclick="openMiniScreen('${l.name}', '${l.official_url}')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-95">
+                                <span>🖥️ มินิจอสด</span>
+                            </button>
+                            <a href="${l.smlot_url}" target="_blank" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-95">
+                                <span>🔗 SMLOT</span>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function renderManualSendForm(name) {
+            const cleanId = name.replace(/[^a-zA-Z0-9]/g, '_');
+            return `
+                <div class="bg-slate-900/70 border border-slate-700/70 rounded-xl p-3 my-3">
+                    <div class="text-[11px] text-slate-400 font-medium mb-1.5 flex items-center justify-between">
+                        <span>ป้อนผลด่วนยิงเข้า LINE</span>
+                        <span class="text-emerald-400 font-mono text-[10px]">Manual Push</span>
+                    </div>
+                    <div class="flex gap-2 mb-2">
+                        <input type="text" id="top-${cleanId}" maxlength="3" placeholder="3 บน"
+                            class="w-1/2 bg-slate-800 border border-slate-600 text-center font-mono font-bold text-white rounded-lg py-1.5 text-sm focus:border-emerald-400 focus:outline-none">
+                        <input type="text" id="bot-${cleanId}" maxlength="2" placeholder="2 ล่าง"
+                            class="w-1/2 bg-slate-800 border border-slate-600 text-center font-mono font-bold text-white rounded-lg py-1.5 text-sm focus:border-cyan-400 focus:outline-none">
+                    </div>
+                    <button onclick="manualSendResult('${name}', '${cleanId}')" class="w-full py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-lg transition shadow-md shadow-emerald-900/30 active:scale-95">
+                        🚀 ยิงผลเข้ากลุ่ม LINE ทันที
+                    </button>
+                </div>
+            `;
+        }
+
+        async function manualSendResult(name, cleanId) {
+            const topVal = (document.getElementById(`top-${cleanId}`).value || '').trim();
+            const botVal = (document.getElementById(`bot-${cleanId}`).value || '').trim();
+
+            if (topVal.length !== 3 || botVal.length !== 2) {
+                alert('กรุณากรอกเลข 3 ตัวบน (3 หลัก) และ 2 ตัวล่าง (2 หลัก) ให้ครบถ้วน');
+                return;
+            }
+
+            if (!confirm(`ยืนยันการส่งผล:\n🎯 ${name}\n🔺 3 บน: ${topVal}\n🔻 2 ล่าง: ${botVal}\n\nต้องการยิงการ์ดเข้ากลุ่ม LINE ทันทีหรือไม่?`)) {
+                return;
+            }
+
+            const sendUrl = getBaseUrl() + '/api/send';
+
+            try {
+                const resp = await fetch(sendUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        top3: topVal,
+                        bottom2: botVal
+                    })
+                });
+                const result = await resp.json();
+                if (result.ok) {
+                    showToast(`✅ ยิงผล ${name} (${topVal}-${botVal}) เข้ากลุ่ม LINE แล้ว!`);
+                    fetchLotteryStatus();
+                } else {
+                    alert('ส่งผลไม่สำเร็จ: ' + (result.error || 'Server error'));
+                }
+            } catch (err) {
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์ กรุณาตรวจสอบว่าบอทรันอยู่หรือไม่ (http://localhost:8000)');
+            }
+        }
+
+        // Mini-Screen Modal Controls
+        function openMiniScreen(name, url) {
+            const modal = document.getElementById('mini-screen-modal');
+            const iframe = document.getElementById('modal-iframe');
+            const title = document.getElementById('modal-title');
+            const extLink = document.getElementById('modal-external-link');
+            const urlDisp = document.getElementById('modal-url-display');
+            const loading = document.getElementById('iframe-loading');
+
+            title.innerText = `🖥️ มินิจอถ่ายทอดสด : ${name}`;
+            extLink.href = url;
+            urlDisp.innerText = url;
+            loading.classList.remove('hidden');
+
+            iframe.src = url;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('mini-screen-modal');
+            const iframe = document.getElementById('modal-iframe');
+            iframe.src = 'about:blank';
+            modal.classList.add('hidden');
+        }
+
+        function hideIframeLoading() {
+            document.getElementById('iframe-loading').classList.add('hidden');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+
+        // Initial Load
+        fetchLotteryStatus();
+    </script>
+</body>
+</html>

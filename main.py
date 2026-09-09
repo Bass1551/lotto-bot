@@ -40,6 +40,76 @@ def start_http_server(db: Database, sender: LineSender):
                 self.end_headers()
                 self.wfile.write(b"OK")
                 return
+
+            if self.path in ("/dashboard", "/dashboard/"):
+                self.path = "/dashboard.html"
+                return super().do_GET()
+
+            if self.path == "/api/lottery_status":
+                from datetime import datetime
+                from zoneinfo import ZoneInfo
+                from parsers.direct_scraper import get_official_url
+
+                tz = ZoneInfo("Asia/Bangkok")
+                now_dt = datetime.now(tz)
+                today_date = now_dt.date()
+                today_str = today_date.isoformat()
+                current_time_str = now_dt.strftime("%H:%M")
+
+                daily_results = db.get_daily_results(today_date)
+                sent_map = {r["lottery_name"]: r for r in daily_results}
+
+                cfg_lottos = []
+                try:
+                    with open("config.json", "r", encoding="utf-8") as f:
+                        cfg_lottos = json.load(f)
+                except Exception:
+                    pass
+
+                items = []
+                for l in cfg_lottos:
+                    name = l["name"]
+                    t_str = l.get("time", "00:00")
+                    flag = l.get("flag", "🎯")
+                    off_url = get_official_url(name)
+                    is_sent = name in sent_map
+                    res_obj = sent_map.get(name, {})
+
+                    if is_sent:
+                        status = "sent"
+                    elif current_time_str >= t_str:
+                        status = "checking"
+                    else:
+                        status = "pending"
+
+                    items.append({
+                        "name": name,
+                        "time": t_str,
+                        "flag": flag,
+                        "status": status,
+                        "is_sent": is_sent,
+                        "top3": res_obj.get("top3", ""),
+                        "bottom2": res_obj.get("bottom2", ""),
+                        "full": res_obj.get("full_result", ""),
+                        "sent_at": res_obj.get("sent_at", ""),
+                        "official_url": off_url,
+                        "smlot_url": "https://member.smlot.net/",
+                    })
+
+                resp_data = {
+                    "today": today_str,
+                    "current_time": current_time_str,
+                    "lotteries": items,
+                }
+                res_bytes = json.dumps(resp_data, ensure_ascii=False).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.send_header("Content-Length", str(len(res_bytes)))
+                self.end_headers()
+                self.wfile.write(res_bytes)
+                return
+
             if self.path == "/api/last_group":
                 self.send_response(200)
                 self.send_header("Content-Type", "text/plain; charset=utf-8")
@@ -252,15 +322,35 @@ def main() -> None:
     ping_thread = threading.Thread(target=keep_alive_loop, daemon=True)
     ping_thread.start()
 
-    bot = LotteryScheduler(config_path="config.json", db=db, sender=sender)
-    bot.start()
-    bot.send_yesterday_summary()
-    bot.check_pending_due_today()
-    bot.send_history_by_names(["ลาว Extra"])
+    is_cloud_server = bool(os.environ.get("RENDER") or os.environ.get("RENDER_EXTERNAL_URL"))
+    default_scheduler = "false" if is_cloud_server else "true"
+    enable_scheduler = os.environ.get("ENABLE_SCHEDULER", default_scheduler).lower() in ("true", "1", "yes")
+    if "--only-predictor" in sys.argv:
+        enable_scheduler = False
+
+    bot = None
+    if enable_scheduler:
+        bot = LotteryScheduler(config_path="config.json", db=db, sender=sender)
+        bot.start()
+        bot.send_yesterday_summary()
+        bot.check_pending_due_today()
+
+        # Send Lao Extra history if starting up in the morning before draw time
+        from zoneinfo import ZoneInfo
+        from datetime import datetime
+        now_bkk = datetime.now(ZoneInfo("Asia/Bangkok"))
+        if now_bkk.strftime("%H:%M") < "08:30" and not db.already_sent("ลาว Extra", now_bkk.date()):
+            bot.send_history_by_names(["ลาว Extra"])
+    else:
+        logger.info("=" * 55)
+        logger.info("🔮 Running in PREDICTOR BOT ONLY MODE (24/7 Standalone)")
+        logger.info("Lottery Scheduler is DISABLED. Only 'ขอแนวทาง / ขอ / แนวทาง' commands will be handled.")
+        logger.info("=" * 55)
 
     def handle_signal(signum, frame):
         logger.info("Received signal %s – shutting down...", signum)
-        bot.shutdown()
+        if bot:
+            bot.shutdown()
         sys.exit(0)
 
     signal.signal(signal.SIGINT, handle_signal)
