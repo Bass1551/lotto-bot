@@ -266,6 +266,36 @@ class LotteryScheduler:
             logger.info("Sending next-round 15-day history report for: %s", names_summary)
             self.sender.send_text(combined_message)
 
+    def _backfill_results_for_date(self, target_date: date) -> dict[str, dict]:
+        """Fetch and backfill all available results from SMLOT and Edaylotto for target_date to ensure 100% completeness."""
+        db_results = {r["lottery_name"]: r for r in self.db.get_daily_results(result_date=target_date)}
+        date_type = "today" if target_date == datetime.now(TZ).date() else "yesterday"
+
+        # 1. Backfill from SMLOT
+        try:
+            from parsers.smlot_reward import SmlotRewardParser
+            smlot_all = SmlotRewardParser.fetch_all_smlot_results(force_refresh=True, date_type=date_type)
+            for name, res in smlot_all.items():
+                if name not in db_results:
+                    self.db.save_result(name, res["top3"], res["bottom2"], res.get("full", ""), result_date=target_date)
+        except Exception as e:
+            logger.warning("Error backfilling %s results from SMLOT: %s", date_type, e)
+
+        # 2. Backfill from Edaylotto for all targets
+        try:
+            from parsers.edaylotto import get_product_code, EdaylottoClient
+            eday_client = EdaylottoClient()
+            for lotto in self.lotteries:
+                lname = lotto["name"]
+                if lname not in db_results and get_product_code(lname):
+                    res = eday_client.get_result(lname, target_date)
+                    if res:
+                        self.db.save_result(lname, res["top3"], res["bottom2"], res.get("full", ""), result_date=target_date)
+        except Exception as e:
+            logger.warning("Error backfilling %s results from edaylotto: %s", date_type, e)
+
+        return {r["lottery_name"]: r for r in self.db.get_daily_results(result_date=target_date)}
+
     def send_daily_summary(self, target_date: date | None = None) -> None:
         """Send the full formatted summary text report for the day into the LINE group."""
         if not self.sender:
@@ -273,12 +303,13 @@ class LotteryScheduler:
             return
 
         today = target_date or datetime.now(TZ).date()
-        daily_results = self.db.get_daily_results(result_date=today)
-        if not daily_results:
+        db_results = self._backfill_results_for_date(today)
+        if not db_results:
             logger.info("No lottery results recorded for %s – skip summary report", today)
             return
 
         is_weekend = (today.weekday() in (5, 6))
+        daily_results = list(db_results.values())
         if is_weekend:
             filtered_results = [r for r in daily_results if r["lottery_name"] not in WEEKDAY_STOCKS]
         else:
@@ -287,8 +318,12 @@ class LotteryScheduler:
         if not filtered_results:
             return
 
-        report_text = generate_summary_report(filtered_results, target_date=today)
-        logger.info("Sending Daily Summary Report for %s:\n%s", today, report_text)
+        # Sort chronologically by scheduled draw time in config
+        time_order = {lotto["name"]: lotto.get("time", "99:99") for lotto in self.lotteries}
+        sorted_results = sorted(filtered_results, key=lambda x: time_order.get(x["lottery_name"], "99:99"))
+
+        report_text = generate_summary_report(sorted_results, target_date=today)
+        logger.info("Sending Daily Summary Report for %s (%d lotteries):\n%s", today, len(sorted_results), report_text)
         self.sender.send_text(report_text)
 
     def send_yesterday_summary(self) -> None:
@@ -301,19 +336,7 @@ class LotteryScheduler:
         logger.info("Generating Yesterday's Full Summary Report for %s...", yesterday)
         is_weekend = (yesterday.weekday() in (5, 6))
 
-        # Ensure yesterday's results are filled from SMLOT if missing
-        db_results = {r["lottery_name"]: r for r in self.db.get_daily_results(result_date=yesterday)}
-        if len(db_results) < 20:
-            try:
-                from parsers.smlot_reward import SmlotRewardParser
-                smlot_all = SmlotRewardParser.fetch_all_smlot_results(force_refresh=True, date_type="yesterday")
-                for name, res in smlot_all.items():
-                    if name not in db_results:
-                        self.db.save_result(name, res["top3"], res["bottom2"], res.get("full", ""), result_date=yesterday)
-                db_results = {r["lottery_name"]: r for r in self.db.get_daily_results(result_date=yesterday)}
-            except Exception as e:
-                logger.warning("Error backfilling yesterday results from SMLOT: %s", e)
-
+        db_results = self._backfill_results_for_date(yesterday)
         daily_results = list(db_results.values())
         if is_weekend:
             filtered_results = [r for r in daily_results if r["lottery_name"] not in WEEKDAY_STOCKS]
@@ -321,8 +344,12 @@ class LotteryScheduler:
             filtered_results = daily_results
 
         if filtered_results:
-            report_text = generate_summary_report(filtered_results, target_date=yesterday)
-            logger.info("Sending Yesterday's Full Summary Report (%d lotteries):\n%s", len(filtered_results), report_text)
+            # Sort chronologically by scheduled draw time in config
+            time_order = {lotto["name"]: lotto.get("time", "99:99") for lotto in self.lotteries}
+            sorted_results = sorted(filtered_results, key=lambda x: time_order.get(x["lottery_name"], "99:99"))
+
+            report_text = generate_summary_report(sorted_results, target_date=yesterday)
+            logger.info("Sending Yesterday's Full Summary Report (%d lotteries):\n%s", len(sorted_results), report_text)
             self.sender.send_text(report_text)
 
     def check_pending_due_today(self) -> None:
