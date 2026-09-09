@@ -1,0 +1,762 @@
+# -*- coding: utf-8 -*-
+"""
+Predictor Bot – Standalone Lottery Prediction Engine & LINE Delivery.
+Brand: 🪐 แอดBaras 🛸 / Bot คำนวณเลข
+Channel ID: 2011501216
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import re
+from collections import Counter
+from datetime import date, datetime
+from typing import Optional, Dict, Any, List, Tuple
+
+import requests
+from database import Database
+from utils import setup_logging
+
+logger = setup_logging()
+
+# LINE Channel credentials for Bot คำนวณเลข
+PREDICTOR_CLIENT_ID = "2011501216"
+PREDICTOR_CLIENT_SECRET = "8f8ed4243dde63351aef6b0e6904c0ea"
+
+# Day of week power numbers (กำลังวัน: 0=จันทร์, 1=อังคาร, 2=พุธ, 3=พฤหัสบดี, 4=ศุกร์, 5=เสาร์, 6=อาทิตย์)
+DAY_POWER_NUMBERS = {
+    0: ["2", "4", "8"],       # จันทร์
+    1: ["3", "5", "8"],       # อังคาร
+    2: ["4", "2", "8"],       # พุธ
+    3: ["5", "1", "9"],       # พฤหัสบดี
+    4: ["6", "3", "5"],       # ศุกร์
+    5: ["7", "8", "2"],       # เสาร์
+    6: ["1", "8", "4"],       # อาทิตย์
+}
+
+DAY_THAI_NAMES = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์", "วันเสาร์", "วันอาทิตย์"]
+
+LOTTERY_ALIASES: Dict[str, Tuple[str, str]] = {
+    "นอยอาเซียน": ("ฮานอยอาเซียน", "🇻🇳"),
+    "ฮานอยอาเซียน": ("ฮานอยอาเซียน", "🇻🇳"),
+    "นอยhd": ("ฮานอย HD", "🇻🇳"),
+    "ฮานอยhd": ("ฮานอย HD", "🇻🇳"),
+    "นอยสตาร์": ("ฮานอย Star", "🇻🇳"),
+    "นอยstar": ("ฮานอย Star", "🇻🇳"),
+    "ฮานอยสตาร์": ("ฮานอย Star", "🇻🇳"),
+    "ฮานอยstar": ("ฮานอย Star", "🇻🇳"),
+    "นอยทีวี": ("ฮานอย TV", "🇻🇳"),
+    "นอยtv": ("ฮานอย TV", "🇻🇳"),
+    "ฮานอยtv": ("ฮานอย TV", "🇻🇳"),
+    "นอยกาชาด": ("ฮานอย กาชาด", "🇻🇳"),
+    "ฮานอยกาชาด": ("ฮานอย กาชาด", "🇻🇳"),
+    "นอยสามัคคี": ("ฮานอยสามัคคี", "🇻🇳"),
+    "ฮานอยสามัคคี": ("ฮานอยสามัคคี", "🇻🇳"),
+    "นอยพิเศษ": ("หวยฮานอย พิเศษ", "🇻🇳"),
+    "ฮานอยพิเศษ": ("หวยฮานอย พิเศษ", "🇻🇳"),
+    "นอยปกติ": ("หวยฮานอย", "🇻🇳"),
+    "ฮานอยปกติ": ("หวยฮานอย", "🇻🇳"),
+    "ฮานอย": ("หวยฮานอย", "🇻🇳"),
+    "นอยvip": ("หวยฮานอย VIP", "🇻🇳"),
+    "ฮานอยvip": ("หวยฮานอย VIP", "🇻🇳"),
+    "นอยพัฒนา": ("ฮานอยพัฒนา", "🇻🇳"),
+    "ฮานอยพัฒนา": ("ฮานอยพัฒนา", "🇻🇳"),
+    "นอยextra": ("ฮานอยEXTRA", "🇻🇳"),
+    "ฮานอยextra": ("ฮานอยEXTRA", "🇻🇳"),
+    "นิเช้า": ("นิเคอิเช้า", "🇯🇵"),
+    "นิเคอิเช้า": ("นิเคอิเช้า", "🇯🇵"),
+    "นิบ่าย": ("นิเคอิบ่าย", "🇯🇵"),
+    "นิเคอิบ่าย": ("นิเคอิบ่าย", "🇯🇵"),
+    "จีนเช้า": ("จีนเช้า", "🇨🇳"),
+    "จีนบ่าย": ("จีนบ่าย", "🇨🇳"),
+    "ฮั่งเช้า": ("ฮั่งเส็งเช้า", "🇭🇰"),
+    "ฮั่งเส็งเช้า": ("ฮั่งเส็งเช้า", "🇭🇰"),
+    "ฮั่งบ่าย": ("ฮั่งเส็งบ่าย", "🇭🇰"),
+    "ฮั่งเส็งบ่าย": ("ฮั่งเส็งบ่าย", "🇭🇰"),
+    "ไต้หวัน": ("ไต้หวัน", "🇹🇼"),
+    "เกาหลี": ("หุ้นเกาหลี", "🇰🇷"),
+    "หุ้นเกาหลี": ("หุ้นเกาหลี", "🇰🇷"),
+    "สิงคโปร์": ("หุ้นสิงคโปร์", "🇸🇬"),
+    "หุ้นสิงคโปร์": ("หุ้นสิงคโปร์", "🇸🇬"),
+    "ไทย": ("หุ้นไทยเย็น", "🇹🇭"),
+    "หุ้นไทย": ("หุ้นไทยเย็น", "🇹🇭"),
+    "ไทยเย็น": ("หุ้นไทยเย็น", "🇹🇭"),
+    "หุ้นไทยเย็น": ("หุ้นไทยเย็น", "🇹🇭"),
+    "ลาว": ("หวยลาวพัฒนา (จ-ศ)", "🇱🇦"),
+    "หวยลาว": ("หวยลาวพัฒนา (จ-ศ)", "🇱🇦"),
+    "ลาวพัฒนา": ("หวยลาวพัฒนา (จ-ศ)", "🇱🇦"),
+    "ลาวสตาร์": ("ลาว Star", "🇱🇦"),
+    "ลาวstar": ("ลาว Star", "🇱🇦"),
+    "ลาวextra": ("ลาว Extra", "🇱🇦"),
+    "ลาวทีวี": ("ลาว TV", "🇱🇦"),
+    "ลาวtv": ("ลาว TV", "🇱🇦"),
+    "ลาวhd": ("ลาว HD", "🇱🇦"),
+    "ลาวประตูชัย": ("ลาวประตูชัย", "🇱🇦"),
+    "ลาวสันติภาพ": ("ลาวสันติภาพ", "🇱🇦"),
+    "ประชาชนลาว": ("ประชาชนลาว", "🇱🇦"),
+    "ลาวสามัคคี": ("ลาวสามัคคี", "🇱🇦"),
+    "ลาวอาเซียน": ("ลาวอาเซียน", "🇱🇦"),
+    "ลาวกาชาด": ("หวยลาว กาชาด", "🇱🇦"),
+    "ลาวดาว": ("ลาวดาว", "🇱🇦"),
+    "ดาวโจนส์": ("หุ้นดาวโจนส์", "🇺🇸"),
+    "หุ้นดาวโจนส์": ("หุ้นดาวโจนส์", "🇺🇸"),
+    "ดาวvip": ("หวยดาวโจนส์ VIP", "⭐🇺🇸"),
+    "ดาวสตาร์": ("หวยดาวโจนส์ STAR", "⭐🇺🇸"),
+    "ดาวextra": ("หวยดาวโจนส์ extra", "⭐🇺🇸"),
+    "ดาวtv": ("หวยดาวโจนส์ TV", "⭐🇺🇸"),
+    "อังกฤษ": ("หุ้นอังกฤษ", "🇬🇧"),
+    "เยอรมัน": ("หุ้นเยอรมัน", "🇩🇪"),
+    "รัสเซีย": ("หุ้นรัสเซีย", "🇷🇺"),
+    "อินเดีย": ("หุ้นอินเดีย", "🇮🇳"),
+    "อียิปต์": ("หุ้นอียิปต์", "🇪🇬"),
+}
+
+
+def resolve_lottery(query: str) -> Tuple[Optional[str], str]:
+    """Resolve lottery name and flag from colloquial query."""
+    clean_q = re.sub(r"[\s\-\_]", "", query).lower()
+    if clean_q in LOTTERY_ALIASES:
+        name, flag = LOTTERY_ALIASES[clean_q]
+        return name, flag
+
+    try:
+        with open("config.json", encoding="utf-8") as f:
+            cfg = json.load(f)
+            for c in cfg:
+                cname = c["name"]
+                c_clean = re.sub(r"[\s\-\_]", "", cname).lower()
+                if clean_q in c_clean or c_clean in clean_q:
+                    return cname, c.get("flag", "🎯")
+    except Exception:
+        pass
+    return None, "🎯"
+
+
+class PredictorEngine:
+    """Calculates statistically weighted lottery predictions from 15-day history."""
+
+    def __init__(self, db: Optional[Database] = None):
+        self.db = db or Database("lottery_results.db")
+
+    def calculate_prediction(self, lottery_name: str, target_date: Optional[date] = None) -> Optional[Dict[str, Any]]:
+        if target_date is None:
+            target_date = date.today()
+
+        history = self.db.get_history_results(lottery_name, limit=15, before_date=target_date)
+        if not history or len(history) < 3:
+            logger.warning("Insufficient history for '%s' (got %d draws)", lottery_name, len(history) if history else 0)
+            return None
+
+        digit_weights = Counter()
+        n = len(history)
+        for i, row in enumerate(history):
+            recency_weight = 2.0 if (n - i) <= 5 else 1.0
+
+            top3 = str(row.get("top3", "")).zfill(3)[-3:]
+            bot2 = str(row.get("bottom2", "")).zfill(2)[-2:]
+
+            for d in top3:
+                if d.isdigit():
+                    digit_weights[d] += recency_weight * 1.2
+            for d in bot2:
+                if d.isdigit():
+                    digit_weights[d] += recency_weight * 1.0
+
+        weekday = target_date.weekday()
+        power_digits = DAY_POWER_NUMBERS.get(weekday, [])
+        for pd in power_digits:
+            digit_weights[pd] += 3.0
+
+        ranked_digits = [d for d, _ in digit_weights.most_common()]
+        if len(ranked_digits) < 4:
+            ranked_digits.extend([str(x) for x in range(10) if str(x) not in ranked_digits])
+
+        primary_den = ranked_digits[0]
+        secondary_den = ranked_digits[1]
+        supp_1 = ranked_digits[2]
+        supp_2 = ranked_digits[3]
+
+        run_rood = [primary_den, secondary_den]
+        run_rood.sort()
+
+        fun = primary_den
+
+        pairs = []
+        for d in run_rood:
+            for s in [supp_1, supp_2, power_digits[0] if power_digits else "0"]:
+                pair = f"{d}{s}" if d <= s else f"{s}{d}"
+                if pair not in pairs and pair[0] != pair[1]:
+                    pairs.append(pair)
+            if digit_weights[d] >= 8.0:
+                pair_dbl = f"{d}{d}"
+                if pair_dbl not in pairs:
+                    pairs.append(pair_dbl)
+
+        for candidate in [f"{run_rood[0]}{run_rood[1]}", f"{run_rood[0]}0", f"{run_rood[1]}5", f"{run_rood[0]}9"]:
+            if len(pairs) < 6 and candidate not in pairs:
+                pairs.append(candidate)
+        pairs = pairs[:6]
+
+        triplets = [
+            f"{primary_den}{secondary_den}{supp_1}",
+            f"{primary_den}{secondary_den}{supp_2}",
+            f"{primary_den}{supp_1}{power_digits[0] if power_digits else '9'}",
+            f"{secondary_den}{supp_1}{supp_2}",
+        ]
+        unique_triplets = []
+        seen_combos = set()
+        for t in triplets:
+            sorted_t = "".join(sorted(t))
+            if sorted_t not in seen_combos:
+                seen_combos.add(sorted_t)
+                unique_triplets.append(t)
+
+        hits = 0
+        for row in history:
+            top3 = str(row.get("top3", "")).zfill(3)[-3:]
+            bot2 = str(row.get("bottom2", "")).zfill(2)[-2:]
+            all_digits = set(top3 + bot2)
+            if primary_den in all_digits or secondary_den in all_digits:
+                hits += 1
+
+        accuracy_pct = round((hits / n) * 100, 1) if n > 0 else 0.0
+
+        return {
+            "lottery_name": lottery_name,
+            "target_date": target_date.strftime("%d/%m/%Y"),
+            "target_date_thai": f"{target_date.day} {['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'][target_date.month - 1]} {target_date.year + 543}",
+            "day_name": DAY_THAI_NAMES[weekday],
+            "run_rood": run_rood,
+            "fun": fun,
+            "pairs": pairs,
+            "triplets": unique_triplets[:4],
+            "power_numbers": power_digits,
+            "history_count": n,
+            "accuracy_pct": accuracy_pct,
+            "hits": hits,
+        }
+
+
+class PredictorBot:
+    """Handles LINE token authentication, Flex Message generation, and delivery."""
+
+    def __init__(self, group_id_path: str = "data/predictor_group_id.txt"):
+        self.group_id_path = group_id_path
+        self.client_id = PREDICTOR_CLIENT_ID
+        self.client_secret = PREDICTOR_CLIENT_SECRET
+        self._access_token: Optional[str] = None
+        self.engine = PredictorEngine()
+
+    def get_token(self) -> str:
+        if self._access_token:
+            return self._access_token
+        try:
+            res = requests.post(
+                "https://api.line.me/v2/oauth/accessToken",
+                data={
+                    "grant_type": "client_credentials",
+                    "client_id": self.client_id,
+                    "client_secret": self.client_secret,
+                },
+                headers={"Content-Type": "application/x-www-form-urlencoded"},
+                timeout=10,
+            )
+            res.raise_for_status()
+            token = res.json().get("access_token")
+            self._access_token = token
+            return token
+        except Exception as e:
+            logger.error("Failed to get PredictorBot access token: %s", e)
+            raise
+
+    def get_group_id(self) -> Optional[str]:
+        env_gid = os.environ.get("PREDICTOR_GROUP_ID")
+        if env_gid:
+            return env_gid
+        if os.path.exists(self.group_id_path):
+            try:
+                with open(self.group_id_path, "r", encoding="utf-8-sig") as f:
+                    gid = f.read().strip()
+                    if gid:
+                        return gid
+            except Exception:
+                pass
+        return None
+
+    def build_flex_message(self, flag: str, pred: Dict[str, Any]) -> Dict[str, Any]:
+        lottery_name = pred["lottery_name"]
+        date_thai = pred["target_date_thai"]
+        day_name = pred["day_name"]
+        run_rood_str = f"{pred['run_rood'][0]}  -  {pred['run_rood'][1]}"
+        fun_str = f"{pred['fun']}"
+        pairs_str = "   ".join(pred["pairs"])
+        triplets_str = "   ".join(pred["triplets"])
+        power_str = " - ".join(pred["power_numbers"])
+        accuracy_str = f"ความแม่นยำย้อนหลัง: {pred['hits']}/{pred['history_count']} งวด ({pred['accuracy_pct']}%)"
+
+        flex_dict = {
+            "type": "bubble",
+            "size": "mega",
+            "header": {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#0F172A",
+                "paddingAll": "20px",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {"type": "text", "text": "🪐 แอดBaras 🛸", "color": "#38BDF8", "size": "sm", "weight": "bold", "flex": 1},
+                            {"type": "text", "text": "AI คำนวณสูตร", "color": "#FBBF24", "size": "xs", "align": "end", "weight": "bold"}
+                        ]
+                    },
+                    {
+                        "type": "text",
+                        "text": f"{flag} {lottery_name}",
+                        "color": "#FFFFFF",
+                        "size": "xl",
+                        "weight": "bold",
+                        "margin": "md"
+                    },
+                    {
+                        "type": "text",
+                        "text": f"ประจำ{day_name}ที่ {date_thai}",
+                        "color": "#94A3B8",
+                        "size": "xs",
+                        "margin": "xs"
+                    }
+                ]
+            },
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#1E293B",
+                "paddingAll": "20px",
+                "spacing": "lg",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "backgroundColor": "#334155",
+                        "cornerRadius": "12px",
+                        "paddingAll": "14px",
+                        "contents": [
+                            {"type": "text", "text": "🎯 วิ่ง / รูด 19 ประตู", "color": "#38BDF8", "size": "sm", "weight": "bold"},
+                            {"type": "text", "text": run_rood_str, "color": "#34D399", "size": "xxl", "weight": "bold", "align": "center", "margin": "sm"}
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "backgroundColor": "#831843",
+                        "cornerRadius": "10px",
+                        "paddingAll": "12px",
+                        "alignItems": "center",
+                        "contents": [
+                            {"type": "text", "text": "⚡ เม็ดเดียว ฟันธง", "color": "#F9A8D4", "size": "sm", "weight": "bold", "flex": 1},
+                            {"type": "text", "text": fun_str, "color": "#FDE047", "size": "xxl", "weight": "bold", "align": "end"}
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "backgroundColor": "#0F172A",
+                        "cornerRadius": "10px",
+                        "paddingAll": "14px",
+                        "contents": [
+                            {"type": "text", "text": "🎲 เจาะ 2 ตัวเด่น (ไป-กลับ)", "color": "#FBBF24", "size": "xs", "weight": "bold"},
+                            {"type": "text", "text": pairs_str, "color": "#FFFFFF", "size": "md", "weight": "bold", "align": "center", "margin": "md"}
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "backgroundColor": "#0F172A",
+                        "cornerRadius": "10px",
+                        "paddingAll": "14px",
+                        "contents": [
+                            {"type": "text", "text": "👑 ชุด 3 ตัวตรง - โต๊ด", "color": "#A78BFA", "size": "xs", "weight": "bold"},
+                            {"type": "text", "text": triplets_str, "color": "#E2E8F0", "size": "md", "weight": "bold", "align": "center", "margin": "md"}
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "spacing": "xs",
+                        "contents": [
+                            {"type": "text", "text": f"🌟 เลขเด่นกำลังวัน: {power_str}", "color": "#94A3B8", "size": "xxs"},
+                            {"type": "text", "text": f"📊 {accuracy_str}", "color": "#10B981", "size": "xxs", "weight": "bold"}
+                        ]
+                    }
+                ]
+            },
+            "footer": {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#0F172A",
+                "paddingAll": "12px",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "⚠️ แนวทางสถิติเพื่อความบันเทิง โปรดใช้วิจารณญาณ",
+                        "color": "#64748B",
+                        "size": "xxs",
+                        "align": "center"
+                    }
+                ]
+            }
+        }
+        return {
+            "type": "flex",
+            "altText": f"🪐 แนวทาง {lottery_name} ประจำวันที่ {date_thai}",
+            "contents": flex_dict
+        }
+
+    def reply_or_push_prediction(self, lottery_name: str, flag: str = "🎯", reply_token: Optional[str] = None, group_id: Optional[str] = None) -> bool:
+        """Reply via LINE reply token if available, or push to group."""
+        pred = self.engine.calculate_prediction(lottery_name)
+        if not pred:
+            logger.error("Could not calculate prediction for '%s'", lottery_name)
+            return False
+
+        flex_msg = self.build_flex_message(flag, pred)
+        token = self.get_token()
+
+        if reply_token:
+            try:
+                res = requests.post(
+                    "https://api.line.me/v2/bot/message/reply",
+                    headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+                    json={"replyToken": reply_token, "messages": [flex_msg]},
+                    timeout=5
+                )
+                if res.status_code == 200:
+                    logger.info("Successfully replied prediction for '%s'", lottery_name)
+                    return True
+            except Exception as exc:
+                logger.warning("Reply token failed, falling back to push: %s", exc)
+
+        return self.send_prediction(lottery_name, flag=flag, group_id=group_id)
+
+    def send_prediction(self, lottery_name: str, flag: str = "🎯", group_id: Optional[str] = None) -> bool:
+        target_group = group_id or self.get_group_id()
+        if not target_group:
+            logger.error("Cannot send prediction: No dedicated group_id found.")
+            return False
+
+        pred = self.engine.calculate_prediction(lottery_name)
+        if not pred:
+            logger.error("Could not calculate prediction for '%s'", lottery_name)
+            return False
+
+        flex_msg = self.build_flex_message(flag, pred)
+        token = self.get_token()
+
+        try:
+            res = requests.post(
+                "https://api.line.me/v2/bot/message/push",
+                headers={
+                    "Authorization": f"Bearer {token}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "to": target_group,
+                    "messages": [flex_msg]
+                },
+                timeout=10,
+            )
+            if res.status_code == 200:
+                logger.info("Successfully pushed prediction for '%s' to group %s", lottery_name, target_group)
+                return True
+            else:
+                logger.error("Failed to push prediction: %d %s", res.status_code, res.text)
+                return False
+        except Exception as e:
+            logger.error("Exception pushing prediction: %s", e)
+            return False
+
+
+    def build_win_flex_message(self, flag: str, lottery_name: str, top3: str, bottom2: str, hits: List[Dict[str, str]]) -> Dict[str, Any]:
+        """Construct a luxury celebratory winning Flex Message."""
+        hit_contents = []
+        for h in hits:
+            hit_contents.append({
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#1E293B",
+                "cornerRadius": "10px",
+                "paddingAll": "12px",
+                "margin": "md",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {"type": "text", "text": h["title"], "color": h["color"], "size": "sm", "weight": "bold", "flex": 1},
+                            {
+                                "type": "box",
+                                "layout": "vertical",
+                                "backgroundColor": h["color"],
+                                "cornerRadius": "6px",
+                                "paddingStart": "8px",
+                                "paddingEnd": "8px",
+                                "paddingTop": "2px",
+                                "paddingBottom": "2px",
+                                "contents": [
+                                    {"type": "text", "text": h["badge"], "color": "#0F172A", "size": "xxs", "weight": "bold"}
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "text",
+                        "text": h["detail"],
+                        "color": "#FFFFFF",
+                        "size": "md",
+                        "weight": "bold",
+                        "margin": "sm"
+                    }
+                ]
+            })
+
+        flex_dict = {
+            "type": "bubble",
+            "size": "mega",
+            "header": {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#064E3B",
+                "paddingAll": "20px",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {"type": "text", "text": "🪐 แอดBaras 🛸", "color": "#6EE7B7", "size": "xs", "weight": "bold", "flex": 1},
+                            {"type": "text", "text": "🏆 ตรวจผลแนวทาง", "color": "#FDE047", "size": "xs", "align": "end", "weight": "bold"}
+                        ]
+                    },
+                    {
+                        "type": "text",
+                        "text": f"🎉 แตกเข้าเป้า! {flag} {lottery_name}",
+                        "color": "#FFFFFF",
+                        "size": "xl",
+                        "weight": "bold",
+                        "margin": "md"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "backgroundColor": "#022C22",
+                        "cornerRadius": "10px",
+                        "paddingAll": "12px",
+                        "margin": "md",
+                        "contents": [
+                            {
+                                "type": "box",
+                                "layout": "vertical",
+                                "flex": 1,
+                                "alignItems": "center",
+                                "contents": [
+                                    {"type": "text", "text": "3 ตัวบน", "color": "#94A3B8", "size": "xxs"},
+                                    {"type": "text", "text": top3, "color": "#38BDF8", "size": "xxl", "weight": "bold"}
+                                ]
+                            },
+                            {
+                                "type": "box",
+                                "layout": "vertical",
+                                "flex": 1,
+                                "alignItems": "center",
+                                "contents": [
+                                    {"type": "text", "text": "2 ตัวล่าง", "color": "#94A3B8", "size": "xxs"},
+                                    {"type": "text", "text": bottom2, "color": "#F43F5E", "size": "xxl", "weight": "bold"}
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#0F172A",
+                "paddingAll": "20px",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "รายการที่ฟันเข้าเป้าวันนี้:",
+                        "color": "#94A3B8",
+                        "size": "xs",
+                        "weight": "bold"
+                    },
+                    *hit_contents
+                ]
+            },
+            "footer": {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#064E3B",
+                "paddingAll": "12px",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "💸 ปังยกกลุ่ม! ยินดีกับทุกท่านที่ตามครับ ✨",
+                        "color": "#FDE047",
+                        "size": "xs",
+                        "weight": "bold",
+                        "align": "center"
+                    }
+                ]
+            }
+        }
+        return {
+            "type": "flex",
+            "altText": f"🎉 สรุปผลเข้าเป้า {lottery_name}: 3 ตัว {top3} | 2 ตัว {bottom2}",
+            "contents": flex_dict
+        }
+
+    def check_and_send_win(
+        self,
+        lottery_name: str,
+        top3: str,
+        bottom2: str,
+        result_date: Optional[date] = None,
+        flag: str = "🎯"
+    ) -> bool:
+        """Check if today's prediction hit any prize, and if so, push celebratory card to the dedicated group."""
+        if result_date is None:
+            result_date = datetime.now().date()
+
+        win_log_path = "data/sent_win_celebrations.json"
+        sent_keys = set()
+        if os.path.exists(win_log_path):
+            try:
+                with open(win_log_path, "r", encoding="utf-8") as f:
+                    sent_keys = set(json.load(f))
+            except Exception:
+                pass
+
+        cache_key = f"{result_date.isoformat()}_{lottery_name}"
+        if cache_key in sent_keys:
+            return False
+
+        pred = self.engine.calculate_prediction(lottery_name, target_date=result_date)
+        if not pred:
+            return False
+
+        top3 = str(top3).zfill(3)[-3:]
+        bot2 = str(bottom2).zfill(2)[-2:]
+        top2 = top3[-2:]
+
+        hits = []
+
+        # 1. Check วิ่ง / รูด 19 ประตู
+        d1, d2 = pred["run_rood"][0], pred["run_rood"][1]
+        run_hits = []
+        if d1 in top3: run_hits.append(f"{d1} บน")
+        if d1 in bot2: run_hits.append(f"{d1} ล่าง")
+        if d2 in top3 and d2 != d1: run_hits.append(f"{d2} บน")
+        if d2 in bot2 and d2 != d1: run_hits.append(f"{d2} ล่าง")
+
+        if run_hits:
+            hits.append({
+                "title": "🎯 วิ่ง / รูด 19 ประตู",
+                "detail": f"เข้าเลขเด่น {' • '.join(run_hits)}",
+                "badge": "เข้าเป้า",
+                "color": "#34D399"
+            })
+
+        # 2. Check ฟันธง
+        fun = pred["fun"]
+        fun_hits = []
+        if fun in top3: fun_hits.append(f"{fun} บน")
+        if fun in bot2: fun_hits.append(f"{fun} ล่าง")
+        if fun_hits:
+            hits.append({
+                "title": "⚡ เม็ดเดียว ฟันธง",
+                "detail": f"เข้าเน้นๆ {fun} ({', '.join(fun_hits)})",
+                "badge": "ฟันตรงเป้า",
+                "color": "#FDE047"
+            })
+
+        # 3. Check เจาะ 2 ตัว
+        pairs = pred["pairs"]
+        pair_hits = []
+        for p in pairs:
+            rev_p = p[::-1]
+            if p == top2:
+                pair_hits.append(f"{p} บน (ตรงๆ)")
+            elif rev_p == top2 and p != rev_p:
+                pair_hits.append(f"{rev_p} บน (กลับ)")
+            if p == bot2:
+                pair_hits.append(f"{p} ล่าง (ตรงๆ)")
+            elif rev_p == bot2 and p != rev_p:
+                pair_hits.append(f"{rev_p} ล่าง (กลับ)")
+
+        if pair_hits:
+            hits.append({
+                "title": "🎲 เจาะ 2 ตัวเด่น",
+                "detail": " • ".join(pair_hits),
+                "badge": "แตกเต็มๆ",
+                "color": "#F472B6"
+            })
+
+        # 4. Check 3 ตัว
+        triplets = pred["triplets"]
+        triplet_hits = []
+        sorted_top3 = "".join(sorted(top3))
+        for t in triplets:
+            if t == top3:
+                triplet_hits.append(f"{t} (3 ตัวตรง!)")
+            elif "".join(sorted(t)) == sorted_top3:
+                triplet_hits.append(f"{t} (3 ตัวโต๊ด!)")
+
+        if triplet_hits:
+            hits.append({
+                "title": "👑 ชุด 3 ตัว",
+                "detail": " • ".join(triplet_hits),
+                "badge": "แตกกระจาย",
+                "color": "#A78BFA"
+            })
+
+        if not hits:
+            logger.info("No win for prediction '%s' on %s (top3=%s, bot2=%s)", lottery_name, result_date, top3, bot2)
+            return False
+
+        flex_msg = self.build_win_flex_message(flag, lottery_name, top3, bot2, hits)
+        target_group = self.get_group_id()
+        if not target_group:
+            return False
+
+        token = self.get_token()
+        try:
+            res = requests.post(
+                "https://api.line.me/v2/bot/message/push",
+                headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+                json={"to": target_group, "messages": [flex_msg]},
+                timeout=10,
+            )
+            if res.status_code == 200:
+                logger.info("Successfully pushed WIN celebration for '%s' to group %s", lottery_name, target_group)
+                sent_keys.add(cache_key)
+                try:
+                    with open(win_log_path, "w", encoding="utf-8") as f:
+                        json.dump(list(sent_keys), f, ensure_ascii=False)
+                except Exception:
+                    pass
+                return True
+            else:
+                logger.error("Failed to push win celebration: %d %s", res.status_code, res.text)
+                return False
+        except Exception as e:
+            logger.error("Exception pushing win celebration: %s", e)
+            return False
+
+
+if __name__ == "__main__":
+    bot = PredictorBot()
+    name, flag = resolve_lottery("ขอนอยสตาร์".replace("ขอ", ""))
+    print("Resolved:", name, flag)
+
