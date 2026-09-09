@@ -86,6 +86,16 @@ def start_http_server(db: Database, sender: LineSender):
                     data = json.loads(body)
                     events = data.get("events", [])
                     for ev in events:
+                        source = ev.get("source", {})
+                        if source.get("type") == "group":
+                            gid = source.get("groupId")
+                            logger.info("LINE Webhook group source captured: %s", gid)
+                            try:
+                                with open("data/last_captured_group.txt", "w", encoding="utf-8") as f:
+                                    f.write(gid)
+                            except Exception:
+                                pass
+
                         if ev.get("type") == "message" and ev.get("message", {}).get("type") == "text":
                             txt = ev["message"]["text"].strip()
                             
