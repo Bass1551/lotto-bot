@@ -12,6 +12,7 @@ import os
 import re
 from collections import Counter
 from datetime import date, datetime
+from zoneinfo import ZoneInfo
 from typing import Optional, Dict, Any, List, Tuple
 
 import requests
@@ -282,7 +283,38 @@ class PredictorBot:
                         return gid
             except Exception:
                 pass
-        return None
+    def record_requested_lottery(self, lottery_name: str, target_date: Optional[date] = None) -> None:
+        """Record that a user explicitly requested prediction for this lottery today."""
+        target_date = target_date or datetime.now(ZoneInfo("Asia/Bangkok")).date()
+        req_path = "data/requested_predictions.json"
+        reqs = set()
+        if os.path.exists(req_path):
+            try:
+                with open(req_path, "r", encoding="utf-8") as f:
+                    reqs = set(json.load(f))
+            except Exception:
+                pass
+        key = f"{target_date.isoformat()}_{lottery_name}"
+        reqs.add(key)
+        try:
+            with open(req_path, "w", encoding="utf-8") as f:
+                json.dump(list(reqs), f, ensure_ascii=False)
+        except Exception:
+            pass
+
+    def is_lottery_requested(self, lottery_name: str, target_date: Optional[date] = None) -> bool:
+        """Check if this lottery was explicitly requested today by group members."""
+        target_date = target_date or datetime.now(ZoneInfo("Asia/Bangkok")).date()
+        req_path = "data/requested_predictions.json"
+        if not os.path.exists(req_path):
+            return False
+        try:
+            with open(req_path, "r", encoding="utf-8") as f:
+                reqs = set(json.load(f))
+                key = f"{target_date.isoformat()}_{lottery_name}"
+                return key in reqs
+        except Exception:
+            return False
 
     def build_flex_message(self, flag: str, pred: Dict[str, Any]) -> Dict[str, Any]:
         lottery_name = pred["lottery_name"]
@@ -434,6 +466,7 @@ class PredictorBot:
                 )
                 if res.status_code == 200:
                     logger.info("Successfully replied prediction for '%s'", lottery_name)
+                    self.record_requested_lottery(lottery_name)
                     return True
             except Exception as exc:
                 logger.warning("Reply token failed, falling back to push: %s", exc)
@@ -469,6 +502,7 @@ class PredictorBot:
             )
             if res.status_code == 200:
                 logger.info("Successfully pushed prediction for '%s' to group %s", lottery_name, target_group)
+                self.record_requested_lottery(lottery_name)
                 return True
             else:
                 logger.error("Failed to push prediction: %d %s", res.status_code, res.text)
@@ -640,6 +674,10 @@ class PredictorBot:
 
         cache_key = f"{result_date.isoformat()}_{lottery_name}"
         if cache_key in sent_keys:
+            return False
+
+        # Only check and celebrate wins for lotteries that users in the group explicitly requested!
+        if not self.is_lottery_requested(lottery_name, target_date=result_date):
             return False
 
         pred = self.engine.calculate_prediction(lottery_name, target_date=result_date)
