@@ -36,6 +36,9 @@
         .glow-amber {
             box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
         }
+        .glow-red {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.35);
+        }
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -91,7 +94,7 @@
         </div>
 
         <!-- Status Summary Counters -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-4">
             <div class="bg-cardBg/70 border border-emerald-500/30 rounded-xl p-3.5 flex items-center justify-between">
                 <div>
                     <div class="text-xs text-emerald-400 font-semibold uppercase tracking-wider">ออกผลแล้ว</div>
@@ -122,6 +125,16 @@
                 </div>
             </div>
 
+            <div class="bg-cardBg/70 border border-rose-500/40 rounded-xl p-3.5 flex items-center justify-between">
+                <div>
+                    <div class="text-xs text-rose-400 font-semibold uppercase tracking-wider">ตลาดปิด</div>
+                    <div id="cnt-closed" class="text-2xl font-black text-rose-400 mt-1">0</div>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center font-bold">
+                    🛑
+                </div>
+            </div>
+
             <div class="bg-cardBg/70 border border-cyan-500/30 rounded-xl p-3.5 flex items-center justify-between">
                 <div>
                     <div class="text-xs text-cyan-400 font-semibold uppercase tracking-wider">ทั้งหมดในระบบ</div>
@@ -135,15 +148,18 @@
 
         <!-- Filter & Search Toolbar -->
         <div class="flex flex-col sm:flex-row gap-3 mt-5 items-stretch sm:items-center justify-between">
-            <div class="flex gap-2 bg-cardBg/80 border border-slate-700 p-1 rounded-xl">
-                <button onclick="setFilter('all')" id="btn-tab-all" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-white">
+            <div class="flex flex-wrap gap-1.5 sm:gap-2 bg-cardBg/80 border border-slate-700 p-1 rounded-xl">
+                <button onclick="setFilter('all')" id="btn-tab-all" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-white">
                     ทั้งหมด (<span id="tab-all-cnt">63</span>)
                 </button>
-                <button onclick="setFilter('sent')" id="btn-tab-sent" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
+                <button onclick="setFilter('sent')" id="btn-tab-sent" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
                     🟢 ออกผลแล้ว (<span id="tab-sent-cnt">0</span>)
                 </button>
-                <button onclick="setFilter('waiting')" id="btn-tab-waiting" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
+                <button onclick="setFilter('waiting')" id="btn-tab-waiting" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
                     🟡 กำลังตรวจ/รอผล (<span id="tab-waiting-cnt">0</span>)
+                </button>
+                <button onclick="setFilter('closed')" id="btn-tab-closed" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white">
+                    🔴 ตลาดปิด (<span id="tab-closed-cnt">0</span>)
                 </button>
             </div>
 
@@ -272,6 +288,24 @@
                 }
             } catch (err) {
                 console.log('API offline or file mode. Using embedded default list:', err);
+                // Client-side weekend detection for standalone/offline preview
+                const nowDay = new Date().getDay();
+                const isWeekend = (nowDay === 0 || nowDay === 6);
+                const WEEKDAY_STOCKS = new Set([
+                    "นิเคอิเช้า", "นิเคอิบ่าย", "จีนเช้า", "จีนบ่าย", "ฮั่งเส็งเช้า", "ฮั่งเส็งบ่าย",
+                    "ไต้หวัน", "หุ้นเกาหลี", "หุ้นสิงคโปร์", "หุ้นไทยเย็น", "หุ้นอังกฤษ", "หุ้นเยอรมัน",
+                    "หุ้นรัสเซีย", "หุ้นดาวโจนส์", "หวยดาวโจนส์", "หุ้นอินเดีย", "หุ้นอียิปต์"
+                ]);
+                if (isWeekend) {
+                    allLotteries.forEach(l => {
+                        if (WEEKDAY_STOCKS.has(l.name) && l.status !== 'sent') {
+                            l.status = 'closed';
+                            l.is_closed = true;
+                            l.closed_reason = 'ตลาดปิด (วันหยุดสุดสัปดาห์ เสาร์-อาทิตย์)';
+                        }
+                    });
+                }
+
                 if (statusDot) statusDot.className = 'inline-block w-2 h-2 rounded-full bg-amber-400';
                 if (statusText) {
                     statusText.innerText = 'โหมดสแตนด์บาย (รอเชื่อมต่อบอท http://localhost:8000)';
@@ -286,33 +320,40 @@
             }
         }
 
-        setInterval(fetchLotteryStatus, 15000);
+        // Live Real-time polling every 10 seconds
+        setInterval(fetchLotteryStatus, 10000);
 
         function updateCounters() {
             const sent = allLotteries.filter(l => l.status === 'sent').length;
-            const checking = allLotteries.filter(l => l.status === 'checking').length;
-            const pending = allLotteries.filter(l => l.status === 'pending').length;
+            const closed = allLotteries.filter(l => l.status === 'closed' || l.is_closed).length;
+            const checking = allLotteries.filter(l => l.status === 'checking' && !l.is_closed).length;
+            const pending = allLotteries.filter(l => l.status === 'pending' && !l.is_closed).length;
             const total = allLotteries.length;
 
             document.getElementById('cnt-sent').innerText = sent;
             document.getElementById('cnt-checking').innerText = checking;
             document.getElementById('cnt-pending').innerText = pending;
+            document.getElementById('cnt-closed').innerText = closed;
             document.getElementById('cnt-total').innerText = total;
 
             document.getElementById('tab-all-cnt').innerText = total;
             document.getElementById('tab-sent-cnt').innerText = sent;
             document.getElementById('tab-waiting-cnt').innerText = checking + pending;
+            document.getElementById('tab-closed-cnt').innerText = closed;
         }
 
         function setFilter(filter) {
             currentFilter = filter;
-            const tabs = ['all', 'sent', 'waiting'];
+            const tabs = ['all', 'sent', 'waiting', 'closed'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`btn-tab-${t}`);
+                if (!btn) return;
                 if (t === filter) {
-                    btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-white';
+                    btn.className = t === 'closed'
+                        ? 'px-3 py-1.5 rounded-lg text-xs font-bold transition bg-rose-600 text-white shadow-md shadow-rose-900/40'
+                        : 'px-3 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-white';
                 } else {
-                    btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white';
+                    btn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-400 hover:text-white';
                 }
             });
             renderCards();
@@ -324,8 +365,10 @@
             const emptyState = document.getElementById('empty-state');
 
             let filtered = allLotteries.filter(l => {
+                const isClosed = l.status === 'closed' || l.is_closed;
                 if (currentFilter === 'sent' && l.status !== 'sent') return false;
-                if (currentFilter === 'waiting' && l.status === 'sent') return false;
+                if (currentFilter === 'waiting' && (l.status === 'sent' || isClosed)) return false;
+                if (currentFilter === 'closed' && !isClosed) return false;
                 if (query && !l.name.toLowerCase().includes(query)) return false;
                 return true;
             });
@@ -339,7 +382,8 @@
 
             grid.innerHTML = filtered.map(l => {
                 const isSent = l.status === 'sent';
-                const isChecking = l.status === 'checking';
+                const isClosed = l.status === 'closed' || l.is_closed;
+                const isChecking = l.status === 'checking' && !isClosed;
 
                 let statusBadge = '';
                 let cardBorder = 'border-slate-700/70';
@@ -365,6 +409,22 @@
                         <div class="text-[11px] text-slate-400 text-center flex items-center justify-center gap-1">
                             <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
                             <span>ส่งผลเมื่อ: ${l.sent_at ? l.sent_at.split('T')[1] || l.sent_at : 'วันนี้'}</span>
+                        </div>
+                    `;
+                } else if (isClosed) {
+                    cardBorder = 'border-rose-500/50 glow-red';
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/50 flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ตลาดปิด
+                    </span>`;
+                    numbersHtml = `
+                        <div class="bg-rose-950/30 border border-rose-500/40 rounded-xl p-4 my-3 text-center">
+                            <div class="text-2xl font-black text-rose-500 font-mono tracking-wider flex items-center justify-center gap-2">
+                                <span>🛑</span>
+                                <span>ตลาดปิด</span>
+                            </div>
+                            <div class="text-xs text-rose-300/80 mt-1 font-medium">
+                                ${l.closed_reason || 'ปิดทำการ (เสาร์-อาทิตย์ / วันหยุดตลาด)'}
+                            </div>
                         </div>
                     `;
                 } else if (isChecking) {

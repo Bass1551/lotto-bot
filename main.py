@@ -99,12 +99,17 @@ def start_http_server(db: Database, sender: LineSender):
                                     res_obj = v
                                     break
 
+                    from utils import check_market_closed
                     is_sent = res_obj is not None
                     if not res_obj:
                         res_obj = {}
 
+                    is_closed, closed_reason = check_market_closed(name, today_date)
+
                     if is_sent:
                         status = "sent"
+                    elif is_closed:
+                        status = "closed"
                     elif current_time_str >= t_str:
                         status = "checking"
                     else:
@@ -116,6 +121,8 @@ def start_http_server(db: Database, sender: LineSender):
                         "flag": flag,
                         "status": status,
                         "is_sent": is_sent,
+                        "is_closed": is_closed,
+                        "closed_reason": closed_reason,
                         "top3": res_obj.get("top3", ""),
                         "bottom2": res_obj.get("bottom2", ""),
                         "full": res_obj.get("full_result", ""),
@@ -503,6 +510,11 @@ def passive_results_harvester_loop(db: Database):
 
             for c in due_candidates:
                 name = c["name"]
+                from utils import check_market_closed
+                is_closed, _ = check_market_closed(name, today_date)
+                if is_closed:
+                    continue
+
                 # 1. Fast Direct Official Scraper
                 try:
                     res = scrape_direct_official(name, target_date=today_date)

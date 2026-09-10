@@ -213,3 +213,63 @@ def generate_history_report(lottery_name: str, results: list[dict], flag: str = 
     return "\n".join(lines)
 
 
+import holidays
+from datetime import date, timedelta
+
+STOCK_HOLIDAYS_MAP = {
+    "นิเคอิเช้า": (holidays.Japan(), "ญี่ปุ่น (Tokyo Stock Exchange)"),
+    "นิเคอิบ่าย": (holidays.Japan(), "ญี่ปุ่น (Tokyo Stock Exchange)"),
+    "จีนเช้า": (holidays.China(), "จีน (Shanghai/Shenzhen Stock Exchange)"),
+    "จีนบ่าย": (holidays.China(), "จีน (Shanghai/Shenzhen Stock Exchange)"),
+    "ฮั่งเส็งเช้า": (holidays.HongKong(), "ฮ่องกง (Hong Kong Stock Exchange)"),
+    "ฮั่งเส็งบ่าย": (holidays.HongKong(), "ฮ่องกง (Hong Kong Stock Exchange)"),
+    "ไต้หวัน": (holidays.Taiwan(), "ไต้หวัน (Taiwan Stock Exchange)"),
+    "หุ้นเกาหลี": (holidays.SouthKorea(), "เกาหลีใต้ (Korea Exchange)"),
+    "หุ้นสิงคโปร์": (holidays.Singapore(), "สิงคโปร์ (Singapore Exchange)"),
+    "หุ้นไทยเย็น": (holidays.Thailand(), "ไทย (ตลาดหลักทรัพย์แห่งประเทศไทย)"),
+    "หุ้นอังกฤษ": (holidays.UnitedKingdom(), "อังกฤษ (London Stock Exchange)"),
+    "หุ้นเยอรมัน": (holidays.Germany(), "เยอรมัน (Frankfurt Stock Exchange)"),
+    "หุ้นรัสเซีย": (holidays.Russia(), "รัสเซีย (Moscow Exchange)"),
+    "หุ้นดาวโจนส์": (holidays.UnitedStates(), "สหรัฐอเมริกา (New York Stock Exchange)"),
+    "หวยดาวโจนส์": (holidays.UnitedStates(), "สหรัฐอเมริกา (New York Stock Exchange)"),
+    "หุ้นอินเดีย": (holidays.India(), "อินเดีย (National Stock Exchange of India)"),
+    "หุ้นอียิปต์": (holidays.Egypt(), "อียิปต์ (The Egyptian Exchange)"),
+}
+
+
+def check_market_closed(lottery_name: str, target_date: date) -> tuple[bool, str]:
+    """Check if a stock lottery is closed on target_date due to weekend or exchange holiday.
+    Returns (is_closed, reason).
+    """
+    if lottery_name in ("หุ้นดาวโจนส์", "หวยดาวโจนส์"):
+        # US Stock Exchange (NYSE) closes Friday afternoon US time -> Sat 03:55 AM BKK is last draw.
+        # BKK Sunday (03:55) and BKK Monday (03:55) have no draws!
+        if target_date.weekday() in (6, 0):  # Sunday or Monday in Thailand
+            return True, "ตลาดปิด (วันหยุดสุดสัปดาห์ NYSE)"
+        try:
+            us_cal = holidays.UnitedStates()
+            trade_date = target_date - timedelta(days=1)
+            if trade_date in us_cal:
+                h_name = us_cal.get(trade_date)
+                return True, f"ตลาดปิด (วันหยุดตลาดสหรัฐฯ: {h_name})"
+        except Exception:
+            pass
+        return False, ""
+
+    if lottery_name in STOCK_HOLIDAYS_MAP:
+        # Weekend check: Saturday (5) or Sunday (6)
+        if target_date.weekday() in (5, 6):
+            return True, "ตลาดปิด (วันหยุดสุดสัปดาห์ เสาร์-อาทิตย์)"
+        cal, market_name = STOCK_HOLIDAYS_MAP[lottery_name]
+        try:
+            if target_date in cal:
+                h_name = cal.get(target_date)
+                return True, f"ตลาดปิด (วันหยุดตลาด{market_name}: {h_name})"
+        except Exception:
+            pass
+        return False, ""
+
+    return False, ""
+
+
+
