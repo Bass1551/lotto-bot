@@ -27,6 +27,53 @@ MAX_ROLLING_BILLS = 100
 LOCK = threading.Lock()
 
 
+def is_same_lottery(name1: str, name2: str) -> bool:
+    """Accurately check if two lottery names refer to the exact same lottery draw."""
+    if not name1 or not name2:
+        return False
+    if name1 == name2:
+        return True
+
+    import re
+    clean1 = re.sub(r"[\s\-\_\(\)]", "", name1).replace("หวย", "").replace("หุ้น", "").replace("รอบ", "").replace("จศ", "").replace("จ-ศ", "").lower()
+    clean2 = re.sub(r"[\s\-\_\(\)]", "", name2).replace("หวย", "").replace("หุ้น", "").replace("รอบ", "").replace("จศ", "").replace("จ-ศ", "").lower()
+    if clean1 == clean2:
+        return True
+
+    # VIP check: one has VIP, other doesn't -> definitely NOT same lottery!
+    is_vip1 = "vip" in clean1 or "วีไอพี" in clean1
+    is_vip2 = "vip" in clean2 or "วีไอพี" in clean2
+    if is_vip1 != is_vip2:
+        return False
+
+    # Session check (เช้า, บ่าย, เย็น)
+    for s in ["เช้า", "บ่าย", "เย็น"]:
+        if (s in clean1) != (s in clean2):
+            return False
+
+    # Sub-type checks
+    sub_types = [
+        "star", "สตาร์", "extra", "เอกต้า", "เอ็กต้า", "tv", "ทีวี", "hd", "เอชดี",
+        "พิเศษ", "พัฒนา", "อาเซียน", "กาชาด", "สามัคคี", "ประตูชัย", "สันติภาพ", "ประชาชน", "ดาว"
+    ]
+    for st in sub_types:
+        if (st in clean1) != (st in clean2):
+            return False
+
+    # Generic check: "ฮานอย" (normal) vs sub-lotteries
+    is_plain_hanoi1 = clean1 in {"ฮานอย", "ฮานอยปกติ"}
+    is_plain_hanoi2 = clean2 in {"ฮานอย", "ฮานอยปกติ"}
+    if is_plain_hanoi1 != is_plain_hanoi2:
+        return False
+
+    is_plain_lao1 = clean1 in {"ลาว", "ลาวพัฒนา"}
+    is_plain_lao2 = clean2 in {"ลาว", "ลาวพัฒนา"}
+    if is_plain_lao1 != is_plain_lao2:
+        return False
+
+    return clean1 == clean2 or clean1 in clean2 or clean2 in clean1
+
+
 class WinRateManager:
     def __init__(self):
         PENDING_BILLS_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -250,7 +297,7 @@ class WinRateManager:
         for b in all_bills:
             b_name = b.get("lottery_name", "")
             b_date = b.get("date", "")
-            name_match = (b_name == lottery_name) or (lottery_name in b_name) or (b_name in lottery_name)
+            name_match = is_same_lottery(b_name, lottery_name)
             if name_match and b_date == date_str and b.get("status") == "pending":
                 is_win, hits = self.evaluate_bill(b, top3, bottom2)
                 b["status"] = "resolved"

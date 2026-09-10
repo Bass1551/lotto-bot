@@ -236,6 +236,14 @@ GENERIC_WORDS = {
     "หุ้น", "เวียดนาม", "ไทย", "หวยไทย"
 }
 
+STANDALONE_BLOCKLIST = {
+    "เช้า", "บ่าย", "เย็น", "ดึก", "vip", "วีไอพี", "ปกติ", "พิเศษ", "สตาร์", "สตา", "star",
+    "อาเซียน", "พัฒนา", "พัดทนา", "กาชาด", "สามัคคี", "ประตูชัย", "สันติภาพ", "ประชาชน",
+    "extra", "เอกต้า", "เอ็กต้า", "เอ็กตร้า", "tv", "ทีวี", "hd", "เอชดี", "รอบเช้า", "รอบบ่าย",
+    "รอบเย็น", "หุ้น", "หวย", "เลข", "แนวทาง", "เด็ด", "ดัง", "ขอ", "ดู", "วันนี้", "เมื่อวาน",
+    "รอบ", "สวัสดี", "ขอบคุณ", "แอด", "บอท", "เฮดดี", "เฮ็ดดี"
+}
+
 
 def resolve_lottery(query: str) -> Tuple[Optional[str], str]:
     """Resolve lottery name and flag from colloquial query with extreme natural language flexibility."""
@@ -248,7 +256,7 @@ def resolve_lottery(query: str) -> Tuple[Optional[str], str]:
     clean_q = re.sub(r"^(?:ขอ(?:แนวทาง|ดู|เลข)?|แนวทาง|เลข|หวย|หุ้น)\s*", "", clean_q).strip()
     clean_q = re.sub(r"[\s\-\_\(\)]", "", clean_q).lower()
 
-    if not clean_q:
+    if not clean_q or clean_q in STANDALONE_BLOCKLIST:
         return None, "🎯"
 
     # 2. Exact match in comprehensive alias dictionary
@@ -264,7 +272,7 @@ def resolve_lottery(query: str) -> Tuple[Optional[str], str]:
     # 4. Specific modifier substring match: sort by alias length DESCENDING
     # Generic category names (like 'นอย', 'ลาว', 'ดาว') are excluded here so they never accidentally match sub-types!
     specific_aliases = sorted(
-        [(k, v) for k, v in LOTTERY_ALIASES.items() if k not in GENERIC_WORDS],
+        [(k, v) for k, v in LOTTERY_ALIASES.items() if k not in GENERIC_WORDS and k not in STANDALONE_BLOCKLIST],
         key=lambda item: len(item[0]),
         reverse=True,
     )
@@ -273,7 +281,7 @@ def resolve_lottery(query: str) -> Tuple[Optional[str], str]:
             return val
 
     for alias, val in specific_aliases:
-        if len(alias) >= 3 and clean_q in alias:
+        if len(alias) >= 3 and clean_q in alias and clean_q not in STANDALONE_BLOCKLIST and len(clean_q) >= 3:
             return val
 
     # 5. Fallback against config.json
@@ -341,7 +349,7 @@ class PredictorEngine:
             triplets = [
                 f"{primary_den}{secondary_den}{supp_1}",
                 f"{primary_den}{secondary_den}{supp_2}",
-                f"{primary_den}{supp_1}{power_digits[0]}",
+                f"{primary_den}{supp_1}{supp_2}",
                 f"{secondary_den}{supp_1}{supp_2}"
             ]
             return {
