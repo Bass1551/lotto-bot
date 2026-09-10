@@ -164,6 +164,7 @@ HANOI_API_MAP = {
     "ฮานอย TV": "https://api.minhngoctv.com/result",
     "ฮานอย กาชาด": "https://api.xosoredcross.com/result",
     "ฮานอยEXTRA": "https://api.xosoextra.com/result",
+    "ฮานอยอาเซียน": "https://hanoiasean.com/api/result",
 }
 
 LAO_API_MAP = {

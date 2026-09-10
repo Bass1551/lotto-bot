@@ -81,9 +81,13 @@ def start_http_server(db: Database, sender: LineSender):
                     res_obj = sent_map.get(name)
                     if not res_obj:
                         clean_target = name.replace("หวย", "").replace("หุ้น", "").replace(" ", "").replace("์", "").lower()
+                        is_target_vip = "vip" in clean_target
                         for k, v in sent_map.items():
                             clean_k = k.replace("หวย", "").replace("หุ้น", "").replace(" ", "").replace("์", "").lower()
-                            if clean_target == clean_k or (clean_target in clean_k and len(clean_target) >= 3):
+                            is_k_vip = "vip" in clean_k
+                            if is_target_vip != is_k_vip:
+                                continue
+                            if clean_target == clean_k or (clean_target in clean_k and len(clean_target) >= 4):
                                 res_obj = v
                                 break
 
@@ -93,9 +97,13 @@ def start_http_server(db: Database, sender: LineSender):
                         res_obj = yesterday_map.get(name)
                         if not res_obj:
                             clean_target = name.replace("หวย", "").replace("หุ้น", "").replace(" ", "").replace("์", "").lower()
+                            is_target_vip = "vip" in clean_target
                             for k, v in yesterday_map.items():
                                 clean_k = k.replace("หวย", "").replace("หุ้น", "").replace(" ", "").replace("์", "").lower()
-                                if clean_target == clean_k or (clean_target in clean_k and len(clean_target) >= 3):
+                                is_k_vip = "vip" in clean_k
+                                if is_target_vip != is_k_vip:
+                                    continue
+                                if clean_target == clean_k or (clean_target in clean_k and len(clean_target) >= 4):
                                     res_obj = v
                                     break
 
