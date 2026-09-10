@@ -243,6 +243,33 @@ def start_http_server(db: Database, sender: LineSender):
                     self.wfile.write(err_bytes)
                 return
 
+            elif self.path == "/api/delete_result":
+                length = int(self.headers.get("Content-Length", 0))
+                body = self.rfile.read(length).decode("utf-8")
+                try:
+                    data = json.loads(body)
+                    name = data.get("name", "")
+                    res_date = data.get("result_date")
+                    if res_date:
+                        try:
+                            res_date = datetime.strptime(res_date, "%Y-%m-%d").date()
+                        except Exception:
+                            res_date = None
+                    ok = db.delete_result(name, res_date)
+                    res_bytes = json.dumps({"ok": ok}).encode("utf-8")
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Content-Length", str(len(res_bytes)))
+                    self.end_headers()
+                    self.wfile.write(res_bytes)
+                except Exception as exc:
+                    err_bytes = json.dumps({"ok": False, "error": str(exc)}).encode("utf-8")
+                    self.send_response(500)
+                    self.send_header("Content-Type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(err_bytes)
+                return
+
             elif self.path == "/api/record_bill":
                 length = int(self.headers.get("Content-Length", 0))
                 body = self.rfile.read(length).decode("utf-8")

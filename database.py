@@ -162,6 +162,21 @@ class Database:
             )
             return False
 
+    def delete_result(self, lottery_name: str, result_date: Optional[date] = None) -> bool:
+        """Delete a result for a specific lottery and date."""
+        if result_date is None:
+            result_date = date.today()
+        date_str = result_date.isoformat() if isinstance(result_date, date) else str(result_date)
+        with self._connect() as conn:
+            cur = conn.execute(
+                "DELETE FROM results WHERE lottery_name = ? AND result_date = ?",
+                (lottery_name, date_str)
+            )
+            deleted = cur.rowcount > 0
+            if deleted:
+                logger.info("Deleted result: %s | %s", lottery_name, date_str)
+            return deleted
+
     def get_last_result(self, lottery_name: str) -> Optional[dict]:
         """Return the most recent result for a lottery (for debugging)."""
         with self._connect() as conn:
