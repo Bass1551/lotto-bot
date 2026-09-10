@@ -60,7 +60,9 @@ def start_http_server(db: Database, sender: LineSender):
                 current_time_str = now_dt.strftime("%H:%M")
 
                 daily_results = db.get_daily_results(today_date)
+                yesterday_results = db.get_daily_results(today_date - timedelta(days=1))
                 sent_map = {r["lottery_name"]: r for r in daily_results}
+                yesterday_map = {r["lottery_name"]: r for r in yesterday_results}
 
                 cfg_lottos = []
                 try:
@@ -85,30 +87,19 @@ def start_http_server(db: Database, sender: LineSender):
                                 res_obj = v
                                 break
 
-                    is_sent = res_obj is not None
-                    if not res_obj and current_time_str >= t_str:
-                        # Real-time instant check for recently due lotteries (within 30 mins)
-                        try:
-                            t_parts = [int(x) for x in t_str.split(":")]
-                            c_parts = [int(x) for x in current_time_str.split(":")]
-                            diff_mins = (c_parts[0] * 60 + c_parts[1]) - (t_parts[0] * 60 + t_parts[1])
-                            if 0 <= diff_mins <= 30:
-                                from parsers.direct_scraper import scrape_direct_official
-                                live_res = scrape_direct_official(name, target_date=today_date)
-                                if live_res and len(live_res.get("top3", "")) == 3 and len(live_res.get("bottom2", "")) == 2:
-                                    db.save_result(name, live_res["top3"], live_res["bottom2"], live_res.get("full", ""), result_date=today_date)
-                                    res_obj = {
-                                        "lottery_name": name,
-                                        "top3": live_res["top3"],
-                                        "bottom2": live_res["bottom2"],
-                                        "full_result": live_res.get("full", ""),
-                                        "sent_at": datetime.now(tz).isoformat(timespec="seconds"),
-                                    }
-                                    sent_map[name] = res_obj
-                                    is_sent = True
-                        except Exception:
-                            pass
+                    # For overnight/midnight lotteries (00:00 - 06:59, like Dow Jones):
+                    # They belong to yesterday's draw round! If not in today's map, check yesterday!
+                    if not res_obj and (t_str < "07:00" or l.get("overnight", False)):
+                        res_obj = yesterday_map.get(name)
+                        if not res_obj:
+                            clean_target = name.replace("หวย", "").replace("หุ้น", "").replace(" ", "").replace("์", "").lower()
+                            for k, v in yesterday_map.items():
+                                clean_k = k.replace("หวย", "").replace("หุ้น", "").replace(" ", "").replace("์", "").lower()
+                                if clean_target == clean_k or (clean_target in clean_k and len(clean_target) >= 3):
+                                    res_obj = v
+                                    break
 
+                    is_sent = res_obj is not None
                     if not res_obj:
                         res_obj = {}
 
@@ -209,11 +200,17 @@ def start_http_server(db: Database, sender: LineSender):
                     name = data.get("name", "")
                     top3 = str(data.get("top3", "")).zfill(3)[-3:]
                     bot2 = str(data.get("bottom2", "")).zfill(2)[-2:]
+                    res_date = None
+                    if data.get("result_date"):
+                        try:
+                            res_date = datetime.strptime(data["result_date"], "%Y-%m-%d").date()
+                        except Exception:
+                            pass
 
-                    db.save_result(name, top3, bot2)
+                    db.save_result(name, top3, bot2, result_date=res_date)
                     try:
                         from winrate_manager import winrate_mgr
-                        winrate_mgr.check_and_send_bill_outcomes(name, top3, bot2, sender=sender)
+                        winrate_mgr.check_and_send_bill_outcomes(name, top3, bot2, sender=sender, target_date=res_date)
                     except Exception as b_err:
                         logger.debug("Bill outcome trigger error: %s", b_err)
 
