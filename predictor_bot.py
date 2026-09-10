@@ -61,6 +61,18 @@ LOTTERY_ALIASES: Dict[str, Tuple[str, str]] = {
     "นอยhd": ("ฮานอย HD", "🇻🇳"),
     "ฮานอยhd": ("ฮานอย HD", "🇻🇳"),
     "นอยเอชดี": ("ฮานอย HD", "🇻🇳"),
+    "ฮานอยเอชดี": ("ฮานอย HD", "🇻🇳"),
+    "นอยเฮดดี": ("ฮานอย HD", "🇻🇳"),
+    "ฮานอยเฮดดี": ("ฮานอย HD", "🇻🇳"),
+    "นอยเฮ็ดดี": ("ฮานอย HD", "🇻🇳"),
+    "ฮานอยเฮ็ดดี": ("ฮานอย HD", "🇻🇳"),
+    "นอยเฮดดี้": ("ฮานอย HD", "🇻🇳"),
+    "ฮานอยเฮดดี้": ("ฮานอย HD", "🇻🇳"),
+    "นอยเอสดี": ("ฮานอย HD", "🇻🇳"),
+    "ฮานอยเอสดี": ("ฮานอย HD", "🇻🇳"),
+    "เฮดดี": ("ฮานอย HD", "🇻🇳"),
+    "เฮ็ดดี": ("ฮานอย HD", "🇻🇳"),
+    "เอชดี": ("ฮานอย HD", "🇻🇳"),
     "นอยtv": ("ฮานอย TV", "🇻🇳"),
     "นอยทีวี": ("ฮานอย TV", "🇻🇳"),
     "ฮานอยtv": ("ฮานอย TV", "🇻🇳"),
@@ -98,6 +110,10 @@ LOTTERY_ALIASES: Dict[str, Tuple[str, str]] = {
     "ลาวทีวี": ("ลาว TV", "🇱🇦"),
     "ลาวhd": ("ลาว HD", "🇱🇦"),
     "ลาวเอชดี": ("ลาว HD", "🇱🇦"),
+    "ลาวเฮดดี": ("ลาว HD", "🇱🇦"),
+    "ลาวเฮ็ดดี": ("ลาว HD", "🇱🇦"),
+    "ลาวเฮดดี้": ("ลาว HD", "🇱🇦"),
+    "ลาวเอสดี": ("ลาว HD", "🇱🇦"),
     "ลาวประตูชัย": ("ลาวประตูชัย", "🇱🇦"),
     "ประตูชัย": ("ลาวประตูชัย", "🇱🇦"),
     "ลาวสันติภาพ": ("ลาวสันติภาพ", "🇱🇦"),
@@ -215,6 +231,12 @@ LOTTERY_ALIASES: Dict[str, Tuple[str, str]] = {
 }
 
 
+GENERIC_WORDS = {
+    "นอย", "ฮานอย", "หวยฮานอย", "ลาว", "หวยลาว", "ดาว", "หุ้นดาว", "หวยดาว",
+    "หุ้น", "เวียดนาม", "ไทย", "หวยไทย"
+}
+
+
 def resolve_lottery(query: str) -> Tuple[Optional[str], str]:
     """Resolve lottery name and flag from colloquial query with extreme natural language flexibility."""
     if not query:
@@ -233,15 +255,25 @@ def resolve_lottery(query: str) -> Tuple[Optional[str], str]:
     if clean_q in LOTTERY_ALIASES:
         return LOTTERY_ALIASES[clean_q]
 
-    # 3. Tone-mark-insensitive match (e.g. สตา vs สตาร์, พัดทนา vs พัฒนา)
+    # 3. Tone-mark-insensitive exact match (e.g. สตา vs สตาร์, พัดทนา vs พัฒนา)
     clean_q_notone = re.sub(r"[่้๊๋็์]", "", clean_q)
     for alias, val in LOTTERY_ALIASES.items():
         if clean_q_notone == re.sub(r"[่้๊๋็์]", "", alias):
             return val
 
-    # 4. Substring / fuzzy match against aliases
-    for alias, val in LOTTERY_ALIASES.items():
-        if len(alias) >= 3 and (alias in clean_q or clean_q in alias):
+    # 4. Specific modifier substring match: sort by alias length DESCENDING
+    # Generic category names (like 'นอย', 'ลาว', 'ดาว') are excluded here so they never accidentally match sub-types!
+    specific_aliases = sorted(
+        [(k, v) for k, v in LOTTERY_ALIASES.items() if k not in GENERIC_WORDS],
+        key=lambda item: len(item[0]),
+        reverse=True,
+    )
+    for alias, val in specific_aliases:
+        if len(alias) >= 2 and alias in clean_q:
+            return val
+
+    for alias, val in specific_aliases:
+        if len(alias) >= 3 and clean_q in alias:
             return val
 
     # 5. Fallback against config.json
@@ -252,10 +284,15 @@ def resolve_lottery(query: str) -> Tuple[Optional[str], str]:
                 cname = c["name"]
                 c_clean = re.sub(r"[\s\-\_\(\)]", "", cname).lower()
                 c_notone = re.sub(r"[่้๊๋็์]", "", c_clean)
-                if clean_q in c_clean or clean_q_notone in c_notone or c_notone in clean_q_notone:
+                if clean_q == c_clean or clean_q_notone == c_notone:
                     return cname, c.get("flag", "🎯")
     except Exception:
         pass
+
+    # 6. Generic base words fallback (only if no specific modifier matched)
+    for g in sorted(GENERIC_WORDS, key=len, reverse=True):
+        if g in clean_q and g in LOTTERY_ALIASES:
+            return LOTTERY_ALIASES[g]
 
     return None, "🎯"
 
