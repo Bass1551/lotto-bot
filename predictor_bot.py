@@ -396,6 +396,7 @@ class PredictorEngine:
             }
 
         digit_weights = Counter()
+        historical_pair_weights = Counter()
         n = len(history)
         for i, row in enumerate(history):
             recency_weight = 2.0 if (n - i) <= 5 else 1.0
@@ -410,8 +411,22 @@ class PredictorEngine:
                 if d.isdigit():
                     digit_weights[d] += recency_weight * 1.0
 
+            # Co-occurrence analysis: count actual pairs appearing in historical draws
+            for a, b in [(top3[0], top3[1]), (top3[0], top3[2]), (top3[1], top3[2])]:
+                if a.isdigit() and b.isdigit():
+                    p_key = "".join(sorted([a, b]))
+                    historical_pair_weights[p_key] += recency_weight * 1.5
+
+            if len(bot2) >= 2 and bot2[0].isdigit() and bot2[1].isdigit():
+                p_bot = "".join(sorted([bot2[0], bot2[1]]))
+                historical_pair_weights[p_bot] += recency_weight * 1.8
+
         weekday = target_date.weekday()
         power_digits = DAY_POWER_NUMBERS.get(weekday, [])
+        # Day Power Boost: enhance statistical alignment with day's power digits
+        for pd in power_digits:
+            if pd.isdigit():
+                digit_weights[pd] += 1.8
 
         ranked_digits = [d for d, _ in digit_weights.most_common()]
         if len(ranked_digits) < 5:
@@ -428,22 +443,34 @@ class PredictorEngine:
 
         fun = primary_den
 
-        pairs = []
-        # Pair top 2 run/rood digits with supporters 1, 2, 3 based purely on stats
-        for d in run_rood:
-            for s in [supp_1, supp_2, supp_3]:
-                pair = f"{d}{s}" if d <= s else f"{s}{d}"
-                if pair not in pairs and pair[0] != pair[1]:
-                    pairs.append(pair)
-            if digit_weights[d] >= 14.0:
-                pair_dbl = f"{d}{d}"
-                if pair_dbl not in pairs:
-                    pairs.append(pair_dbl)
+        # Build candidate pairs based on proven co-occurrence frequency + digit strength
+        candidate_pairs = []
+        seen_pairs = set()
 
-        for candidate in [f"{run_rood[0]}{run_rood[1]}", f"{run_rood[0]}{supp_1}", f"{run_rood[1]}{supp_2}"]:
-            if len(pairs) < 6 and candidate not in pairs:
-                pairs.append(candidate)
-        pairs = pairs[:6]
+        main_pair = "".join(sorted([primary_den, secondary_den]))
+        candidate_pairs.append((main_pair, digit_weights[primary_den] + digit_weights[secondary_den] + historical_pair_weights.get(main_pair, 0.0) * 2.0))
+        seen_pairs.add(main_pair)
+
+        for core in [primary_den, secondary_den]:
+            for other in ranked_digits[1:]:
+                if core == other:
+                    continue
+                p_str = "".join(sorted([core, other]))
+                if p_str not in seen_pairs:
+                    score = (digit_weights[core] * 0.8) + (digit_weights[other] * 0.6) + (historical_pair_weights.get(p_str, 0.0) * 2.5)
+                    candidate_pairs.append((p_str, score))
+                    seen_pairs.add(p_str)
+
+        # Check for double digits (เลขเบิ้ล) if indicated
+        for core in [primary_den, secondary_den]:
+            if digit_weights[core] >= 14.0 or historical_pair_weights.get(f"{core}{core}", 0) > 0:
+                p_dbl = f"{core}{core}"
+                if p_dbl not in seen_pairs:
+                    candidate_pairs.append((p_dbl, digit_weights[core]))
+                    seen_pairs.add(p_dbl)
+
+        candidate_pairs.sort(key=lambda x: x[1], reverse=True)
+        pairs = [p for p, _ in candidate_pairs[:6]]
 
         triplets = [
             f"{primary_den}{secondary_den}{supp_1}",
