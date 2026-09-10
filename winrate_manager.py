@@ -53,12 +53,21 @@ def is_same_lottery(name1: str, name2: str) -> bool:
 
     # Sub-type checks
     sub_types = [
-        "star", "สตาร์", "extra", "เอกต้า", "เอ็กต้า", "tv", "ทีวี", "hd", "เอชดี",
-        "พิเศษ", "พัฒนา", "อาเซียน", "กาชาด", "สามัคคี", "ประตูชัย", "สันติภาพ", "ประชาชน", "ดาว"
+        "star", "สตาร์", "สตา", "extra", "เอกต้า", "เอ็กต้า", "เอ็กตร้า", "tv", "ทีวี", "hd", "เอชดี",
+        "พิเศษ", "พัฒนา", "อาเซียน", "กาชาด", "สามัคคี", "ประตูชัย", "สันติภาพ", "ประชาชน", "ดาว",
+        "midnight", "mid night", "มิดไนท์"
     ]
     for st in sub_types:
         if (st in clean1) != (st in clean2):
             return False
+
+    # Thai lotto (รัฐบาล) vs Thai Stock (หุ้นไทยเย็น)
+    is_lotto_thai1 = ("หวยไทย" in name1) or (clean1 == "ไทย")
+    is_stock_thai1 = ("หุ้นไทย" in name1) or ("ไทยเย็น" in name1) or ("ปิดเย็น" in name1)
+    is_lotto_thai2 = ("หวยไทย" in name2) or (clean2 == "ไทย")
+    is_stock_thai2 = ("หุ้นไทย" in name2) or ("ไทยเย็น" in name2) or ("ปิดเย็น" in name2)
+    if (is_lotto_thai1 and is_stock_thai2) or (is_stock_thai1 and is_lotto_thai2):
+        return False
 
     # Generic check: "ฮานอย" (normal) vs sub-lotteries
     is_plain_hanoi1 = clean1 in {"ฮานอย", "ฮานอยปกติ"}
