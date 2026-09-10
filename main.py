@@ -15,6 +15,8 @@ import socketserver
 import json
 import re
 import urllib3
+from datetime import datetime, date, timedelta
+from zoneinfo import ZoneInfo
 
 from database import Database
 from line_sender import LineSender
@@ -23,6 +25,7 @@ from utils import setup_logging
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 logger = setup_logging()
+TZ = ZoneInfo("Asia/Bangkok")
 
 PORT = int(os.environ.get("PORT", 8000))
 DIRECTORY = "public"
@@ -83,6 +86,29 @@ def start_http_server(db: Database, sender: LineSender):
                                 break
 
                     is_sent = res_obj is not None
+                    if not res_obj and current_time_str >= t_str:
+                        # Real-time instant check for recently due lotteries (within 30 mins)
+                        try:
+                            t_parts = [int(x) for x in t_str.split(":")]
+                            c_parts = [int(x) for x in current_time_str.split(":")]
+                            diff_mins = (c_parts[0] * 60 + c_parts[1]) - (t_parts[0] * 60 + t_parts[1])
+                            if 0 <= diff_mins <= 30:
+                                from parsers.direct_scraper import scrape_direct_official
+                                live_res = scrape_direct_official(name, target_date=today_date)
+                                if live_res and len(live_res.get("top3", "")) == 3 and len(live_res.get("bottom2", "")) == 2:
+                                    db.save_result(name, live_res["top3"], live_res["bottom2"], live_res.get("full", ""), result_date=today_date)
+                                    res_obj = {
+                                        "lottery_name": name,
+                                        "top3": live_res["top3"],
+                                        "bottom2": live_res["bottom2"],
+                                        "full_result": live_res.get("full", ""),
+                                        "sent_at": datetime.now(tz).isoformat(timespec="seconds"),
+                                    }
+                                    sent_map[name] = res_obj
+                                    is_sent = True
+                        except Exception:
+                            pass
+
                     if not res_obj:
                         res_obj = {}
 
@@ -401,12 +427,18 @@ def passive_results_harvester_loop(db: Database):
             except Exception:
                 pass
 
+            due_candidates = []
             for c in cfg_lottos:
                 name = c["name"]
                 t_str = c.get("time", "00:00")
-                if current_time_str < t_str or name in existing:
-                    continue
+                if current_time_str >= t_str and name not in existing:
+                    due_candidates.append(c)
 
+            # Sort descending by draw time: newest draws scraped first!
+            due_candidates.sort(key=lambda x: x.get("time", "00:00"), reverse=True)
+
+            for c in due_candidates:
+                name = c["name"]
                 # 1. Fast Direct Official Scraper
                 try:
                     res = scrape_direct_official(name, target_date=today_date)
@@ -415,8 +447,8 @@ def passive_results_harvester_loop(db: Database):
                         existing.add(name)
                         logger.info("🔭 Harvester saved result for '%s': %s-%s", name, res["top3"], res["bottom2"])
                         continue
-                except Exception:
-                    pass
+                except Exception as de:
+                    logger.debug("Harvester direct scrape error for %s: %s", name, de)
 
                 # 2. Edaylotto API
                 if get_product_code(name):
@@ -427,13 +459,13 @@ def passive_results_harvester_loop(db: Database):
                             db.save_result(name, res["top3"], res["bottom2"], res.get("full", ""), result_date=today_date)
                             existing.add(name)
                             logger.info("🔭 Harvester saved result for '%s': %s-%s", name, res["top3"], res["bottom2"])
-                    except Exception:
-                        pass
+                    except Exception as ee:
+                        logger.debug("Harvester edaylotto error for %s: %s", name, ee)
 
         except Exception as exc:
-            logger.debug("Passive harvester iteration notice: %s", exc)
+            logger.warning("Passive harvester iteration notice: %s", exc)
 
-        time.sleep(30)
+        time.sleep(20)
 
 
 def main() -> None:

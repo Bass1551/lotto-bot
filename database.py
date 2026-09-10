@@ -128,6 +128,31 @@ class Database:
                 top3,
                 bottom2,
             )
+
+            # Auto-sync to Render cloud dashboard if running locally
+            import os
+            if not (os.environ.get("RENDER") or os.environ.get("RENDER_EXTERNAL_URL")):
+                import threading
+                def _push_cloud():
+                    try:
+                        import urllib.request, json
+                        payload = json.dumps({
+                            "name": lottery_name,
+                            "top3": top3,
+                            "bottom2": bottom2,
+                            "full": full_result
+                        }).encode("utf-8")
+                        req = urllib.request.Request(
+                            "https://lotto-bot-uy9t.onrender.com/api/save_only",
+                            data=payload,
+                            headers={"Content-Type": "application/json"},
+                            method="POST"
+                        )
+                        urllib.request.urlopen(req, timeout=5)
+                    except Exception:
+                        pass
+                threading.Thread(target=_push_cloud, daemon=True).start()
+
             return True
         except sqlite3.IntegrityError:
             logger.warning(
