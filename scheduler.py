@@ -398,12 +398,6 @@ class LotteryScheduler:
                 if not lotto.get("weekend", False):
                     continue
             else:
-                # On weekdays, if this is a stock VIP, only check it if its regular stock is on holiday
-                if name in VIP_TO_STOCK_MAP:
-                    reg_stock = VIP_TO_STOCK_MAP[name]
-                    is_hol, _, _ = is_stock_holiday(reg_stock, today)
-                    if not is_hol:
-                        continue
                 if name == "หวยไทย" and today.day not in (1, 16):
                     continue
 
@@ -432,18 +426,11 @@ class LotteryScheduler:
                 if l.get("weekend", False) and not self.db.already_sent(name, today):
                     pending_lottos.append(l)
             else:
-                # On weekdays, stock VIPs are only active if their regular stock is closed on holiday
-                if name in VIP_TO_STOCK_MAP:
-                    reg_stock = VIP_TO_STOCK_MAP[name]
-                    is_hol, _, _ = is_stock_holiday(reg_stock, today)
-                    if is_hol and not self.db.already_sent(name, today):
-                        pending_lottos.append(l)
-                else:
-                    # Thai government lottery only draws on the 1st and 16th of the month
-                    if name == "หวยไทย" and today.day not in (1, 16):
-                        continue
-                    if not self.db.already_sent(name, today):
-                        pending_lottos.append(l)
+                # Thai government lottery only draws on the 1st and 16th of the month
+                if name == "หวยไทย" and today.day not in (1, 16):
+                    continue
+                if not self.db.already_sent(name, today):
+                    pending_lottos.append(l)
 
         if not pending_lottos:
             return

@@ -108,6 +108,11 @@ def verify_date_guardrail(text: str, target_date: date) -> bool:
         return False
 
     # 2. Target date formatted strings
+    EN_MONTHS_SHORT = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+    EN_MONTHS_FULL = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
+    m_short = EN_MONTHS_SHORT[target_date.month - 1]
+    m_full = EN_MONTHS_FULL[target_date.month - 1]
+
     d_patterns = [
         target_date.strftime("%Y-%m-%d"),  # 2026-09-09
         target_date.strftime("%d/%m/%Y"),  # 09/09/2026
@@ -118,9 +123,14 @@ def verify_date_guardrail(text: str, target_date: date) -> bool:
         target_date.strftime("%d-%m-%y"),  # 09-09-26
         f"{target_date.day:02d}/{target_date.month:02d}",  # 09/09
         f"{target_date.day}/{target_date.month}",          # 9/9
-        target_date.strftime("%b %d, %Y"), # Sep 09, 2026
-        target_date.strftime("%B %d, %Y"), # September 09, 2026
-        f"{target_date.strftime('%b')} {target_date.day}, {target_date.year}", # Sep 9, 2026
+        f"{m_short} {target_date.day:02d}, {target_date.year}", # Sep 10, 2026
+        f"{m_short} {target_date.day}, {target_date.year}",     # Sep 9, 2026
+        f"{m_full} {target_date.day:02d}, {target_date.year}",  # September 10, 2026
+        f"{m_full} {target_date.day}, {target_date.year}",      # September 9, 2026
+        f"{m_short}/{target_date.day:02d}/{target_date.year}", # Sep/10/2026
+        f"{m_short}/{target_date.day}/{target_date.year}",     # Sep/9/2026
+        f"{m_short}/{target_date.day:02d}/{str(target_date.year)[-2:]}", # Sep/10/26
+        f"{m_full}/{target_date.day:02d}/{target_date.year}",  # September/10/2026
     ]
 
     target_matched = any(p.lower() in text.lower() for p in d_patterns)
@@ -129,12 +139,15 @@ def verify_date_guardrail(text: str, target_date: date) -> bool:
 
     # Check if yesterday's date is prominently present while target is missing
     yesterday = target_date - timedelta(days=1)
+    y_m_short = EN_MONTHS_SHORT[yesterday.month - 1]
     y_patterns = [
         yesterday.strftime("%Y-%m-%d"),
         yesterday.strftime("%d/%m/%Y"),
         yesterday.strftime("%d-%m-%Y"),
-        yesterday.strftime("%b %d, %Y"),
-        f"{yesterday.strftime('%b')} {yesterday.day}, {yesterday.year}",
+        f"{y_m_short} {yesterday.day:02d}, {yesterday.year}",
+        f"{y_m_short} {yesterday.day}, {yesterday.year}",
+        f"{y_m_short}/{yesterday.day:02d}/{yesterday.year}",
+        f"{y_m_short}/{yesterday.day}/{yesterday.year}",
     ]
     if any(p.lower() in text.lower() for p in y_patterns):
         return False
