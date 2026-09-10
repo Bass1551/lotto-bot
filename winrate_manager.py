@@ -87,8 +87,63 @@ class WinRateManager:
     def __init__(self):
         PENDING_BILLS_FILE.parent.mkdir(parents=True, exist_ok=True)
 
+    def _get_db_conn(self):
+        import sqlite3
+        conn = sqlite3.connect("lottery_results.db", timeout=10.0)
+        conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS pending_prediction_bills (
+                id TEXT PRIMARY KEY,
+                lottery_name TEXT NOT NULL,
+                flag TEXT,
+                group_id TEXT,
+                target_date TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                prediction_json TEXT NOT NULL,
+                status TEXT NOT NULL
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS rolling_100_bills (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                bill_id TEXT UNIQUE,
+                lottery_name TEXT NOT NULL,
+                flag TEXT,
+                target_date TEXT NOT NULL,
+                draw_time TEXT,
+                is_win INTEGER,
+                top3 TEXT,
+                bottom2 TEXT,
+                hits_json TEXT
+            )
+        """)
+        return conn
+
     def load_pending_bills(self) -> List[Dict[str, Any]]:
         with LOCK:
+            # 1. Try SQLite first
+            try:
+                with self._get_db_conn() as conn:
+                    rows = conn.execute("SELECT * FROM pending_prediction_bills WHERE status = 'pending'").fetchall()
+                    if rows:
+                        bills = []
+                        for r in rows:
+                            bills.append({
+                                "id": r["id"],
+                                "lottery_name": r["lottery_name"],
+                                "flag": r["flag"],
+                                "group_id": r["group_id"],
+                                "date": r["target_date"],
+                                "created_at": r["created_at"],
+                                "prediction": json.loads(r["prediction_json"]),
+                                "status": r["status"]
+                            })
+                        return bills
+            except Exception as se:
+                logger.debug("SQLite load pending bills notice: %s", se)
+
+            # 2. Fallback to JSON
             if not PENDING_BILLS_FILE.exists():
                 return []
             try:
@@ -100,6 +155,32 @@ class WinRateManager:
 
     def save_pending_bills(self, bills: List[Dict[str, Any]]) -> None:
         with LOCK:
+            # 1. Save to SQLite
+            try:
+                with self._get_db_conn() as conn:
+                    active_ids = set()
+                    for b in bills:
+                        active_ids.add(b["id"])
+                        conn.execute("""
+                            INSERT INTO pending_prediction_bills (id, lottery_name, flag, group_id, target_date, created_at, prediction_json, status)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                            ON CONFLICT(id) DO UPDATE SET
+                                status=excluded.status,
+                                group_id=excluded.group_id
+                        """, (
+                            b["id"], b.get("lottery_name", ""), b.get("flag", "🎯"), b.get("group_id", ""),
+                            b.get("date", ""), b.get("created_at", ""), json.dumps(b.get("prediction", {}), ensure_ascii=False),
+                            b.get("status", "pending")
+                        ))
+                    if active_ids:
+                        placeholders = ",".join("?" * len(active_ids))
+                        conn.execute(f"UPDATE pending_prediction_bills SET status = 'resolved' WHERE status = 'pending' AND id NOT IN ({placeholders})", list(active_ids))
+                    else:
+                        conn.execute("UPDATE pending_prediction_bills SET status = 'resolved' WHERE status = 'pending'")
+            except Exception as se:
+                logger.debug("SQLite save pending bills notice: %s", se)
+
+            # 2. Save to JSON
             try:
                 with open(PENDING_BILLS_FILE, "w", encoding="utf-8") as f:
                     json.dump(bills, f, ensure_ascii=False, indent=2)
@@ -148,6 +229,27 @@ class WinRateManager:
 
     def load_rolling_bills(self) -> List[Dict[str, Any]]:
         with LOCK:
+            try:
+                with self._get_db_conn() as conn:
+                    rows = conn.execute("SELECT * FROM rolling_100_bills ORDER BY id ASC").fetchall()
+                    if rows:
+                        history = []
+                        for r in rows:
+                            history.append({
+                                "bill_id": r["bill_id"],
+                                "lottery_name": r["lottery_name"],
+                                "flag": r["flag"],
+                                "date": r["target_date"],
+                                "time": r["draw_time"],
+                                "is_win": bool(r["is_win"]),
+                                "top3": r["top3"],
+                                "bottom2": r["bottom2"],
+                                "hits_summary": json.loads(r["hits_json"]) if r["hits_json"] else []
+                            })
+                        return history
+            except Exception as se:
+                logger.debug("SQLite load rolling bills notice: %s", se)
+
             if not ROLLING_BILLS_FILE.exists():
                 return []
             try:
@@ -159,6 +261,22 @@ class WinRateManager:
 
     def save_rolling_bills(self, history: List[Dict[str, Any]]) -> None:
         with LOCK:
+            try:
+                with self._get_db_conn() as conn:
+                    for item in history:
+                        conn.execute("""
+                            INSERT INTO rolling_100_bills (bill_id, lottery_name, flag, target_date, draw_time, is_win, top3, bottom2, hits_json)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ON CONFLICT(bill_id) DO NOTHING
+                        """, (
+                            item.get("bill_id"), item.get("lottery_name", ""), item.get("flag", "🎯"),
+                            item.get("date", ""), item.get("time", ""), 1 if item.get("is_win") else 0,
+                            item.get("top3", ""), item.get("bottom2", ""),
+                            json.dumps(item.get("hits_summary", []), ensure_ascii=False)
+                        ))
+            except Exception as se:
+                logger.debug("SQLite save rolling bills notice: %s", se)
+
             try:
                 with open(ROLLING_BILLS_FILE, "w", encoding="utf-8") as f:
                     json.dump(history, f, ensure_ascii=False, indent=2)
@@ -686,15 +804,43 @@ class WinRateManager:
                     if tok and tok not in candidate_tokens:
                         candidate_tokens.append(tok)
 
+            if not candidate_tokens:
+                try:
+                    with open("data/bot_chain.json", "r", encoding="utf-8") as bf:
+                        bc = json.load(bf)
+                        for b_entry in bc:
+                            tok = b_entry.get("token")
+                            if tok and tok not in candidate_tokens:
+                                candidate_tokens.append(tok)
+                except Exception:
+                    pass
+
             for b in resolved_bills:
                 flex_card = self.build_bill_result_flex(b, stats)
-                target_gid = b.get("group_id") or pbot.get_group_id()
-                if not target_gid:
+                target_gid = b.get("group_id")
+                if not target_gid or not target_gid.startswith("C"):
+                    for fname in ["last_captured_group.txt", "predictor_group_id.txt"]:
+                        try:
+                            with open(f"data/{fname}", "r", encoding="utf-8") as gf:
+                                cgid = gf.read().strip()
+                                if cgid.startswith("C") and len(cgid) >= 20:
+                                    target_gid = cgid
+                                    break
+                        except Exception:
+                            pass
+                if not target_gid or not target_gid.startswith("C"):
                     try:
-                        with open("data/last_captured_group.txt", "r", encoding="utf-8") as f:
-                            target_gid = f.read().strip()
+                        with open("data/bot_chain.json", "r", encoding="utf-8") as bf:
+                            bc = json.load(bf)
+                            for b_entry in bc:
+                                cgid = b_entry.get("group_id", "")
+                                if cgid.startswith("C") and len(cgid) >= 20:
+                                    target_gid = cgid
+                                    break
                     except Exception:
                         pass
+                if not target_gid:
+                    target_gid = pbot.get_group_id()
 
                 if target_gid and candidate_tokens:
                     for tok in candidate_tokens:
@@ -708,6 +854,8 @@ class WinRateManager:
                             if res.status_code == 200:
                                 logger.info("Successfully pushed bill result card for %s to %s", lottery_name, target_gid)
                                 break
+                            else:
+                                logger.warning("Failed pushing bill outcome: %s %s", res.status_code, res.text)
                         except Exception as pe:
                             logger.warning("Failed pushing bill outcome: %s", pe)
 

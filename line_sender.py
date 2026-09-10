@@ -193,8 +193,21 @@ class LineSender:
         for idx in range(start_idx, total_bots):
             bot = self.bot_chain[idx]
             bot_name = bot.get("name", f"Bot-{idx}")
-            group_id = bot.get("group_id", "")
             token = self._get_valid_token(bot)
+            group_id = bot.get("group_id", "")
+            # Dynamically prioritize active group captured by webhook
+            base_dir = Path(__file__).parent
+            for fname in ["last_captured_group.txt", "predictor_group_id.txt"]:
+                cap_f = base_dir / "data" / fname
+                if cap_f.exists():
+                    try:
+                        with open(cap_f, "r", encoding="utf-8") as gf:
+                            cgid = gf.read().strip()
+                            if cgid.startswith("C") and len(cgid) >= 20:
+                                group_id = cgid
+                                break
+                    except Exception:
+                        pass
 
             if not group_id or not token:
                 logger.warning("Bot [%s] is missing group_id or token – skipping", bot_name)

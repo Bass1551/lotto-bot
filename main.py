@@ -362,6 +362,60 @@ def start_http_server(db: Database, sender: LineSender):
                                             pass
                                 continue
                             
+                            # 0.1) Check for Result inquiry: 'ผล...', 'ขอผล...', 'ตรวจผล...', 'เช็คผล...', 'ตรวจหวย...'
+                            res_match = re.match(r"^(?:ขอผล|ตรวจผล|เช็คผล|ตรวจหวย|เช็กผล|ผลหวย|ผล|ตรวจ)\s*(?P<query>.+)$", txt, re.IGNORECASE)
+                            if res_match:
+                                from predictor_bot import resolve_lottery
+                                rq = res_match.group("query").strip()
+                                r_target, r_flag = resolve_lottery(rq)
+                                if r_target:
+                                    today_date = datetime.now(TZ).date()
+                                    last_res = db.get_last_result(r_target)
+                                    if last_res and (last_res.get("result_date") == today_date.isoformat()):
+                                        res_dict = sender.create_clean_flex_message_dict(r_target, last_res["top3"], last_res["bottom2"], flag=r_flag)
+                                        reply_msg = {
+                                            "type": "flex",
+                                            "altText": f"🎯 ผลรางวัล {r_flag} {r_target}: บน {last_res['top3']} ล่าง {last_res['bottom2']}",
+                                            "contents": res_dict
+                                        }
+                                    else:
+                                        draw_time = ""
+                                        try:
+                                            with open("config.json", encoding="utf-8") as f:
+                                                cfg = json.load(f)
+                                                for c in cfg:
+                                                    if c["name"] == r_target:
+                                                        draw_time = c.get("time", "")
+                                                        break
+                                        except Exception:
+                                            pass
+                                        time_info = f" (เวลาออกผลประมาณ {draw_time} น.)" if draw_time else ""
+                                        reply_msg = {
+                                            "type": "text",
+                                            "text": f"⏳ {r_flag} {r_target} ประจำวันนี้ ({today_date.strftime('%d/%m/%Y')})\n⚠️ ผลรางวัลยังไม่ออกครับ{time_info}"
+                                        }
+
+                                    candidate_tokens = []
+                                    if hasattr(sender, "bot_chain"):
+                                        for b in sender.bot_chain:
+                                            tok = b.get("token")
+                                            if tok and tok not in candidate_tokens:
+                                                candidate_tokens.append(tok)
+                                    if reply_token:
+                                        for tok in candidate_tokens:
+                                            try:
+                                                res = requests.post(
+                                                    "https://api.line.me/v2/bot/message/reply",
+                                                    headers={"Authorization": f"Bearer {tok}", "Content-Type": "application/json"},
+                                                    json={"replyToken": reply_token, "messages": [reply_msg]},
+                                                    timeout=5
+                                                )
+                                                if res.status_code == 200:
+                                                    break
+                                            except Exception:
+                                                pass
+                                    continue
+
                             # 0) Handle 'ขอ...', 'ขอแนวทาง...', 'แนวทาง...', 'ขอดู...', 'ขอเลข...' or colloquial shorthand
                             from predictor_bot import PredictorBot, resolve_lottery
                             target_name = None
@@ -439,7 +493,7 @@ def start_http_server(db: Database, sender: LineSender):
                                         sender.send_text(report)
                                 continue
 
-                            # 2) Handle quick result dispatch format e.g. "นอยHD 123 45"
+                            # 2) Handle quick result dispatch format e.g. "นอยHD 123 45" or "ส่งผล จีนบ่าย 767 65"
                             pattern = re.compile(r"^(?:ส่งผล\s*)?(?P<name>[\u0E00-\u0E7Fa-zA-Z0-9\s]+?)\s+(?P<top3>\d{3})[\s\-\/]+(?P<bot2>\d{2})$")
                             m = pattern.match(txt)
                             if m:
@@ -464,6 +518,11 @@ def start_http_server(db: Database, sender: LineSender):
                                 ok = sender.send_result_flex(name=target_name, top3=top3, bottom2=bot2, flag=flag)
                                 if ok:
                                     db.save_result(target_name, top3, bot2)
+                                    try:
+                                        from winrate_manager import winrate_mgr
+                                        winrate_mgr.check_and_send_bill_outcomes(target_name, top3, bot2, sender=sender)
+                                    except Exception as b_err:
+                                        logger.debug("Manual dispatch bill outcome error: %s", b_err)
                 except Exception as exc:
                     logger.error("Webhook processing error: %s", exc)
 
