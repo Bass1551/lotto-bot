@@ -654,6 +654,11 @@ class PredictorBot:
                     if res.status_code == 200:
                         logger.info("Successfully replied prediction for '%s'", lottery_name)
                         self.record_requested_lottery(lottery_name)
+                        try:
+                            from winrate_manager import winrate_mgr
+                            winrate_mgr.record_bill(lottery_name, flag, group_id, pred)
+                        except Exception as we:
+                            logger.debug("WinRateManager record error: %s", we)
                         return True
                     else:
                         logger.debug("Reply failed with token (...%s): status %s - %s", tok[-8:] if len(tok) >= 8 else "", res.status_code, res.text)
@@ -705,6 +710,11 @@ class PredictorBot:
                 if res.status_code == 200:
                     logger.info("Prediction for '%s' successfully pushed to %s", lottery_name, target_group)
                     self.record_requested_lottery(lottery_name)
+                    try:
+                        from winrate_manager import winrate_mgr
+                        winrate_mgr.record_bill(lottery_name, flag, target_group, pred)
+                    except Exception as we:
+                        logger.debug("WinRateManager record error: %s", we)
                     return True
                 else:
                     logger.warning("Push failed with token (...%s): status %s - %s", tok[-8:] if len(tok) >= 8 else "", res.status_code, res.text)

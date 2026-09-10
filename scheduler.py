@@ -534,6 +534,11 @@ class LotteryScheduler:
                                     l = item["lotto"]
                                     r = item["result"]
                                     self.db.save_result(l["name"], r["top3"], r["bottom2"], r.get("full", ""), result_date=today)
+                                    try:
+                                        from winrate_manager import winrate_mgr
+                                        winrate_mgr.check_and_send_bill_outcomes(l["name"], r["top3"], r["bottom2"], sender=self.sender, target_date=today)
+                                    except Exception:
+                                        pass
                                     if l in pending_lottos:
                                         pending_lottos.remove(l)
                         else:
@@ -621,6 +626,13 @@ class LotteryScheduler:
         ok = self.sender.send_result_flex(name, top3, bottom2, flag=flag)
         if ok:
             self.db.save_result(name, top3, bottom2, full, result_date=result_date)
+            # Check and evaluate requested bills & update 100-bill rolling winrate
+            try:
+                from winrate_manager import winrate_mgr
+                winrate_mgr.check_and_send_bill_outcomes(name, top3, bottom2, sender=self.sender, target_date=result_date)
+            except Exception as w_err:
+                logger.debug("WinRate bill outcome error: %s", w_err)
+
             # Check and broadcast winning celebration to dedicated predictor group
             try:
                 from predictor_bot import PredictorBot

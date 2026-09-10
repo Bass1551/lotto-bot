@@ -211,8 +211,39 @@ def start_http_server(db: Database, sender: LineSender):
                     bot2 = str(data.get("bottom2", "")).zfill(2)[-2:]
 
                     db.save_result(name, top3, bot2)
+                    try:
+                        from winrate_manager import winrate_mgr
+                        winrate_mgr.check_and_send_bill_outcomes(name, top3, bot2, sender=sender)
+                    except Exception as b_err:
+                        logger.debug("Bill outcome trigger error: %s", b_err)
 
                     res_bytes = json.dumps({"ok": True}).encode("utf-8")
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Content-Length", str(len(res_bytes)))
+                    self.end_headers()
+                    self.wfile.write(res_bytes)
+                except Exception as exc:
+                    err_bytes = json.dumps({"ok": False, "error": str(exc)}).encode("utf-8")
+                    self.send_response(500)
+                    self.send_header("Content-Type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(err_bytes)
+                return
+
+            elif self.path == "/api/record_bill":
+                length = int(self.headers.get("Content-Length", 0))
+                body = self.rfile.read(length).decode("utf-8")
+                try:
+                    data = json.loads(body)
+                    from winrate_manager import winrate_mgr
+                    bill = winrate_mgr.record_bill(
+                        data["lottery_name"],
+                        data.get("flag", "🎯"),
+                        data.get("group_id"),
+                        data["prediction"]
+                    )
+                    res_bytes = json.dumps({"ok": True, "bill": bill}).encode("utf-8")
                     self.send_response(200)
                     self.send_header("Content-Type", "application/json")
                     self.send_header("Content-Length", str(len(res_bytes)))
@@ -247,6 +278,42 @@ def start_http_server(db: Database, sender: LineSender):
                         if ev.get("type") == "message" and ev.get("message", {}).get("type") == "text":
                             txt = ev["message"]["text"].strip()
                             reply_token = ev.get("replyToken")
+                            
+                            # Check for Win Rate inquiry: 'ขอวินเรท', 'ขอดูวินเรท', 'วินเรท', 'ชนะเท่าไหร่', 'แพ้เท่าไหร่', 'winrate'
+                            txt_clean = txt.replace(" ", "").lower()
+                            winrate_patterns = [
+                                "ขอวินเรท", "ขอดูวินเรท", "วินเรท", "winrate", "ชนะเท่าไหร่", "แพ้เท่าไหร่",
+                                "สถิติชนะแพ้", "สถิติบอท", "อัตราชนะ", "เข้ากี่งวด", "ดูวินเรท"
+                            ]
+                            if any(p in txt_clean for p in winrate_patterns):
+                                from winrate_manager import winrate_mgr
+                                flex_msg = winrate_mgr.build_winrate_flex()
+                                from predictor_bot import PredictorBot
+                                pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
+                                candidate_tokens = []
+                                try:
+                                    candidate_tokens.append(pbot.get_token())
+                                except Exception:
+                                    pass
+                                if hasattr(sender, "bot_chain"):
+                                    for b in sender.bot_chain:
+                                        tok = b.get("token")
+                                        if tok and tok not in candidate_tokens:
+                                            candidate_tokens.append(tok)
+                                if reply_token:
+                                    for tok in candidate_tokens:
+                                        try:
+                                            res = requests.post(
+                                                "https://api.line.me/v2/bot/message/reply",
+                                                headers={"Authorization": f"Bearer {tok}", "Content-Type": "application/json"},
+                                                json={"replyToken": reply_token, "messages": [flex_msg]},
+                                                timeout=5
+                                            )
+                                            if res.status_code == 200:
+                                                break
+                                        except Exception:
+                                            pass
+                                continue
                             
                             # 0) Handle 'ขอ...', 'ขอแนวทาง...', 'แนวทาง...', 'ขอดู...', 'ขอเลข...' or colloquial shorthand
                             from predictor_bot import PredictorBot, resolve_lottery
