@@ -237,23 +237,23 @@ def start_http_server(db: Database, sender: LineSender):
 
                             if target_name:
                                 pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
-                                    candidate_tokens = []
-                                    try:
-                                        candidate_tokens.append(pbot.get_token())
-                                    except Exception:
-                                        pass
-                                    if hasattr(sender, "bot_chain"):
-                                        for b in sender.bot_chain:
-                                            tok = b.get("token")
-                                            if tok and tok not in candidate_tokens:
-                                                candidate_tokens.append(tok)
-                                    pbot.reply_or_push_prediction(
-                                        target_name,
-                                        flag=flag,
-                                        reply_token=reply_token,
-                                        group_id=target_id,
-                                        candidate_tokens=candidate_tokens
-                                    )
+                                candidate_tokens = []
+                                try:
+                                    candidate_tokens.append(pbot.get_token())
+                                except Exception:
+                                    pass
+                                if hasattr(sender, "bot_chain"):
+                                    for b in sender.bot_chain:
+                                        tok = b.get("token")
+                                        if tok and tok not in candidate_tokens:
+                                            candidate_tokens.append(tok)
+                                pbot.reply_or_push_prediction(
+                                    target_name,
+                                    flag=flag,
+                                    reply_token=reply_token,
+                                    group_id=target_id,
+                                    candidate_tokens=candidate_tokens
+                                )
                                 continue
 
                             # 1) Handle 'สถิติ [ชื่อหวย]' command
