@@ -734,6 +734,27 @@ def passive_results_harvester_loop(db: Database):
                     except Exception as ee:
                         logger.debug("Harvester edaylotto error for %s: %s", name, ee)
 
+            # 3. SMLOT Secure Harvester (for SMLOT-exclusive lotteries)
+            unresolved = [c["name"] for c in due_candidates if c["name"] not in existing]
+            if unresolved:
+                try:
+                    from parsers.smlot_reward import SmlotRewardParser, SMLOT_NAME_MAP
+                    smlot_data = SmlotRewardParser.fetch_all_smlot_results()
+                    for un_name in unresolved:
+                        s_res = None
+                        for s_key, mapped_name in SMLOT_NAME_MAP.items():
+                            if mapped_name == un_name and s_key in smlot_data:
+                                s_res = smlot_data[s_key]
+                                break
+                        if not s_res and un_name in smlot_data:
+                            s_res = smlot_data[un_name]
+                        if s_res and len(s_res.get("top3", "")) == 3 and len(s_res.get("bottom2", "")) == 2:
+                            db.save_result(un_name, s_res["top3"], s_res["bottom2"], s_res.get("full", ""), result_date=today_date)
+                            existing.add(un_name)
+                            logger.info("🔭 Harvester (SMLOT) saved result for '%s': %s-%s", un_name, s_res["top3"], s_res["bottom2"])
+                except Exception as se:
+                    logger.debug("Harvester SMLOT batch fetch note: %s", se)
+
         except Exception as exc:
             logger.warning("Passive harvester iteration notice: %s", exc)
 

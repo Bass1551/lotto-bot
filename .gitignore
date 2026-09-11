@@ -7,3 +7,5 @@ __pycache__/
 *.png
 .env
 cloudflared.exe
+*session*.json
+data/*session*.json
