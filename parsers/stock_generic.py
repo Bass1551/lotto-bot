@@ -53,6 +53,21 @@ class StockBaseParser(BaseParser):
 
     def _extract_index_and_change(self, soup: BeautifulSoup) -> tuple[str, str]:
         """Find main index number and change value."""
+        text = soup.get_text(" ", strip=True)
+
+        # 1. Google Finance specific structure
+        m_gf = re.search(r"([\d,]+\.\d{2})\s+arrow_(?:down|up)ward\s+[-+]?[\d.]+%\s*\(\s*([-+]\s*[\d,]+\.\d{2})\s*\)", text)
+        if m_gf:
+            return m_gf.group(1).replace(",", ""), m_gf.group(2).replace(",", "").replace(" ", "")
+
+        m_gf2 = re.search(r"\(\s*([-+]\s*[\d,]+\.\d{2})\s*\)\s*Today", text)
+        if m_gf2:
+            chg = m_gf2.group(1).replace(",", "").replace(" ", "")
+            pre = text[:m_gf2.start()]
+            prices = re.findall(r"[\d,]+\.\d{2}", pre)
+            if prices:
+                return prices[-1].replace(",", ""), chg
+
         value = ""
         change = ""
 
@@ -69,12 +84,17 @@ class StockBaseParser(BaseParser):
         if not value:
             value = self._extract_index_value(soup)
 
-        # Find change value (e.g. +130.11, -23.62)
-        for el in soup.select(".change, .chg, .diff, .net-change, span"):
-            t = el.get_text(strip=True)
-            m = re.search(r"[-+]\s*(\d+\.\d{2})", t)
-            if m:
-                change = m.group(1)
+        # Find change value (e.g. +130.11, -23.62) - ignore percentages
+        for sel in [".change", ".chg", ".diff", ".net-change"]:
+            for el in soup.select(sel):
+                t = el.get_text(strip=True)
+                if "%" in t:
+                    continue
+                m = re.search(r"[-+]\s*(\d+\.\d{2})", t)
+                if m:
+                    change = m.group(1)
+                    break
+            if change:
                 break
 
         return value, change
