@@ -607,15 +607,31 @@ class PredictorBot:
         return False
 
     def build_flex_message(self, flag: str, pred: Dict[str, Any]) -> Dict[str, Any]:
-        lottery_name = pred["lottery_name"]
-        date_thai = pred["target_date_thai"]
-        day_name = pred["day_name"]
-        run_rood_str = f"{pred['run_rood'][0]}  -  {pred['run_rood'][1]}"
-        fun_str = f"{pred['fun']}"
-        pairs_str = "   ".join(pred["pairs"])
-        triplets_str = "   ".join(pred["triplets"])
-        power_str = " - ".join(pred["power_numbers"])
-        accuracy_str = f"ความแม่นยำย้อนหลัง: {pred['hits']}/{pred['history_count']} งวด ({pred['accuracy_pct']}%)"
+        lottery_name = pred.get("lottery_name", "หวย")
+        date_thai = pred.get("target_date_thai", "")
+        day_name = pred.get("day_name", "")
+        run_rood = pred.get("run_rood") or ["-", "-"]
+        if len(run_rood) == 1:
+            run_rood_str = f"{run_rood[0]}"
+        elif len(run_rood) >= 2:
+            run_rood_str = f"{run_rood[0]}  -  {run_rood[1]}"
+        else:
+            run_rood_str = "-  -  -"
+        fun_str = str(pred.get("fun") or "-")
+        pairs = pred.get("pairs") or []
+        pairs_str = "   ".join(str(p) for p in pairs) if pairs else "-"
+        triplets = pred.get("triplets") or []
+        triplets_str = "   ".join(str(t) for t in triplets) if triplets else "-"
+        power_numbers = pred.get("power_numbers") or []
+        power_str = " - ".join(str(p) for p in power_numbers) if power_numbers else "-"
+
+        hits = pred.get("hits")
+        hist_count = pred.get("history_count")
+        acc_pct = pred.get("accuracy_pct")
+        if hits is not None and hist_count:
+            accuracy_str = f"ความแม่นยำย้อนหลัง: {hits}/{hist_count} งวด ({acc_pct}%)"
+        else:
+            accuracy_str = pred.get("stats_summary") or "ความแม่นยำย้อนหลัง: คำนวณสูตรกำลังวัน"
 
         flex_dict = {
             "type": "bubble",

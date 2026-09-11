@@ -365,7 +365,7 @@ class WinRateManager:
         if not t3_str.isdigit() or not b2_str.isdigit():
             return False, []
 
-        pred = bill.get("prediction", {})
+        pred = (bill.get("prediction") or {}) if isinstance(bill, dict) else {}
         top3 = t3_str.zfill(3)[-3:]
         bot2 = b2_str.zfill(2)[-2:]
         top2 = top3[-2:]
@@ -373,15 +373,20 @@ class WinRateManager:
         hits: List[Dict[str, str]] = []
 
         # 1. Check วิ่ง / รูด 19 ประตู
-        run_rood = pred.get("run_rood", [])
+        run_rood = pred.get("run_rood") or []
+        if not isinstance(run_rood, list):
+            run_rood = [run_rood]
         run_hits = []
         for digit in run_rood:
-            if not digit:
+            if digit is None:
                 continue
-            if digit in top3:
-                run_hits.append(f"{digit} บน")
-            if digit in bot2:
-                run_hits.append(f"{digit} ล่าง")
+            digit_str = str(digit).strip()
+            if not digit_str:
+                continue
+            if digit_str in top3:
+                run_hits.append(f"{digit_str} บน")
+            if digit_str in bot2:
+                run_hits.append(f"{digit_str} ล่าง")
         if run_hits:
             hits.append({
                 "category": "🎯 วิ่ง / รูด 19 ประตู",
@@ -390,7 +395,7 @@ class WinRateManager:
             })
 
         # 2. Check เม็ดเดียว ฟันธง
-        fun = pred.get("fun", "")
+        fun = str(pred.get("fun") or "").strip()
         if fun:
             fun_hits = []
             if fun in top3:
@@ -405,10 +410,14 @@ class WinRateManager:
                 })
 
         # 3. Check เจาะ 2 ตัวเด่น (ไป-กลับ)
-        pairs = pred.get("pairs", [])
+        pairs = pred.get("pairs") or []
+        if not isinstance(pairs, list):
+            pairs = [pairs]
         pair_hits = []
         for p in pairs:
-            p_clean = p.strip()
+            if p is None:
+                continue
+            p_clean = str(p).strip()
             if len(p_clean) != 2:
                 continue
             rev_p = p_clean[::-1]
@@ -424,11 +433,15 @@ class WinRateManager:
             })
 
         # 4. Check ชุด 3 ตัวตรง - โต๊ด
-        triplets = pred.get("triplets", [])
+        triplets = pred.get("triplets") or []
+        if not isinstance(triplets, list):
+            triplets = [triplets]
         triplet_hits = []
         top3_sorted = "".join(sorted(top3))
         for t in triplets:
-            t_clean = t.strip()
+            if t is None:
+                continue
+            t_clean = str(t).strip()
             if len(t_clean) != 3:
                 continue
             if t_clean == top3:
