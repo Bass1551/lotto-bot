@@ -51,8 +51,8 @@
   },
   {
     "name": "ฮั่งเส็งเช้า",
-    "url": "https://www.google.com/finance/quote/HSI:INDEXHANGSENG",
-    "time": "11:05",
+    "url": "https://www.hsi.com.hk/eng",
+    "time": "11:00",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇭🇰",
@@ -101,8 +101,8 @@
   },
   {
     "name": "ไต้หวัน",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "12:30",
+    "url": "https://www.twse.com.tw/en/",
+    "time": "12:40",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇹🇼",
@@ -141,7 +141,7 @@
   },
   {
     "name": "หุ้นเกาหลี",
-    "url": "https://m.investing.com/indices/kospi",
+    "url": "http://global.krx.co.kr/main/main.jsp",
     "time": "13:30",
     "parser": "smlot_reward",
     "type": "stock",
@@ -181,7 +181,7 @@
   },
   {
     "name": "ฮั่งเส็งบ่าย",
-    "url": "https://www.google.com/finance/quote/HSI:INDEXHANGSENG",
+    "url": "https://www.hsi.com.hk/eng",
     "time": "15:10",
     "parser": "smlot_reward",
     "type": "stock",
@@ -202,7 +202,7 @@
   {
     "name": "หุ้นสิงคโปร์",
     "url": "https://www.sgx.com/wps/portal/sgxweb/home/marketinfo/indices/indice",
-    "time": "16:25",
+    "time": "16:30",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇸🇬",
@@ -281,8 +281,8 @@
   },
   {
     "name": "หุ้นเยอรมัน",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "22:45",
+    "url": "http://www.marketwatch.com/investing/index/dax?countrycode=dx",
+    "time": "22:50",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇩🇪",
@@ -291,8 +291,8 @@
   },
   {
     "name": "หุ้นอังกฤษ",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "22:45",
+    "url": "http://www.bloomberg.com/quote/UKX:IND",
+    "time": "22:50",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇬🇧",
@@ -301,8 +301,8 @@
   },
   {
     "name": "หุ้นรัสเซีย",
-    "url": "https://member.smlot.net/reports/reward",
-    "time": "22:45",
+    "url": "https://m.investing.com/indices/rts-standard",
+    "time": "22:50",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇷🇺",
