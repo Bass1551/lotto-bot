@@ -232,6 +232,18 @@
         let allLotteries = [...DEFAULT_LOTTERIES];
         let currentFilter = 'all';
 
+        // Load instantly from localStorage cache on boot (0ms load time, no waiting!)
+        try {
+            const cached = localStorage.getItem('agy_dashboard_lotteries');
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                if (parsed && parsed.lotteries && parsed.lotteries.length > 0) {
+                    allLotteries = parsed.lotteries;
+                    if (parsed.today) window.currentServerDate = parsed.today;
+                }
+            }
+        } catch (e) {}
+
         // Check if opened via file://
         if (window.location.protocol === 'file:') {
             const banner = document.getElementById('file-protocol-banner');
@@ -274,7 +286,7 @@
 
             try {
                 const res = await fetch(apiUrl);
-                    if (res.ok) {
+                if (res.ok) {
                     const data = await res.json();
                     if (data.today) {
                         window.currentServerDate = data.today;
@@ -282,6 +294,13 @@
                     if (data.lotteries && data.lotteries.length > 0) {
                         allLotteries = data.lotteries;
                         allLotteries.sort((a, b) => (a.time || '00:00').localeCompare(b.time || '00:00'));
+                        try {
+                            localStorage.setItem('agy_dashboard_lotteries', JSON.stringify({
+                                today: data.today,
+                                lotteries: data.lotteries,
+                                updated_at: Date.now()
+                            }));
+                        } catch (e) {}
                         if (statusDot) statusDot.className = 'inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
                         if (statusText) {
                             statusText.innerText = 'เชื่อมต่อบอทสด (Live Server)';
@@ -290,28 +309,36 @@
                     }
                 }
             } catch (err) {
-                console.log('API offline or file mode. Using embedded default list:', err);
-                // Client-side weekend detection for standalone/offline preview
-                const nowDay = new Date().getDay();
+                console.log('API offline or file mode:', err);
+                // Client-side weekend and market closed detection
+                const nowDay = new Date().getDay(); // 0=Sun, 5=Fri, 6=Sat
                 const isWeekend = (nowDay === 0 || nowDay === 6);
                 const WEEKDAY_STOCKS = new Set([
                     "นิเคอิเช้า", "นิเคอิบ่าย", "จีนเช้า", "จีนบ่าย", "ฮั่งเส็งเช้า", "ฮั่งเส็งบ่าย",
                     "ไต้หวัน", "หุ้นเกาหลี", "หุ้นสิงคโปร์", "หุ้นไทยเย็น", "หุ้นอังกฤษ", "หุ้นเยอรมัน",
-                    "หุ้นรัสเซีย", "หุ้นดาวโจนส์", "หวยดาวโจนส์", "หุ้นอินเดีย", "หุ้นอียิปต์"
+                    "หุ้นรัสเซีย", "หุ้นดาวโจนส์", "หวยดาวโจนส์", "หุ้นอินเดีย"
                 ]);
-                if (isWeekend) {
-                    allLotteries.forEach(l => {
-                        if (WEEKDAY_STOCKS.has(l.name) && l.status !== 'sent') {
-                            l.status = 'closed';
-                            l.is_closed = true;
-                            l.closed_reason = 'ตลาดปิด (วันหยุดสุดสัปดาห์ เสาร์-อาทิตย์)';
-                        }
-                    });
-                }
+                allLotteries.forEach(l => {
+                    if (isWeekend && WEEKDAY_STOCKS.has(l.name) && l.status !== 'sent') {
+                        l.status = 'closed';
+                        l.is_closed = true;
+                        l.closed_reason = 'ตลาดปิด (วันหยุดสุดสัปดาห์ เสาร์-อาทิตย์)';
+                    }
+                    if (l.name === 'หุ้นอียิปต์' && (nowDay === 5 || nowDay === 6) && l.status !== 'sent') {
+                        l.status = 'closed';
+                        l.is_closed = true;
+                        l.closed_reason = 'ตลาดปิด (วันหยุดสุดสัปดาห์อียิปต์ ศุกร์-เสาร์)';
+                    }
+                    if (l.name === 'มาเลเซีย' && ![0, 3, 6].includes(nowDay) && l.status !== 'sent') {
+                        l.status = 'closed';
+                        l.is_closed = true;
+                        l.closed_reason = 'ไม่มีรอบออกรางวัล (ออกเฉพาะวันพุธ, เสาร์, อาทิตย์)';
+                    }
+                });
 
                 if (statusDot) statusDot.className = 'inline-block w-2 h-2 rounded-full bg-amber-400';
                 if (statusText) {
-                    statusText.innerText = 'โหมดสแตนด์บาย (รอเชื่อมต่อบอท http://localhost:8000)';
+                    statusText.innerText = 'โหมดสแตนด์บาย (กำลังอัปเดตข้อมูลล่าสุด)';
                     statusText.className = 'text-[11px] text-amber-400 font-semibold';
                 }
             } finally {
@@ -633,7 +660,11 @@
             }, 4000);
         }
 
-        // Initial Load
+        // Initial instant render from cache if available (0ms load time)
+        updateCounters();
+        renderCards();
+
+        // Initial Load from Live Server
         fetchLotteryStatus();
     </script>
 </body>

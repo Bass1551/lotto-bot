@@ -256,6 +256,25 @@ def check_market_closed(lottery_name: str, target_date: date) -> tuple[bool, str
             pass
         return False, ""
 
+    if lottery_name in ("หุ้นอียิปต์", "อียิปต์"):
+        # Egyptian Exchange (EGX) weekend is Friday (4) and Saturday (5)
+        if target_date.weekday() in (4, 5):
+            return True, "ตลาดปิด (วันหยุดสุดสัปดาห์อียิปต์ ศุกร์-เสาร์)"
+        cal, market_name = STOCK_HOLIDAYS_MAP.get(lottery_name, (holidays.Egypt(), "อียิปต์ (The Egyptian Exchange)"))
+        try:
+            if target_date in cal:
+                h_name = cal.get(target_date)
+                return True, f"ตลาดปิด (วันหยุดตลาด{market_name}: {h_name})"
+        except Exception:
+            pass
+        return False, ""
+
+    if lottery_name in ("มาเลเซีย", "หวยมาเลย์", "หวยมาเลเซีย"):
+        # Magnum 4D / Malaysia draws on Wednesday (2), Saturday (5), Sunday (6)
+        if target_date.weekday() not in (2, 5, 6):
+            return True, "ไม่มีรอบออกรางวัล (ออกเฉพาะวันพุธ, เสาร์, อาทิตย์)"
+        return False, ""
+
     if lottery_name in STOCK_HOLIDAYS_MAP:
         # Weekend check: Saturday (5) or Sunday (6)
         if target_date.weekday() in (5, 6):
