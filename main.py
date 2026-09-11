@@ -718,6 +718,19 @@ def passive_results_harvester_loop(db: Database):
                         db.save_result(name, res["top3"], res["bottom2"], res.get("full", ""), result_date=today_date)
                         existing.add(name)
                         logger.info("🔭 Harvester saved result for '%s': %s-%s", name, res["top3"], res["bottom2"])
+
+                        # Immediately evaluate requested prediction bills & celebrate wins if any!
+                        try:
+                            from winrate_manager import winrate_mgr
+                            winrate_mgr.check_and_send_bill_outcomes(name, res["top3"], res["bottom2"], target_date=today_date)
+                        except Exception as w_err:
+                            logger.debug("Harvester winrate check note: %s", w_err)
+                        try:
+                            from predictor_bot import PredictorBot
+                            pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
+                            pbot.check_and_send_win(name, res["top3"], res["bottom2"], result_date=today_date)
+                        except Exception as p_err:
+                            logger.debug("Harvester win celebration note: %s", p_err)
                         continue
                 except Exception as de:
                     logger.debug("Harvester direct scrape error for %s: %s", name, de)
@@ -731,6 +744,17 @@ def passive_results_harvester_loop(db: Database):
                             db.save_result(name, res["top3"], res["bottom2"], res.get("full", ""), result_date=today_date)
                             existing.add(name)
                             logger.info("🔭 Harvester saved result for '%s': %s-%s", name, res["top3"], res["bottom2"])
+                            try:
+                                from winrate_manager import winrate_mgr
+                                winrate_mgr.check_and_send_bill_outcomes(name, res["top3"], res["bottom2"], target_date=today_date)
+                            except Exception:
+                                pass
+                            try:
+                                from predictor_bot import PredictorBot
+                                pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
+                                pbot.check_and_send_win(name, res["top3"], res["bottom2"], result_date=today_date)
+                            except Exception:
+                                pass
                     except Exception as ee:
                         logger.debug("Harvester edaylotto error for %s: %s", name, ee)
 
@@ -752,6 +776,17 @@ def passive_results_harvester_loop(db: Database):
                             db.save_result(un_name, s_res["top3"], s_res["bottom2"], s_res.get("full", ""), result_date=today_date)
                             existing.add(un_name)
                             logger.info("🔭 Harvester (SMLOT) saved result for '%s': %s-%s", un_name, s_res["top3"], s_res["bottom2"])
+                            try:
+                                from winrate_manager import winrate_mgr
+                                winrate_mgr.check_and_send_bill_outcomes(un_name, s_res["top3"], s_res["bottom2"], target_date=today_date)
+                            except Exception:
+                                pass
+                            try:
+                                from predictor_bot import PredictorBot
+                                pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
+                                pbot.check_and_send_win(un_name, s_res["top3"], s_res["bottom2"], result_date=today_date)
+                            except Exception:
+                                pass
                 except Exception as se:
                     logger.debug("Harvester SMLOT batch fetch note: %s", se)
 
