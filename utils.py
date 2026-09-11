@@ -269,6 +269,11 @@ def check_market_closed(lottery_name: str, target_date: date) -> tuple[bool, str
             pass
         return False, ""
 
+    if lottery_name in ("หวยไทย", "สลากกินแบ่งรัฐบาล", "หวยรัฐบาลไทย"):
+        if target_date.day not in (1, 16):
+            return True, "ออกรางวัลเฉพาะวันที่ 1 และ 16 ของเดือน"
+        return False, ""
+
     return False, ""
 
 

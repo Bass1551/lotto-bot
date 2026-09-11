@@ -278,6 +278,34 @@ def start_http_server(db: Database, sender: LineSender):
                     self.wfile.write(err_bytes)
                 return
 
+            elif self.path == "/api/cleanup_future":
+                try:
+                    now_bkk = datetime.now(TZ)
+                    today_bkk = now_bkk.date()
+                    cur_t = now_bkk.strftime("%H:%M")
+                    with open("config.json", encoding="utf-8") as f:
+                        cfg_lottos = json.load(f)
+                    cleaned = []
+                    for c in cfg_lottos:
+                        l_time = c.get("time", "00:00")
+                        l_name = c["name"]
+                        if (cur_t < l_time and l_time >= "07:00") or (l_name == "หวยไทย" and today_bkk.day not in (1, 16)):
+                            if db.delete_result(l_name, today_bkk):
+                                cleaned.append(l_name)
+                    res_bytes = json.dumps({"ok": True, "cleaned": cleaned}).encode("utf-8")
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Content-Length", str(len(res_bytes)))
+                    self.end_headers()
+                    self.wfile.write(res_bytes)
+                except Exception as exc:
+                    err_bytes = json.dumps({"ok": False, "error": str(exc)}).encode("utf-8")
+                    self.send_response(500)
+                    self.send_header("Content-Type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(err_bytes)
+                return
+
             elif self.path == "/api/record_bill":
                 length = int(self.headers.get("Content-Length", 0))
                 body = self.rfile.read(length).decode("utf-8")

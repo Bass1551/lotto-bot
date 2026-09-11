@@ -11,7 +11,14 @@ from typing import Generator, Optional
 
 from utils import setup_logging
 
+from zoneinfo import ZoneInfo
+
 logger = setup_logging()
+TZ = ZoneInfo("Asia/Bangkok")
+
+
+def get_bkk_date() -> date:
+    return datetime.now(TZ).date()
 
 
 class Database:
@@ -89,7 +96,7 @@ class Database:
             True if recorded in line_sent_logs.
         """
         if result_date is None:
-            result_date = date.today()
+            result_date = get_bkk_date()
         date_str = result_date.isoformat()
 
         with self._connect() as conn:
@@ -106,9 +113,9 @@ class Database:
     def mark_as_sent(self, lottery_name: str, result_date: Optional[date] = None) -> None:
         """Record that a result was successfully pushed to LINE."""
         if result_date is None:
-            result_date = date.today()
+            result_date = get_bkk_date()
         date_str = result_date.isoformat()
-        now_str = datetime.now().isoformat(timespec="seconds")
+        now_str = datetime.now(TZ).isoformat(timespec="seconds")
 
         with self._connect() as conn:
             conn.execute(
@@ -141,9 +148,9 @@ class Database:
             True if inserted successfully, False if duplicate.
         """
         if result_date is None:
-            result_date = date.today()
+            result_date = get_bkk_date()
         date_str = result_date.isoformat()
-        sent_at = datetime.now().isoformat(timespec="seconds")
+        sent_at = datetime.now(TZ).isoformat(timespec="seconds")
 
         try:
             with self._connect() as conn:
@@ -174,7 +181,8 @@ class Database:
                             "name": lottery_name,
                             "top3": top3,
                             "bottom2": bottom2,
-                            "full": full_result
+                            "full": full_result,
+                            "result_date": date_str
                         }).encode("utf-8")
                         req = urllib.request.Request(
                             "https://lotto-bot-uy9t.onrender.com/api/save_only",
@@ -197,14 +205,19 @@ class Database:
             return False
 
     def delete_result(self, lottery_name: str, result_date: Optional[date] = None) -> bool:
-        """Delete a result for a specific lottery and date."""
+        """Delete a result for a specific lottery and date (matches exact or alias names)."""
         if result_date is None:
-            result_date = date.today()
+            result_date = get_bkk_date()
         date_str = result_date.isoformat() if isinstance(result_date, date) else str(result_date)
+        clean_name = lottery_name.replace("หวย", "").replace("หุ้น", "").strip()
         with self._connect() as conn:
             cur = conn.execute(
-                "DELETE FROM results WHERE lottery_name = ? AND result_date = ?",
-                (lottery_name, date_str)
+                """
+                DELETE FROM results
+                WHERE (lottery_name = ? OR lottery_name LIKE ? OR lottery_name LIKE ?)
+                  AND result_date = ?
+                """,
+                (lottery_name, f"%{lottery_name}%", f"%{clean_name}%", date_str)
             )
             deleted = cur.rowcount > 0
             if deleted:
@@ -228,7 +241,7 @@ class Database:
     def get_daily_results(self, result_date: Optional[date] = None) -> list[dict]:
         """Return all recorded results for a specific date."""
         if result_date is None:
-            result_date = date.today()
+            result_date = get_bkk_date()
         date_str = result_date.isoformat()
 
         with self._connect() as conn:
@@ -251,7 +264,7 @@ class Database:
     ) -> list[dict]:
         """Return the most recent `limit` historical results for a lottery strictly before today, sorted chronologically."""
         if before_date is None:
-            before_date = date.today()
+            before_date = get_bkk_date()
         date_str = before_date.isoformat()
 
         # Check if this lottery belongs to edaylotto.com (Vietnam & Lao Phattana target lotteries)
