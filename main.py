@@ -830,18 +830,17 @@ def main() -> None:
     ping_thread.start()
 
     is_cloud_server = bool(os.environ.get("RENDER") or os.environ.get("RENDER_EXTERNAL_URL"))
-    default_scheduler = "false" if is_cloud_server else "true"
+    default_scheduler = "true"  # Run 24/7 autonomously on Render without needing local PC!
     enable_scheduler = os.environ.get("ENABLE_SCHEDULER", default_scheduler).lower() in ("true", "1", "yes")
     if "--only-predictor" in sys.argv:
         enable_scheduler = False
 
-    # Start Passive Harvester Thread ONLY if scheduler is disabled (e.g. cloud dashboard/predictor-only mode)
-    # If scheduler is enabled, LotteryScheduler handles all scraping & sending; harvester must NOT steal results!
+    # Start Passive Harvester Thread ONLY if scheduler is disabled
     if not enable_scheduler:
         harvester_thread = threading.Thread(target=passive_results_harvester_loop, args=(db,), daemon=True)
         harvester_thread.start()
-    else:
-        # On local machine: keep Render Cloud Dashboard in sync 24/7 in real time
+    elif not is_cloud_server:
+        # On local machine (if ever run): keep Render Cloud Dashboard in sync in real time
         sync_thread = threading.Thread(target=cloud_sync_loop, args=(db,), daemon=True)
         sync_thread.start()
 

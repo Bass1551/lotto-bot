@@ -84,6 +84,8 @@ class EdaylottoClient:
                     self.session_id = data.get("auth", {}).get("sessionId")
             except Exception as e:
                 logger.warning("Could not read edaylotto session file: %s", e)
+        if not self.session_id:
+            self.session_id = _get_sec_cred("EDAYLOTTO_SESSION_ID", "W??pDGd4LfEi*AOVl6aeVKXgaGGsL^HZo&nWi?_kW-~N1")
 
     def login(self) -> str:
         """Authenticate using Chrome with Cloudflare Turnstile and save session ID."""

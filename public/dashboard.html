@@ -459,20 +459,55 @@
                     `;
                 } else if (isClosed) {
                     cardBorder = 'border-rose-500/50 glow-red';
-                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/50 flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ตลาดปิด
-                    </span>`;
-                    numbersHtml = `
-                        <div class="bg-rose-950/30 border border-rose-500/40 rounded-xl p-4 my-3 text-center">
-                            <div class="text-2xl font-black text-rose-500 font-mono tracking-wider flex items-center justify-center gap-2">
-                                <span>🛑</span>
-                                <span>ตลาดปิด</span>
+                    const isMalaysia = l.name.includes('มาเล');
+                    const isThaiLotto = l.name.includes('หวยไทย');
+                    
+                    if (isMalaysia) {
+                        statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> ออกเฉพาะ พุธ, เสาร์, อาทิตย์
+                        </span>`;
+                        numbersHtml = `
+                            <div class="bg-rose-950/30 border border-rose-500/40 rounded-xl p-4 my-3 text-center">
+                                <div class="text-lg font-black text-rose-400 font-mono tracking-wider flex items-center justify-center gap-2">
+                                    <span>🛑</span>
+                                    <span>ไม่มีรอบออกรางวัลวันนี้</span>
+                                </div>
+                                <div class="text-xs text-amber-300 mt-2 font-bold bg-amber-950/60 border border-amber-500/40 rounded-lg py-1.5 px-3 inline-block shadow-sm">
+                                    📅 จะออกเฉพาะวันพุธ, เสาร์, อาทิตย์
+                                </div>
                             </div>
-                            <div class="text-xs text-rose-300/80 mt-1 font-medium">
-                                ${l.closed_reason || 'ปิดทำการ (เสาร์-อาทิตย์ / วันหยุดตลาด)'}
+                        `;
+                    } else if (isThaiLotto) {
+                        statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> ออกเฉพาะวันที่ 1 และ 16
+                        </span>`;
+                        numbersHtml = `
+                            <div class="bg-rose-950/30 border border-rose-500/40 rounded-xl p-4 my-3 text-center">
+                                <div class="text-lg font-black text-rose-400 font-mono tracking-wider flex items-center justify-center gap-2">
+                                    <span>🛑</span>
+                                    <span>ไม่มีรอบออกรางวัลวันนี้</span>
+                                </div>
+                                <div class="text-xs text-amber-300 mt-2 font-bold bg-amber-950/60 border border-amber-500/40 rounded-lg py-1.5 px-3 inline-block shadow-sm">
+                                    📅 ออกรางวัลเฉพาะวันที่ 1 และ 16 ของเดือน
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/50 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ตลาดปิด
+                        </span>`;
+                        numbersHtml = `
+                            <div class="bg-rose-950/30 border border-rose-500/40 rounded-xl p-4 my-3 text-center">
+                                <div class="text-2xl font-black text-rose-500 font-mono tracking-wider flex items-center justify-center gap-2">
+                                    <span>🛑</span>
+                                    <span>ตลาดปิด</span>
+                                </div>
+                                <div class="text-xs text-rose-300/80 mt-1.5 font-medium">
+                                    ${l.closed_reason || 'ปิดทำการ (เสาร์-อาทิตย์ / วันหยุดตลาด)'}
+                                </div>
+                            </div>
+                        `;
+                    }
                 } else if (isChecking) {
                     cardBorder = 'border-amber-500/40 glow-amber';
                     statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center gap-1.5">
