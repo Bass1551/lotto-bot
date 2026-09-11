@@ -42,6 +42,7 @@ OFFICIAL_URL_MAP: dict[str, str] = {
     # Lao APIs & Sites
     "ลาว Extra": "https://laoextra.com/",
     "ลาว TV": "https://lao-tv.com/",
+    "ลาว HD": "https://laoshd.com/",
     "ลาว Star": "https://laostars.com/",
     "หวยลาว กาชาด": "https://lao-redcross.com/",
     "ลาวกาชาด": "https://lao-redcross.com/",
@@ -170,6 +171,7 @@ HANOI_API_MAP = {
 LAO_API_MAP = {
     "ลาว Extra": "https://api.laoextra.com/result",
     "ลาว TV": "https://api.lao-tv.com/result",
+    "ลาว HD": "https://api.laoshd.com/api/result",
     "ลาว Star": "https://api.laostars.com/result",
     "หวยลาว กาชาด": "https://api.lao-redcross.com/result",
     "ลาวกาชาด": "https://api.lao-redcross.com/result",

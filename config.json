@@ -511,9 +511,9 @@
   },
   {
     "name": "ลาว HD",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://laoshd.com/",
     "time": "13:45",
-    "parser": "smlot_reward",
+    "parser": "lao_direct",
     "type": "laos",
     "flag": "🇱🇦",
     "weekend": true,

@@ -19,7 +19,7 @@ LAO_PORTAL_MAP: dict[str, str] = {
     "หวยลาวExtra": "https://www.lao-extra.com/",
     "ลาว TV": "https://www.laostv.com/",
     "หวยลาว TV": "https://www.laostv.com/",
-    "ลาว HD": "https://www.laohd.com/",
+    "ลาว HD": "https://laoshd.com/",
     "ลาว Star": "https://laostar.la/",
     "หวยลาวสตาร์": "https://laostar.la/",
     "หวยลาวSTAR VIP": "https://laostar.la/",
