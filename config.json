@@ -231,7 +231,7 @@
   },
   {
     "name": "ฮานอยสามัคคี",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://hanoiunion.com/",
     "time": "17:30",
     "parser": "smlot_reward",
     "type": "5digit",
@@ -251,7 +251,7 @@
   },
   {
     "name": "หุ้นอินเดีย",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.bseindia.com/",
     "time": "16:50",
     "parser": "smlot_reward",
     "type": "stock",
@@ -261,7 +261,7 @@
   },
   {
     "name": "หุ้นอียิปต์",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.egx.com.eg/",
     "time": "18:00",
     "parser": "smlot_reward",
     "type": "stock",
@@ -351,7 +351,7 @@
   },
   {
     "name": "หวยดาวโจนส์ mid night",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://dowjonesmidnight.com/",
     "time": "04:30",
     "parser": "smlot_reward",
     "type": "stock",
@@ -371,7 +371,7 @@
   },
   {
     "name": "หวยดาวโจนส์ extra",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://dowjonesextra.com/",
     "time": "05:00",
     "parser": "smlot_reward",
     "type": "stock",
@@ -431,7 +431,7 @@
   },
   {
     "name": "หวยไทย",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.glo.or.th/",
     "time": "15:30",
     "parser": "smlot_reward",
     "type": "thai",
@@ -441,7 +441,7 @@
   },
   {
     "name": "มาเลเซีย",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://www.magnum4d.my/",
     "time": "18:30",
     "parser": "smlot_reward",
     "type": "stock",
@@ -481,7 +481,7 @@
   },
   {
     "name": "ลาวประตูชัย",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://laopatuxay.com",
     "time": "10:00",
     "parser": "smlot_reward",
     "type": "laos",
@@ -491,7 +491,7 @@
   },
   {
     "name": "ลาวสันติภาพ",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://laosantipap.com",
     "time": "11:00",
     "parser": "smlot_reward",
     "type": "laos",
@@ -551,7 +551,7 @@
   },
   {
     "name": "หวยลาวSTAR VIP",
-    "url": "https://member.smlot.net/reports/reward",
+    "url": "https://laostars.com/",
     "time": "22:00",
     "parser": "smlot_reward",
     "type": "laos",
