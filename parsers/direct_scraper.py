@@ -489,37 +489,35 @@ def scrape_vip_stock(lottery_name: str, target_date: Optional[date] = None) -> O
                     "full": m_korea.group(1) + m_korea.group(2),
                 }
 
-        # Explicit morning/evening text (e.g. morning top 025 bottom 85)
-        m_kw = "evening" if session_type == "afternoon" else "morning"
-        m_exp = re.search(rf"{m_kw}\s+top\s+(\d{{3}})\s+bottom\s+(\d{{2}})", text, re.IGNORECASE)
-        if m_exp:
-            return {
-                "name": lottery_name,
-                "top3": m_exp.group(1),
-                "bottom2": m_exp.group(2),
-                "full": m_exp.group(1) + m_exp.group(2),
-            }
+        # Strict keyword matching for each VIP session
+        # Nikkei uses 'afternoon', HSI & Shenzhen use 'evening', Taiwan uses 'closed' / 'close'
+        patterns = []
+        if session_type == "morning":
+            patterns = [r"morning\s+top\s+(\d{3})\s+bottom\s+(\d{2})"]
+        elif session_type == "afternoon":
+            patterns = [
+                r"afternoon\s+top\s+(\d{3})\s+bottom\s+(\d{2})",
+                r"evening\s+top\s+(\d{3})\s+bottom\s+(\d{2})"
+            ]
+        elif session_type == "all":
+            patterns = [
+                r"closed?\s+top\s+(\d{3})\s+bottom\s+(\d{2})",
+                r"top\s+(\d{3})\s+bottom\s+(\d{2})"
+            ]
 
-        num_pairs = re.findall(r"([\d,]+)\.(\d{2})", text)
-        if len(num_pairs) >= 2:
-            idx_int, idx_dec = num_pairs[0]
-            _, chg_dec = num_pairs[1]
+        for pat in patterns:
+            m_exp = re.search(pat, text, re.IGNORECASE)
+            if m_exp:
+                return {
+                    "name": lottery_name,
+                    "top3": m_exp.group(1),
+                    "bottom2": m_exp.group(2),
+                    "full": m_exp.group(1) + m_exp.group(2),
+                }
 
-            if session_type == "afternoon" and len(num_pairs) >= 4:
-                idx_int, idx_dec = num_pairs[2]
-                _, chg_dec = num_pairs[3]
-
-            int_clean = idx_int.replace(",", "")
-            if int_clean:
-                top3 = int_clean[-1] + idx_dec
-                bot2 = chg_dec
-                if len(top3) == 3 and len(bot2) == 2:
-                    return {
-                        "name": lottery_name,
-                        "top3": top3,
-                        "bottom2": bot2,
-                        "full": f"{int_clean}.{idx_dec}",
-                    }
+        # If not drawn yet (e.g. 'Evening Top - Bottom -' or placeholder), return None!
+        # NEVER guess from chart numbers!
+        return None
     except Exception as exc:
         logger.debug("VIP Stock scrape error for %s: %s", lottery_name, exc)
 
