@@ -575,6 +575,12 @@ class LotteryScheduler:
                                         winrate_mgr.check_and_send_bill_outcomes(l["name"], r["top3"], r["bottom2"], sender=self.sender, target_date=today)
                                     except Exception:
                                         pass
+                                    try:
+                                        from predictor_bot import PredictorBot
+                                        pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
+                                        pbot.check_and_send_win(l["name"], r["top3"], r["bottom2"], result_date=today, flag=l.get("flag", "🎯"))
+                                    except Exception as pe:
+                                        logger.debug("Predictor win check note in combined: %s", pe)
                                     if l in pending_lottos:
                                         pending_lottos.remove(l)
                         else:

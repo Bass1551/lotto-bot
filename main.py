@@ -668,15 +668,17 @@ def main() -> None:
     ping_thread = threading.Thread(target=keep_alive_loop, daemon=True)
     ping_thread.start()
 
-    # Start Passive Harvester Thread to automatically populate dashboard without sending LINE messages
-    harvester_thread = threading.Thread(target=passive_results_harvester_loop, args=(db,), daemon=True)
-    harvester_thread.start()
-
     is_cloud_server = bool(os.environ.get("RENDER") or os.environ.get("RENDER_EXTERNAL_URL"))
     default_scheduler = "false" if is_cloud_server else "true"
     enable_scheduler = os.environ.get("ENABLE_SCHEDULER", default_scheduler).lower() in ("true", "1", "yes")
     if "--only-predictor" in sys.argv:
         enable_scheduler = False
+
+    # Start Passive Harvester Thread ONLY if scheduler is disabled (e.g. cloud dashboard/predictor-only mode)
+    # If scheduler is enabled, LotteryScheduler handles all scraping & sending; harvester must NOT steal results!
+    if not enable_scheduler:
+        harvester_thread = threading.Thread(target=passive_results_harvester_loop, args=(db,), daemon=True)
+        harvester_thread.start()
 
     bot = None
     if enable_scheduler:
