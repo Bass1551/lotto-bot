@@ -292,7 +292,7 @@
   {
     "name": "หุ้นอังกฤษ",
     "url": "http://www.bloomberg.com/quote/UKX:IND",
-    "time": "22:50",
+    "time": "22:35",
     "parser": "smlot_reward",
     "type": "stock",
     "flag": "🇬🇧",
