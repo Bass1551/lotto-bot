@@ -117,7 +117,7 @@ class LineSender:
         current_month = datetime.now().strftime("%Y-%m")
         if self.active_index_file.exists():
             try:
-                with open(self.active_index_file, "r", encoding="utf-8") as f:
+                with open(self.active_index_file, "r", encoding="utf-8-sig") as f:
                     data = json.load(f)
                 if data.get("month") == current_month:
                     idx = data.get("active_index", 0)
