@@ -55,21 +55,38 @@ class Database:
             )
             conn.execute(
                 """
+                CREATE TABLE IF NOT EXISTS line_sent_logs (
+                    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+                    lottery_name TEXT NOT NULL,
+                    result_date  TEXT NOT NULL,
+                    sent_at      TEXT NOT NULL,
+                    UNIQUE(lottery_name, result_date)
+                )
+                """
+            )
+            conn.execute(
+                """
                 CREATE INDEX IF NOT EXISTS idx_lottery_date
                 ON results (lottery_name, result_date)
+                """
+            )
+            conn.execute(
+                """
+                CREATE INDEX IF NOT EXISTS idx_line_sent_date
+                ON line_sent_logs (lottery_name, result_date)
                 """
             )
         logger.info("Database initialized at %s", self.db_path)
 
     def already_sent(self, lottery_name: str, result_date: Optional[date] = None) -> bool:
-        """Check whether a result for this lottery on this date was already sent.
+        """Check whether a result for this lottery on this date was ACTUALLY sent to LINE.
 
         Args:
             lottery_name: Name of the lottery (must match config).
             result_date: Date of the draw. Defaults to today.
 
         Returns:
-            True if already recorded as sent.
+            True if recorded in line_sent_logs.
         """
         if result_date is None:
             result_date = date.today()
@@ -78,13 +95,30 @@ class Database:
         with self._connect() as conn:
             row = conn.execute(
                 """
-                SELECT 1 FROM results
+                SELECT 1 FROM line_sent_logs
                 WHERE lottery_name = ? AND result_date = ?
                 LIMIT 1
                 """,
                 (lottery_name, date_str),
             ).fetchone()
         return row is not None
+
+    def mark_as_sent(self, lottery_name: str, result_date: Optional[date] = None) -> None:
+        """Record that a result was successfully pushed to LINE."""
+        if result_date is None:
+            result_date = date.today()
+        date_str = result_date.isoformat()
+        now_str = datetime.now().isoformat(timespec="seconds")
+
+        with self._connect() as conn:
+            conn.execute(
+                """
+                INSERT OR IGNORE INTO line_sent_logs (lottery_name, result_date, sent_at)
+                VALUES (?, ?, ?)
+                """,
+                (lottery_name, date_str, now_str),
+            )
+        logger.info("Marked as sent to LINE: %s on %s", lottery_name, date_str)
 
     def save_result(
         self,

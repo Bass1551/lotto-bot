@@ -414,7 +414,7 @@ class LotteryScheduler:
         today = now_dt.date()
         is_weekend = (today.weekday() in (5, 6))
         current_time_str = now_dt.strftime("%H:%M")
-        cutoff_time_str = (now_dt - timedelta(minutes=10)).strftime("%H:%M")
+        cutoff_time_str = (now_dt - timedelta(minutes=30)).strftime("%H:%M")
         is_morning_window = ("08:00" <= current_time_str <= "08:30")
 
         grouped_by_time = defaultdict(list)
@@ -570,6 +570,7 @@ class LotteryScheduler:
                                     l = item["lotto"]
                                     r = item["result"]
                                     self.db.save_result(l["name"], r["top3"], r["bottom2"], r.get("full", ""), result_date=today)
+                                    self.db.mark_as_sent(l["name"], result_date=today)
                                     try:
                                         from winrate_manager import winrate_mgr
                                         winrate_mgr.check_and_send_bill_outcomes(l["name"], r["top3"], r["bottom2"], sender=self.sender, target_date=today)
@@ -588,6 +589,7 @@ class LotteryScheduler:
                                 l = item["lotto"]
                                 r = item["result"]
                                 self.db.save_result(l["name"], r["top3"], r["bottom2"], r.get("full", ""), result_date=today)
+                                self.db.mark_as_sent(l["name"], result_date=today)
                                 if l in pending_lottos:
                                     pending_lottos.remove(l)
                     else:
@@ -657,11 +659,13 @@ class LotteryScheduler:
         if self.sender is None:
             logger.warning("No LineSender configured – message not sent (dry-run)")
             self.db.save_result(name, top3, bottom2, full, result_date=result_date)
+            self.db.mark_as_sent(name, result_date=result_date)
             return
 
         ok = self.sender.send_result_flex(name, top3, bottom2, flag=flag)
         if ok:
             self.db.save_result(name, top3, bottom2, full, result_date=result_date)
+            self.db.mark_as_sent(name, result_date=result_date)
             # Check and evaluate requested bills & update 100-bill rolling winrate
             try:
                 from winrate_manager import winrate_mgr
