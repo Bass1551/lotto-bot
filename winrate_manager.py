@@ -793,33 +793,17 @@ class WinRateManager:
             stats = self.get_winrate_stats()
             from predictor_bot import PredictorBot
             pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
-            candidate_tokens = []
             try:
-                candidate_tokens.append(pbot.get_token())
-            except Exception:
-                pass
-            if sender and hasattr(sender, "bot_chain"):
-                for b in sender.bot_chain:
-                    tok = b.get("token")
-                    if tok and tok not in candidate_tokens:
-                        candidate_tokens.append(tok)
-
-            if not candidate_tokens:
-                try:
-                    with open("data/bot_chain.json", "r", encoding="utf-8") as bf:
-                        bc = json.load(bf)
-                        for b_entry in bc:
-                            tok = b_entry.get("token")
-                            if tok and tok not in candidate_tokens:
-                                candidate_tokens.append(tok)
-                except Exception:
-                    pass
+                p_token = pbot.get_token()
+            except Exception as te:
+                logger.error("Failed to get PredictorBot token: %s", te)
+                p_token = None
 
             for b in resolved_bills:
                 flex_card = self.build_bill_result_flex(b, stats)
-                target_gid = b.get("group_id")
+                target_gid = b.get("group_id") or pbot.get_group_id()
                 if not target_gid or not target_gid.startswith("C"):
-                    for fname in ["last_captured_group.txt", "predictor_group_id.txt"]:
+                    for fname in ["predictor_group_id.txt", "last_captured_group.txt"]:
                         try:
                             with open(f"data/{fname}", "r", encoding="utf-8") as gf:
                                 cgid = gf.read().strip()
@@ -828,36 +812,21 @@ class WinRateManager:
                                     break
                         except Exception:
                             pass
-                if not target_gid or not target_gid.startswith("C"):
-                    try:
-                        with open("data/bot_chain.json", "r", encoding="utf-8") as bf:
-                            bc = json.load(bf)
-                            for b_entry in bc:
-                                cgid = b_entry.get("group_id", "")
-                                if cgid.startswith("C") and len(cgid) >= 20:
-                                    target_gid = cgid
-                                    break
-                    except Exception:
-                        pass
-                if not target_gid:
-                    target_gid = pbot.get_group_id()
 
-                if target_gid and candidate_tokens:
-                    for tok in candidate_tokens:
-                        try:
-                            res = requests.post(
-                                "https://api.line.me/v2/bot/message/push",
-                                headers={"Authorization": f"Bearer {tok}", "Content-Type": "application/json"},
-                                json={"to": target_gid, "messages": [flex_card]},
-                                timeout=10
-                            )
-                            if res.status_code == 200:
-                                logger.info("Successfully pushed bill result card for %s to %s", lottery_name, target_gid)
-                                break
-                            else:
-                                logger.warning("Failed pushing bill outcome: %s %s", res.status_code, res.text)
-                        except Exception as pe:
-                            logger.warning("Failed pushing bill outcome: %s", pe)
+                if target_gid and p_token:
+                    try:
+                        res = requests.post(
+                            "https://api.line.me/v2/bot/message/push",
+                            headers={"Authorization": f"Bearer {p_token}", "Content-Type": "application/json"},
+                            json={"to": target_gid, "messages": [flex_card]},
+                            timeout=10
+                        )
+                        if res.status_code == 200:
+                            logger.info("Successfully pushed bill result card for %s to %s", lottery_name, target_gid)
+                        else:
+                            logger.warning("Failed pushing bill outcome to %s: %s %s", target_gid, res.status_code, res.text)
+                    except Exception as pe:
+                        logger.warning("Failed pushing bill outcome: %s", pe)
 
             return resolved_bills
         except Exception as exc:
