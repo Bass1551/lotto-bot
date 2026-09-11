@@ -227,6 +227,28 @@ class WinRateManager:
         logger.info("Recorded new prediction bill: %s (%s)", lottery_name, bill["id"])
         return bill
 
+    def get_bill_for_lottery(self, lottery_name: str, target_date: Optional[date] = None) -> Optional[Dict[str, Any]]:
+        """Retrieve the exact prediction bill recorded for this lottery and date."""
+        target_date = target_date or datetime.now(TZ).date()
+        date_str = target_date.isoformat()
+        try:
+            with self._get_db_conn() as conn:
+                rows = conn.execute("SELECT * FROM pending_prediction_bills WHERE target_date = ?", (date_str,)).fetchall()
+                for r in rows:
+                    if is_same_lottery(r["lottery_name"], lottery_name):
+                        return {
+                            "id": r["id"],
+                            "lottery_name": r["lottery_name"],
+                            "flag": r["flag"],
+                            "group_id": r["group_id"],
+                            "date": r["target_date"],
+                            "prediction": json.loads(r["prediction_json"]),
+                            "status": r["status"],
+                        }
+        except Exception as e:
+            logger.debug("get_bill_for_lottery DB lookup error: %s", e)
+        return None
+
     def load_rolling_bills(self) -> List[Dict[str, Any]]:
         with LOCK:
             try:

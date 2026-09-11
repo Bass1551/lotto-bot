@@ -992,7 +992,18 @@ class PredictorBot:
         if not self.is_lottery_requested(lottery_name, target_date=result_date):
             return False
 
-        pred = self.engine.calculate_prediction(lottery_name, target_date=result_date)
+        # First check if there was an actual recorded bill for this lottery today
+        pred = None
+        try:
+            from winrate_manager import winrate_mgr
+            bill = winrate_mgr.get_bill_for_lottery(lottery_name, target_date=result_date)
+            if bill and bill.get("prediction"):
+                pred = bill["prediction"]
+        except Exception:
+            pass
+
+        if not pred:
+            pred = self.engine.calculate_prediction(lottery_name, target_date=result_date)
         if not pred:
             return False
 
