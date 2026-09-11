@@ -578,16 +578,33 @@ class PredictorBot:
     def is_lottery_requested(self, lottery_name: str, target_date: Optional[date] = None) -> bool:
         """Check if this lottery was explicitly requested today by group members."""
         target_date = target_date or datetime.now(ZoneInfo("Asia/Bangkok")).date()
+
+        # 1. First check if an active bill exists for this lottery today
+        try:
+            from winrate_manager import winrate_mgr, is_same_lottery
+            bill = winrate_mgr.get_bill_for_lottery(lottery_name, target_date=target_date)
+            if bill:
+                return True
+        except Exception:
+            pass
+
+        # 2. Check requested_predictions.json with alias matching
         req_path = "data/requested_predictions.json"
         if not os.path.exists(req_path):
             return False
         try:
             with open(req_path, "r", encoding="utf-8") as f:
-                reqs = set(json.load(f))
-                key = f"{target_date.isoformat()}_{lottery_name}"
-                return key in reqs
+                reqs = json.load(f)
+                date_prefix = f"{target_date.isoformat()}_"
+                for rk in reqs:
+                    if rk.startswith(date_prefix):
+                        req_name = rk[len(date_prefix):]
+                        from winrate_manager import is_same_lottery
+                        if is_same_lottery(req_name, lottery_name):
+                            return True
         except Exception:
-            return False
+            pass
+        return False
 
     def build_flex_message(self, flag: str, pred: Dict[str, Any]) -> Dict[str, Any]:
         lottery_name = pred["lottery_name"]
@@ -1019,8 +1036,15 @@ class PredictorBot:
         if not pred:
             return False
 
-        top3 = str(top3).zfill(3)[-3:]
-        bot2 = str(bottom2).zfill(2)[-2:]
+        if not top3 or not bottom2:
+            return False
+        t3_str = str(top3).strip()
+        b2_str = str(bottom2).strip()
+        if not t3_str.isdigit() or not b2_str.isdigit():
+            return False
+
+        top3 = t3_str.zfill(3)[-3:]
+        bot2 = b2_str.zfill(2)[-2:]
         top2 = top3[-2:]
 
         hits = []

@@ -358,9 +358,16 @@ class WinRateManager:
         bottom2: str,
     ) -> Tuple[bool, List[Dict[str, str]]]:
         """Evaluate if the bill hit any prize."""
+        if not bill or not top3 or not bottom2:
+            return False, []
+        t3_str = str(top3).strip()
+        b2_str = str(bottom2).strip()
+        if not t3_str.isdigit() or not b2_str.isdigit():
+            return False, []
+
         pred = bill.get("prediction", {})
-        top3 = str(top3).zfill(3)[-3:]
-        bot2 = str(bottom2).zfill(2)[-2:]
+        top3 = t3_str.zfill(3)[-3:]
+        bot2 = b2_str.zfill(2)[-2:]
         top2 = top3[-2:]
 
         hits: List[Dict[str, str]] = []
@@ -448,6 +455,12 @@ class WinRateManager:
         """Find pending bills for this lottery, evaluate them, update 100-bill rolling FIFO, and return outcomes."""
         t_date = target_date or datetime.now(TZ).date()
         date_str = t_date.isoformat()
+
+        t3_str = str(top3).strip() if top3 else ""
+        b2_str = str(bottom2).strip() if bottom2 else ""
+        if not t3_str.isdigit() or not b2_str.isdigit():
+            logger.warning("resolve_pending_bills received invalid results (top3='%s', bot2='%s') for '%s'. Skipping evaluation.", top3, bottom2, lottery_name)
+            return []
 
         all_bills = self.load_pending_bills()
         remaining_bills = []
