@@ -830,7 +830,9 @@ def main() -> None:
     ping_thread.start()
 
     is_cloud_server = bool(os.environ.get("RENDER") or os.environ.get("RENDER_EXTERNAL_URL"))
-    default_scheduler = "true"  # Run 24/7 autonomously on Render without needing local PC!
+    # Cloud server: Run Harvester & Predictor (Dashboard + WinRate outcome cards), do NOT broadcast lottery results automatically
+    # Local machine: Run LotteryScheduler when user manually runs python main.py
+    default_scheduler = "false" if is_cloud_server else "true"
     enable_scheduler = os.environ.get("ENABLE_SCHEDULER", default_scheduler).lower() in ("true", "1", "yes")
     if "--only-predictor" in sys.argv:
         enable_scheduler = False
