@@ -597,6 +597,72 @@ def keep_alive_loop():
         time.sleep(240)  # Ping every 4 minutes (240s)
 
 
+def cloud_sync_loop(db: Database):
+    """Continuously sync local database results to Render Cloud 24/7 server.
+    Ensures Render Dashboard always has 100% of drawn results even if Render restarts or redeploys.
+    """
+    logger.info("☁️ Cloud Sync Daemon active: keeping Render Dashboard up-to-date in real time")
+    import requests
+    time.sleep(3)
+    render_url = os.environ.get("RENDER_EXTERNAL_URL", "https://lotto-bot-uy9t.onrender.com").rstrip("/")
+
+    while True:
+        try:
+            now_bkk = datetime.now(TZ)
+            today_date = now_bkk.date()
+            yesterday_date = today_date - timedelta(days=1)
+
+            resp = requests.get(f"{render_url}/api/lottery_status", timeout=10)
+            if resp.status_code == 200:
+                render_data = resp.json()
+                render_lotteries = {item["name"]: item for item in render_data.get("lotteries", [])}
+
+                local_today = db.get_daily_results(today_date)
+                local_yesterday = db.get_daily_results(yesterday_date)
+
+                for r in local_today:
+                    name = r["lottery_name"]
+                    top3 = r["top3"]
+                    bot2 = r["bottom2"]
+                    r_item = render_lotteries.get(name)
+                    if not r_item or r_item.get("status") != "sent" or r_item.get("top3") != top3 or r_item.get("bottom2") != bot2:
+                        payload = {
+                            "name": name,
+                            "top3": top3,
+                            "bottom2": bot2,
+                            "full": r.get("full_result", ""),
+                            "result_date": today_date.isoformat()
+                        }
+                        try:
+                            requests.post(f"{render_url}/api/save_only", json=payload, timeout=10)
+                            logger.info("☁️ Cloud Sync restored '%s' (%s-%s) to Render Dashboard", name, top3, bot2)
+                        except Exception as pe:
+                            logger.debug("Cloud sync post error for %s: %s", name, pe)
+
+                for r in local_yesterday:
+                    name = r["lottery_name"]
+                    top3 = r["top3"]
+                    bot2 = r["bottom2"]
+                    r_item = render_lotteries.get(name)
+                    if r_item and r_item.get("time", "99:99") < "07:00" and r_item.get("status") != "sent":
+                        payload = {
+                            "name": name,
+                            "top3": top3,
+                            "bottom2": bot2,
+                            "full": r.get("full_result", ""),
+                            "result_date": yesterday_date.isoformat()
+                        }
+                        try:
+                            requests.post(f"{render_url}/api/save_only", json=payload, timeout=10)
+                            logger.info("☁️ Cloud Sync restored overnight '%s' (%s-%s) to Render Dashboard", name, top3, bot2)
+                        except Exception as pe:
+                            logger.debug("Cloud sync post error for overnight %s: %s", name, pe)
+        except Exception as exc:
+            logger.debug("Cloud sync daemon iteration note: %s", exc)
+
+        time.sleep(30)
+
+
 def passive_results_harvester_loop(db: Database):
     """
     Background harvester for the dashboard.
@@ -707,6 +773,10 @@ def main() -> None:
     if not enable_scheduler:
         harvester_thread = threading.Thread(target=passive_results_harvester_loop, args=(db,), daemon=True)
         harvester_thread.start()
+    else:
+        # On local machine: keep Render Cloud Dashboard in sync 24/7 in real time
+        sync_thread = threading.Thread(target=cloud_sync_loop, args=(db,), daemon=True)
+        sync_thread.start()
 
     bot = None
     if enable_scheduler:
