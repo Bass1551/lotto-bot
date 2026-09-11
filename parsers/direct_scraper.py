@@ -232,6 +232,41 @@ def scrape_hanoi_api(lotto_name: str, target_date: Optional[date] = None) -> Opt
     return None
 
 
+def scrape_minhngoc_normal(lottery_name: str = "หวยฮานอย", target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
+    """Direct fast scraper for Hanoi Regular (Xổ Số Miền Bắc) from official broadcast site minhngoc.net.vn."""
+    target_date = target_date or datetime.now(TZ).date()
+    url = "https://www.minhngoc.net.vn/xo-so-truc-tiep/mien-bac.html"
+    try:
+        from bs4 import BeautifulSoup
+        res = requests.get(url, headers=HEADERS, timeout=6)
+        if res.status_code == 200:
+            soup = BeautifulSoup(res.text, "html.parser")
+            gdb = soup.find("td", class_="giaidb")
+            g1 = soup.find("td", class_="giai1")
+            gdb_text = gdb.get_text(strip=True) if gdb else ""
+            g1_text = g1.get_text(strip=True) if g1 else ""
+
+            # Check if date matches target_date
+            today_str = target_date.strftime("%d/%m/%Y")
+            page_text = soup.get_text()
+            if today_str not in page_text:
+                logger.debug("Minh Ngoc live date mismatch: %s not in page", today_str)
+
+            if len(gdb_text) >= 3 and len(g1_text) >= 2 and gdb_text.isdigit() and g1_text.isdigit():
+                top3 = gdb_text[-3:]
+                bot2 = g1_text[-2:]
+                logger.info("⚡ Minh Ngoc live parsed Hanoi Normal: 3 บน=%s | 2 ล่าง=%s", top3, bot2)
+                return {
+                    "name": lottery_name,
+                    "top3": top3,
+                    "bottom2": bot2,
+                    "full": gdb_text,
+                }
+    except Exception as e:
+        logger.debug("Minh Ngoc scrape error: %s", e)
+    return None
+
+
 def scrape_lao_api(lotto_name: str, target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
     api_url = LAO_API_MAP.get(lotto_name)
     if not api_url:
@@ -583,8 +618,14 @@ def scrape_direct_official(lottery_name: str, target_date: Optional[date] = None
             logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (VIP Stock): %s-%s", lottery_name, res["top3"], res["bottom2"])
             return res
 
-    # 7. Main Hanoi lotteries (Press Hanoi Parser)
+    # 7. Main Hanoi lotteries (Minh Ngoc live & Press Hanoi Parser)
     clean_lotto = lottery_name.replace("หวย", "").replace(" ", "").strip()
+    if clean_lotto in ("ฮานอย", "ฮานอยปกติ"):
+        mn_res = scrape_minhngoc_normal(lottery_name, target_date=target_date)
+        if mn_res and len(mn_res.get("top3", "")) == 3 and len(mn_res.get("bottom2", "")) == 2:
+            logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (Minh Ngoc): %s-%s", lottery_name, mn_res["top3"], mn_res["bottom2"])
+            return mn_res
+
     if clean_lotto in ("ฮานอยพิเศษ", "ฮานอย", "ฮานอยปกติ", "ฮานอยVIP", "ฮานอยvip"):
         try:
             from parsers.press_hanoi import PressHanoiParser
