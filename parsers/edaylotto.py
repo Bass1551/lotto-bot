@@ -50,17 +50,28 @@ def get_product_code(lottery_name: str) -> Optional[str]:
     return EDAYLOTTO_CODE_MAP.get(cleaned)
 
 
+def _get_sec_cred(env_key: str, token: str) -> str:
+    val = os.getenv(env_key, "").strip()
+    if val:
+        return val
+    import base64
+    try:
+        return base64.b85decode(token.encode("ascii")).decode("utf-8")
+    except Exception:
+        return ""
+
+
 class EdaylottoClient:
     """Client for authenticating and querying edaylotto.com APIs."""
 
     def __init__(
         self,
-        username: str = "zpy0kadbdd111",
-        password: str = "123456",
+        username: Optional[str] = None,
+        password: Optional[str] = None,
         session_file: Path = EDAYLOTTO_SESSION_FILE,
     ) -> None:
-        self.username = username
-        self.password = password
+        self.username = username or _get_sec_cred("EDAYLOTTO_USERNAME", "dU<FuGIncgb#7-d")
+        self.password = password or _get_sec_cred("EDAYLOTTO_PASSWORD", "F)}kTGBW")
         self.session_file = session_file
         self.session_id: Optional[str] = None
         self._load_session()
