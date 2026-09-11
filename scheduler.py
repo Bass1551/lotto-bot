@@ -224,6 +224,16 @@ class LotteryScheduler:
         )
         logger.info("Scheduled daily summary report at 23:59 (Asia/Bangkok)")
 
+        # Schedule morning yesterday summary report at 08:00 (Asia/Bangkok)
+        self.scheduler.add_job(
+            self.send_yesterday_summary,
+            trigger=CronTrigger(hour=8, minute=0, timezone=TZ),
+            id="morning_yesterday_summary",
+            replace_existing=True,
+            misfire_grace_time=600,
+        )
+        logger.info("Scheduled morning yesterday summary report at 08:00 (Asia/Bangkok)")
+
         self.scheduler.start()
         logger.info("Scheduler started")
 
@@ -328,14 +338,22 @@ class LotteryScheduler:
         self.sender.send_text(report_text)
 
     def send_yesterday_summary(self) -> None:
-        """Send yesterday's summary report for ALL lotteries from website into the LINE group upon startup.
+        """Send yesterday's summary report for ALL lotteries from website into the LINE group.
         Protected against duplicate sending if bot restarts within the same day.
+        Rule: Only send if current time is between 08:00 and 08:30 (Asia/Bangkok).
+        If bot starts after 08:30, skip sending to avoid duplicate/late spam.
         """
         if not self.sender:
             logger.warning("No sender configured – cannot send yesterday summary report")
             return
 
-        today = datetime.now(TZ).date()
+        now_dt = datetime.now(TZ)
+        now_time_str = now_dt.strftime("%H:%M")
+        if not ("08:00" <= now_time_str <= "08:30"):
+            logger.info("Current time %s is outside 08:00-08:30 window. Skipping yesterday summary report.", now_time_str)
+            return
+
+        today = now_dt.date()
         sent_log_path = "data/sent_yesterday_summaries.json"
         sent_dates = set()
         if os.path.exists(sent_log_path):
@@ -377,13 +395,17 @@ class LotteryScheduler:
                     pass
 
     def check_pending_due_today(self) -> None:
-        """Check and send any lotteries whose draw time has passed today and not sent yet.
-        Early morning (<08:00) only backfills regular Dow Jones, skipping variants.
+        """Check only the immediate active round upon startup.
+        NO BACKFILL PUSH TO LINE: Past lotteries that drew before the current round
+        are NEVER pushed to LINE. Bot only checks lotteries whose draw time is within
+        the last 10 minutes (immediate current round). Older rounds are skipped.
         """
         now_dt = datetime.now(TZ)
         today = now_dt.date()
         is_weekend = (today.weekday() in (5, 6))
         current_time_str = now_dt.strftime("%H:%M")
+        # Cutoff: Only lotteries that drew within the last 10 minutes are considered active current round
+        cutoff_time_str = (now_dt - timedelta(minutes=10)).strftime("%H:%M")
 
         grouped_by_time = defaultdict(list)
         for lotto in self.lotteries:
@@ -401,12 +423,16 @@ class LotteryScheduler:
                 if name == "หวยไทย" and today.day not in (1, 16):
                     continue
 
+            # Skip past lotteries: do NOT backfill or push past results to LINE
+            if lotto["time"] < cutoff_time_str:
+                continue
+
             if lotto["time"] <= current_time_str and not self.db.already_sent(lotto["name"], today):
                 grouped_by_time[lotto["time"]].append(lotto)
 
         for time_str, lotto_list in grouped_by_time.items():
             names_str = " + ".join([x["name"] for x in lotto_list])
-            logger.info("Time slot %s (%s) has pending lotteries. Checking now...", time_str, names_str)
+            logger.info("Current active round %s (%s) is due. Checking now...", time_str, names_str)
             self.scheduler.add_job(
                 self._check_group_loop,
                 args=[lotto_list],
