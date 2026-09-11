@@ -234,6 +234,27 @@ class EdaylottoClient:
         sorted_results = [awards_by_date[k] for k in sorted(awards_by_date.keys())]
         return sorted_results[-limit:]
 
+    def get_result(self, lottery_name: str, target_date: Optional[date] = None) -> Optional[dict]:
+        """Fetch result for a lottery name matching target_date."""
+        code = get_product_code(lottery_name)
+        if not code:
+            return None
+        target_date = target_date or date.today()
+        target_iso = target_date.isoformat()
+        try:
+            awards = self.fetch_product_awards(code)
+            for a in awards:
+                if a.get("result_date") == target_iso:
+                    return {
+                        "name": lottery_name,
+                        "top3": a["top3"],
+                        "bottom2": a["bottom2"],
+                        "full": f"{a['top3']}{a['bottom2']}",
+                    }
+        except Exception as e:
+            logger.debug("get_result error for %s (%s): %s", lottery_name, code, e)
+        return None
+
 
 _client = EdaylottoClient()
 

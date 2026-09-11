@@ -200,6 +200,17 @@ def start_http_server(db: Database, sender: LineSender):
                     ok = sender.send_result_flex(name=name, top3=top3, bottom2=bot2, flag=flag)
                     if ok:
                         db.save_result(name, top3, bot2)
+                        try:
+                            from winrate_manager import winrate_mgr
+                            winrate_mgr.check_and_send_bill_outcomes(name, top3, bot2, sender=sender)
+                        except Exception as b_err:
+                            logger.debug("Manual send bill outcome error: %s", b_err)
+                        try:
+                            from predictor_bot import PredictorBot
+                            pbot = PredictorBot(group_id_path="data/predictor_group_id.txt")
+                            pbot.check_and_send_win(name, top3, bot2, flag=flag)
+                        except Exception as p_err:
+                            logger.debug("Manual send win celebration error: %s", p_err)
 
                     res_bytes = json.dumps({"ok": ok}).encode("utf-8")
                     self.send_response(200)
