@@ -44,17 +44,18 @@ class PressHanoiParser(BaseParser):
         if not tables:
             raise ParseError(f"No result tables found on {self.url}")
 
-        # Table index mapping:
-        # Table 0: ฮานอยพิเศษ (17:30)
-        # Table 1: ฮานอยปกติ / หวยฮานอย (18:30)
-        # Table 2: ฮานอย VIP / ฮานอยพัฒนา (19:30)
+        # Table index mapping on press.in.th:
+        # Table 0: ผลฮานอยพิเศษ (17:30)
+        # Table 1: ผลหวยฮานอยปกติ (18:30)
+        # Table 2: ผลนอยvip (19:30)
+        clean_name = self.lotto_name.replace("หวย", "").replace(" ", "").strip()
         target_table_idx = 0
-        if "ฮานอยสามัคคี" in self.lotto_name or "ฮานอยพิเศษ" in self.lotto_name:
+        if "พิเศษ" in clean_name or "สามัคคี" in clean_name:
             target_table_idx = 0
-        elif "ปกติ" in self.lotto_name or "หวยฮานอย" in self.lotto_name:
-            target_table_idx = 1
-        elif "VIP" in self.lotto_name or "พัฒนา" in self.lotto_name:
+        elif "vip" in clean_name.lower() or "พัฒนา" in clean_name:
             target_table_idx = 2
+        elif "ปกติ" in clean_name or "ฮานอย" in clean_name:
+            target_table_idx = 1
 
         if target_table_idx >= len(tables):
             target_table_idx = 0
@@ -62,25 +63,42 @@ class PressHanoiParser(BaseParser):
         table = tables[target_table_idx]
         rows = table.find_all("tr")
 
-        today_str = datetime.now(TZ).strftime("%d/%m/%y")
+        today_dt = datetime.now(TZ)
+        today_d = today_dt.day
+        today_m = today_dt.month
+        today_y2 = today_dt.year % 100
 
         for row in rows[1:]:
             cols = [c.get_text(strip=True) for c in row.find_all(["td", "th"])]
             if len(cols) >= 5:
-                row_date = cols[0]
+                row_date_str = cols[0]
                 full4 = cols[1]
                 top3 = cols[2]
                 bot2 = cols[4]
 
-                # Ensure result is valid
-                if top3 and bot2 and top3.isdigit() and bot2.isdigit():
-                    # If date matches today or if latest result is present
-                    logger.info("PressHanoiParser found result for %s: top3=%s bottom2=%s (date=%s)", self.lotto_name, top3, bot2, row_date)
+                # Check if this row is for today
+                # row_date_str can be DD/MM/YY e.g. 11/09/26
+                is_today = False
+                parts = row_date_str.split("/")
+                if len(parts) == 3:
+                    try:
+                        d, m, y = int(parts[0]), int(parts[1]), int(parts[2])
+                        if d == today_d and m == today_m and (y == today_y2 or y == (today_y2 + 43) % 100):
+                            is_today = True
+                    except Exception:
+                        pass
+
+                if not is_today:
+                    continue
+
+                # Ensure result is valid digits (not "รอผล")
+                if top3 and bot2 and top3.isdigit() and bot2.isdigit() and len(top3) == 3 and len(bot2) == 2:
+                    logger.info("PressHanoiParser found result for %s: top3=%s bottom2=%s (date=%s)", self.lotto_name, top3, bot2, row_date_str)
                     return {
                         "name": self.lotto_name,
                         "top3": top3.zfill(3),
                         "bottom2": bot2.zfill(2),
-                        "full": full4,
+                        "full": full4 if full4.isdigit() else f"{top3}{bot2}",
                     }
 
-        raise ParseError(f"Result for '{self.lotto_name}' is not yet available on press.in.th")
+        raise ParseError(f"Result for '{self.lotto_name}' is not yet available on press.in.th for today")

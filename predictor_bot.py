@@ -702,7 +702,19 @@ class PredictorBot:
                 "layout": "vertical",
                 "backgroundColor": "#0F172A",
                 "paddingAll": "12px",
+                "spacing": "sm",
                 "contents": [
+                    {
+                        "type": "button",
+                        "style": "primary",
+                        "color": "#059669",
+                        "height": "sm",
+                        "action": {
+                            "type": "uri",
+                            "label": "🌐 ดูผลหวยสด แดชบอร์ด 24 ชม.",
+                            "uri": "https://lotto-bot-uy9t.onrender.com/dashboard"
+                        }
+                    },
                     {
                         "type": "text",
                         "text": "⚠️ แนวทางสถิติเพื่อความบันเทิง โปรดใช้วิจารณญาณ",

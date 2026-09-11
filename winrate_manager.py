@@ -247,6 +247,18 @@ class WinRateManager:
                         }
         except Exception as e:
             logger.debug("get_bill_for_lottery DB lookup error: %s", e)
+
+        # Fallback to pending_prediction_bills.json
+        try:
+            if PENDING_BILLS_FILE.exists():
+                with open(PENDING_BILLS_FILE, "r", encoding="utf-8") as f:
+                    bills = json.load(f)
+                    for b in bills:
+                        if b.get("date") == date_str and is_same_lottery(b.get("lottery_name", ""), lottery_name):
+                            return b
+        except Exception as fe:
+            logger.debug("get_bill_for_lottery file lookup error: %s", fe)
+
         return None
 
     def load_rolling_bills(self) -> List[Dict[str, Any]]:
@@ -612,6 +624,25 @@ class WinRateManager:
                             {"type": "text", "text": "📊 วินเรทบอทสะสม (100 ใบล่าสุด)", "color": "#C7D2FE", "size": "xs", "weight": "bold", "flex": 1},
                             {"type": "text", "text": f"{stats['winrate_pct']}% ({stats['wins']}/{stats['total']})", "color": "#38BDF8", "size": "xs", "weight": "bold", "align": "end"}
                         ]
+                    }
+                ]
+            },
+            "footer": {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#0F172A",
+                "paddingAll": "12px",
+                "contents": [
+                    {
+                        "type": "button",
+                        "style": "primary",
+                        "color": "#059669",
+                        "height": "sm",
+                        "action": {
+                            "type": "uri",
+                            "label": "🌐 ดูผลหวยสด แดชบอร์ด 24 ชม.",
+                            "uri": "https://lotto-bot-uy9t.onrender.com/dashboard"
+                        }
                     }
                 ]
             }

@@ -37,8 +37,13 @@ OFFICIAL_URL_MAP: dict[str, str] = {
     "ฮานอยEXTRA": "https://xosoextra.com/",
     "ฮานอยอาเซียน": "https://hanoiasean.com/",
     "ฮานอยพัฒนา": "https://xosohd.com/",
-    "ฮานอย (ปกติ)": "https://xosohd.com/",
-    "ฮานอย VIP": "https://xosohd.com/",
+    "ฮานอย (ปกติ)": "https://www.press.in.th/hanoi-lotto/",
+    "หวยฮานอย": "https://www.press.in.th/hanoi-lotto/",
+    "ฮานอยปกติ": "https://www.press.in.th/hanoi-lotto/",
+    "หวยฮานอย พิเศษ": "https://www.press.in.th/hanoi-lotto/",
+    "ฮานอยพิเศษ": "https://www.press.in.th/hanoi-lotto/",
+    "หวยฮานอย VIP": "https://www.press.in.th/hanoi-lotto/",
+    "ฮานอย VIP": "https://www.press.in.th/hanoi-lotto/",
     # Lao APIs & Sites
     "ลาว Extra": "https://laoextra.com/",
     "ลาว TV": "https://lao-tv.com/",
@@ -577,5 +582,18 @@ def scrape_direct_official(lottery_name: str, target_date: Optional[date] = None
         if res:
             logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (VIP Stock): %s-%s", lottery_name, res["top3"], res["bottom2"])
             return res
+
+    # 7. Main Hanoi lotteries (Press Hanoi Parser)
+    clean_lotto = lottery_name.replace("หวย", "").replace(" ", "").strip()
+    if clean_lotto in ("ฮานอยพิเศษ", "ฮานอย", "ฮานอยปกติ", "ฮานอยVIP", "ฮานอยvip"):
+        try:
+            from parsers.press_hanoi import PressHanoiParser
+            parser = PressHanoiParser(lotto_name=lottery_name)
+            p_res = parser.parse()
+            if p_res and len(p_res.get("top3", "")) == 3 and len(p_res.get("bottom2", "")) == 2:
+                logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (Press Hanoi): %s-%s", lottery_name, p_res["top3"], p_res["bottom2"])
+                return p_res
+        except Exception as pe:
+            logger.debug("Press Hanoi check for %s: %s", lottery_name, pe)
 
     return None
