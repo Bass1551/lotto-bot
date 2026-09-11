@@ -161,22 +161,37 @@ def verify_date_guardrail(text: str, target_date: date) -> bool:
 # ---------------------------------------------------------
 HANOI_API_MAP = {
     "ฮานอย HD": "https://api.xosohd.com/result",
+    "ฮานอยHD": "https://api.xosohd.com/result",
     "ฮานอย Star": "https://api.minhngocstar.com/result",
+    "ฮานอยStar": "https://api.minhngocstar.com/result",
+    "ฮานอยสตาร์": "https://api.minhngocstar.com/result",
     "ฮานอย TV": "https://api.minhngoctv.com/result",
+    "ฮานอยTV": "https://api.minhngoctv.com/result",
     "ฮานอย กาชาด": "https://api.xosoredcross.com/result",
+    "ฮานอยกาชาด": "https://api.xosoredcross.com/result",
     "ฮานอยEXTRA": "https://api.xosoextra.com/result",
+    "ฮานอย Extra": "https://api.xosoextra.com/result",
+    "ฮานอยExtra": "https://api.xosoextra.com/result",
     "ฮานอยอาเซียน": "https://hanoiasean.com/api/result",
 }
 
 LAO_API_MAP = {
     "ลาว Extra": "https://api.laoextra.com/result",
+    "ลาวExtra": "https://api.laoextra.com/result",
     "ลาว TV": "https://api.lao-tv.com/result",
+    "ลาวTV": "https://api.lao-tv.com/result",
     "ลาว HD": "https://api.laoshd.com/api/result",
+    "ลาวHD": "https://api.laoshd.com/api/result",
     "ลาว Star": "https://api.laostars.com/result",
+    "ลาวStar": "https://api.laostars.com/result",
+    "ลาวสตาร์": "https://api.laostars.com/result",
+    "ลาวอาเซียน": "https://hi.lotterylaosasean.com/result",
     "หวยลาว กาชาด": "https://api.lao-redcross.com/result",
+    "หวยลาวกาชาด": "https://api.lao-redcross.com/result",
     "ลาวกาชาด": "https://api.lao-redcross.com/result",
     "ลาว กาชาด": "https://api.lao-redcross.com/result",
 }
+
 
 
 def scrape_hanoi_api(lotto_name: str, target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
@@ -320,7 +335,71 @@ def scrape_superrich_vip(lotto_name: str, target_date: Optional[date] = None) ->
 
 
 # ---------------------------------------------------------
-# 4. VIP Stocks (nikkeivipstock, shenzhenindex, hsi-vip, tsecvipindex, ktopvipindex, dowjonespowerball)
+# 4. Fast REST APIs for VIP (Dow Jones Powerball & Korea VIP)
+# ---------------------------------------------------------
+def scrape_dowjones_powerball_vip(target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
+    url = "https://api.dowjonespowerball.com/result"
+    target_date = target_date or datetime.now(TZ).date()
+    target_str = target_date.strftime("%Y-%m-%d")
+    try:
+        res = requests.get(url, headers=HEADERS, timeout=5)
+        if res.status_code == 200:
+            data = res.json().get("data", {})
+            show_1st = data.get("show_1st", "")
+            lotto_date = data.get("lotto_date", "")
+            if show_1st and not show_1st.startswith(target_str) and lotto_date != target_str:
+                logger.debug("Dow Jones VIP date mismatch: show_1st=%s, lotto_date=%s vs %s", show_1st, lotto_date, target_str)
+                return None
+            results = data.get("results", {})
+            p1 = str(results.get("prize_1st", ""))
+            p2 = str(results.get("prize_2nd", ""))
+            if len(p1) >= 3 and len(p2) >= 2:
+                top3 = p1[-3:]
+                bot2 = p2[-2:]
+                return {
+                    "name": "หวยดาวโจนส์ VIP",
+                    "top3": top3,
+                    "bottom2": bot2,
+                    "full": p1,
+                }
+    except Exception as exc:
+        logger.debug("Dow Jones Powerball API error: %s", exc)
+    return None
+
+
+def scrape_korea_vip_api(target_date: Optional[date] = None) -> Optional[Dict[str, str]]:
+    url = "https://api.ktopvipindex.com/api/kr"
+    target_date = target_date or datetime.now(TZ).date()
+    target_str = target_date.strftime("%Y-%m-%d")
+    try:
+        res = requests.get(url, headers=HEADERS, timeout=5)
+        if res.status_code == 200:
+            kr_data = res.json().get("data", {})
+            kr_date = kr_data.get("date")
+            if kr_date and kr_date != target_str:
+                logger.debug("Korea VIP date mismatch: %s != %s", kr_date, target_str)
+                return None
+            kr_prices = kr_data.get("prices", {})
+            if kr_prices.get("available") and kr_prices.get("note") == "Close":
+                p_val = kr_prices.get("price", 0)
+                d_val = str(kr_prices.get("diff", ""))
+                p_str = f"{p_val:.2f}"
+                top3 = p_str.split(".")[0][-1] + p_str.split(".")[1]
+                bot2 = d_val.split(".")[1] if "." in d_val else d_val[-2:]
+                if len(top3) == 3 and len(bot2) == 2:
+                    return {
+                        "name": "เกาหลี VIP",
+                        "top3": top3,
+                        "bottom2": bot2,
+                        "full": f"{p_str} | {d_val}",
+                    }
+    except Exception as exc:
+        logger.debug("Korea VIP API error: %s", exc)
+    return None
+
+
+# ---------------------------------------------------------
+# 5. VIP Stocks (nikkeivipstock, shenzhenindex, hsi-vip, tsecvipindex, ktopvipindex, dowjonespowerball)
 # ---------------------------------------------------------
 VIP_STOCK_URLS = {
     "นิเคอิเช้า VIP": ("https://nikkeivipstock.com", "morning"),
@@ -378,6 +457,29 @@ def scrape_vip_stock(lottery_name: str, target_date: Optional[date] = None) -> O
             return None
 
         if lottery_name == "เกาหลี VIP":
+            try:
+                r_kr = requests.get("https://api.ktopvipindex.com/api/kr", headers=HEADERS, timeout=5)
+                if r_kr.status_code == 200:
+                    kr_data = r_kr.json().get("data", {})
+                    kr_date = kr_data.get("date")
+                    if not kr_date or kr_date == target_date.strftime("%Y-%m-%d"):
+                        kr_prices = kr_data.get("prices", {})
+                        if kr_prices.get("available") and kr_prices.get("note") == "Close":
+                            p_val = kr_prices.get("price", 0)
+                            d_val = str(kr_prices.get("diff", ""))
+                            p_str = f"{p_val:.2f}"
+                            top3 = p_str.split(".")[0][-1] + p_str.split(".")[1]
+                            bot2 = d_val.split(".")[1] if "." in d_val else d_val[-2:]
+                            if len(top3) == 3 and len(bot2) == 2:
+                                return {
+                                    "name": lottery_name,
+                                    "top3": top3,
+                                    "bottom2": bot2,
+                                    "full": f"{p_str} | {d_val}",
+                                }
+            except Exception as e:
+                logger.debug("Korea VIP API error: %s", e)
+
             m_korea = re.search(r"(\d{3})\s*\|\s*(\d{2})", text)
             if m_korea:
                 return {
@@ -458,7 +560,20 @@ def scrape_direct_official(lottery_name: str, target_date: Optional[date] = None
             logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (Superrich VIP): %s-%s", lottery_name, res["top3"], res["bottom2"])
             return res
 
-    # 5. VIP Stocks
+    # 5. Fast VIP REST APIs (Dow Jones VIP & Korea VIP)
+    if lottery_name == "หวยดาวโจนส์ VIP":
+        res = scrape_dowjones_powerball_vip(target_date=target_date)
+        if res:
+            logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (Dow Jones VIP API): %s-%s", lottery_name, res["top3"], res["bottom2"])
+            return res
+
+    if lottery_name == "เกาหลี VIP":
+        res = scrape_korea_vip_api(target_date=target_date)
+        if res:
+            logger.info("⚡ Fast Direct scrape SUCCESS for '%s' (Korea VIP API): %s-%s", lottery_name, res["top3"], res["bottom2"])
+            return res
+
+    # 6. VIP Stocks (Playwright scraper)
     if lottery_name in VIP_STOCK_URLS:
         res = scrape_vip_stock(lottery_name, target_date=target_date)
         if res:
