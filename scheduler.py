@@ -234,6 +234,16 @@ class LotteryScheduler:
         )
         logger.info("Scheduled morning yesterday summary report at 08:00 (Asia/Bangkok)")
 
+        # Schedule morning check for regular Dow Jones at 08:05 if not sent yet
+        self.scheduler.add_job(
+            self._check_morning_dow_jones,
+            trigger=CronTrigger(hour=8, minute=5, timezone=TZ),
+            id="morning_dow_jones_check",
+            replace_existing=True,
+            misfire_grace_time=600,
+        )
+        logger.info("Scheduled morning regular Dow Jones check at 08:05 (Asia/Bangkok)")
+
         self.scheduler.start()
         logger.info("Scheduler started")
 
@@ -395,23 +405,23 @@ class LotteryScheduler:
                     pass
 
     def check_pending_due_today(self) -> None:
-        """Check only the immediate active round upon startup.
+        """Check only the immediate active round upon startup, with morning exception for regular Dow Jones.
         NO BACKFILL PUSH TO LINE: Past lotteries that drew before the current round
-        are NEVER pushed to LINE. Bot only checks lotteries whose draw time is within
-        the last 10 minutes (immediate current round). Older rounds are skipped.
+        are NEVER pushed to LINE, EXCEPT during 08:00-08:30 morning window where regular Dow Jones
+        ('หวยดาวโจนส์') is allowed to be sent.
         """
         now_dt = datetime.now(TZ)
         today = now_dt.date()
         is_weekend = (today.weekday() in (5, 6))
         current_time_str = now_dt.strftime("%H:%M")
-        # Cutoff: Only lotteries that drew within the last 10 minutes are considered active current round
         cutoff_time_str = (now_dt - timedelta(minutes=10)).strftime("%H:%M")
+        is_morning_window = ("08:00" <= current_time_str <= "08:30")
 
         grouped_by_time = defaultdict(list)
         for lotto in self.lotteries:
             name = lotto["name"]
 
-            # Filter Dow Jones variants on pending check: Only allow regular Dow Jones ("หวยดาวโจนส์")
+            # Filter Dow Jones variants: Only allow regular Dow Jones ("หวยดาวโจนส์")
             # Other variants (VIP, extra, STAR, TV, mid night, etc.) are only reported in daily summary
             if "ดาวโจนส์" in name and name != "หวยดาวโจนส์":
                 continue
@@ -423,8 +433,11 @@ class LotteryScheduler:
                 if name == "หวยไทย" and today.day not in (1, 16):
                     continue
 
-            # Skip past lotteries: do NOT backfill or push past results to LINE
-            if lotto["time"] < cutoff_time_str:
+            # In the morning window (08:00 - 08:30), allow regular Dow Jones to be sent
+            is_morning_dow_jones = (is_morning_window and name == "หวยดาวโจนส์")
+
+            # Skip past lotteries, unless it is regular Dow Jones during 08:00-08:30
+            if lotto["time"] < cutoff_time_str and not is_morning_dow_jones:
                 continue
 
             if lotto["time"] <= current_time_str and not self.db.already_sent(lotto["name"], today):
@@ -432,13 +445,23 @@ class LotteryScheduler:
 
         for time_str, lotto_list in grouped_by_time.items():
             names_str = " + ".join([x["name"] for x in lotto_list])
-            logger.info("Current active round %s (%s) is due. Checking now...", time_str, names_str)
+            logger.info("Time slot %s (%s) is due. Checking now...", time_str, names_str)
             self.scheduler.add_job(
                 self._check_group_loop,
                 args=[lotto_list],
                 id=f"immediate_group_{time_str.replace(':', '_')}_{int(time.time())}",
                 replace_existing=True,
             )
+
+    def _check_morning_dow_jones(self) -> None:
+        """Check and send regular Dow Jones in the morning (08:00-08:30) if not sent yet."""
+        today = datetime.now(TZ).date()
+        if self.db.already_sent("หวยดาวโจนส์", today):
+            return
+        dj_lotto = next((l for l in self.lotteries if l["name"] == "หวยดาวโจนส์"), None)
+        if dj_lotto:
+            logger.info("Morning check for regular Dow Jones ('หวยดาวโจนส์')...")
+            self._check_group_loop([dj_lotto])
 
     def _check_group_loop(self, lotto_list: list[dict[str, Any]]) -> None:
         """Poll lotteries in a group every 60s up to 30 times. Batch send when available."""
